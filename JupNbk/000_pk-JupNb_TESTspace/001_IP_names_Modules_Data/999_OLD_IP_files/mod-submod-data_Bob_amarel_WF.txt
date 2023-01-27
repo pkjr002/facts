@@ -1,0 +1,5 @@
+di                   Module                sub_Module               O/P_Data
+total                workflow              wf1e                     total.workflow.wf1e.global.nc
+total                workflow              wf1f                     total.workflow.wf1f.global.nc
+total                workflow              wf2e                     total.workflow.wf2e.global.nc
+total                workflow              wf2f                     total.workflow.wf2f.global.nc

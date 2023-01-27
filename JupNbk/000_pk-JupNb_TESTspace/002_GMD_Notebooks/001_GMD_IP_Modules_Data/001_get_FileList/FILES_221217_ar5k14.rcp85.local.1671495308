@@ -1,0 +1,16 @@
+-rw-rw-r-- 1 rk509 kopp 40581 Dec 17 13:27 /projects/kopp/facts-experiments/221217/ar5k14.rcp85/output/ar5k14.rcp85.ar5glaciers.ipccar5.glaciers_localsl.nc
+-rw-rw-r-- 1 rk509 kopp 36597 Dec 17 13:27 /projects/kopp/facts-experiments/221217/ar5k14.rcp85/output/ar5k14.rcp85.ar5icesheets.ipccar5.icesheets_EAIS_localsl.nc
+-rw-rw-r-- 1 rk509 kopp 37729 Dec 17 13:27 /projects/kopp/facts-experiments/221217/ar5k14.rcp85/output/ar5k14.rcp85.ar5icesheets.ipccar5.icesheets_GIS_localsl.nc
+-rw-rw-r-- 1 rk509 kopp 41493 Dec 17 13:27 /projects/kopp/facts-experiments/221217/ar5k14.rcp85/output/ar5k14.rcp85.ar5icesheets.ipccar5.icesheets_WAIS_localsl.nc
+-rw-rw-r-- 1 rk509 kopp 33297 Dec 17 13:27 /projects/kopp/facts-experiments/221217/ar5k14.rcp85/output/ar5k14.rcp85.ar5TE.ipccar5.thermalexpansion_localsl.nc
+-rw-rw-r-- 1 rk509 kopp 38639 Dec 17 13:27 /projects/kopp/facts-experiments/221217/ar5k14.rcp85/output/ar5k14.rcp85.deconto16.deconto16.AIS_AIS_localsl.nc
+-rw-rw-r-- 1 rk509 kopp 38106 Dec 17 13:27 /projects/kopp/facts-experiments/221217/ar5k14.rcp85/output/ar5k14.rcp85.deconto16.deconto16.AIS_EAIS_localsl.nc
+-rw-rw-r-- 1 rk509 kopp 38006 Dec 17 13:27 /projects/kopp/facts-experiments/221217/ar5k14.rcp85/output/ar5k14.rcp85.deconto16.deconto16.AIS_WAIS_localsl.nc
+-rw-rw-r-- 1 rk509 kopp 64401 Dec 17 13:27 /projects/kopp/facts-experiments/221217/ar5k14.rcp85/output/ar5k14.rcp85.k14glaciers.kopp14.glaciers_localsl.nc
+-rw-rw-r-- 1 rk509 kopp 58846 Dec 17 13:27 /projects/kopp/facts-experiments/221217/ar5k14.rcp85/output/ar5k14.rcp85.k14icesheets.kopp14.icesheets_EAIS_localsl.nc
+-rw-rw-r-- 1 rk509 kopp 55305 Dec 17 13:27 /projects/kopp/facts-experiments/221217/ar5k14.rcp85/output/ar5k14.rcp85.k14icesheets.kopp14.icesheets_GIS_localsl.nc
+-rw-rw-r-- 1 rk509 kopp 58814 Dec 17 13:27 /projects/kopp/facts-experiments/221217/ar5k14.rcp85/output/ar5k14.rcp85.k14icesheets.kopp14.icesheets_WAIS_localsl.nc
+-rw-rw-r-- 1 rk509 kopp 38694 Dec 17 13:27 /projects/kopp/facts-experiments/221217/ar5k14.rcp85/output/ar5k14.rcp85.k14lws.kopp14.landwaterstorage_localsl.nc
+-rw-rw-r-- 1 rk509 kopp 67300 Dec 17 13:27 /projects/kopp/facts-experiments/221217/ar5k14.rcp85/output/ar5k14.rcp85.k14sterodynamics.kopp14.sterodynamics_localsl.nc
+-rw-rw-r-- 1 rk509 kopp 34915 Dec 17 13:27 /projects/kopp/facts-experiments/221217/ar5k14.rcp85/output/ar5k14.rcp85.k14vlm.kopp14.verticallandmotion_localsl.nc
+-rw-rw-r-- 1 rk509 kopp 53217 Dec 17 13:27 /projects/kopp/facts-experiments/221217/ar5k14.rcp85/output/ar5k14.rcp85.total.workflow.k14.local.nc

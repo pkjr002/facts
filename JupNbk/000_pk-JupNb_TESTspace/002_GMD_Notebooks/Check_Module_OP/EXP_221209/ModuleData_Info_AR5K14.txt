@@ -1,0 +1,204 @@
+DataFILE ==> temperature.fair.temperature_gsat.nc
+Frozen({'samples': 200, 'years': 751, 'locations': 1})
+Data variables:
+    surface_temperature  (samples, years, locations) float32 ...
+    lat                  (locations) float64 ...
+    lon                  (locations) float64 ...
+Coordinates:
+  * years      (years) int64 1750 1751 1752 1753 1754 ... 2497 2498 2499 2500
+  * locations  (locations) int64 -1
+  * samples    (samples) int64 0 1 2 3 4 5 6 7 ... 193 194 195 196 197 198 199
+-------------
+
+DataFILE ==> temperature.fair.temperature_oceantemp.nc
+Frozen({'samples': 200, 'years': 751, 'locations': 1})
+Data variables:
+    deep_ocean_temperature  (samples, years, locations) float32 ...
+    lat                     (locations) float64 ...
+    lon                     (locations) float64 ...
+Coordinates:
+  * years      (years) int64 1750 1751 1752 1753 1754 ... 2497 2498 2499 2500
+  * locations  (locations) int64 -1
+  * samples    (samples) int64 0 1 2 3 4 5 6 7 ... 193 194 195 196 197 198 199
+-------------
+
+DataFILE ==> temperature.fair.temperature_ohc.nc
+Frozen({'samples': 200, 'years': 751, 'locations': 1})
+Data variables:
+    ocean_heat_content  (samples, years, locations) float32 ...
+    lat                 (locations) float64 ...
+    lon                 (locations) float64 ...
+Coordinates:
+  * years      (years) int64 1750 1751 1752 1753 1754 ... 2497 2498 2499 2500
+  * locations  (locations) int64 -1
+  * samples    (samples) int64 0 1 2 3 4 5 6 7 ... 193 194 195 196 197 198 199
+-------------
+
+DataFILE ==> k14sterodynamics.kopp14.sterodynamics_globalsl.nc
+Frozen({'years': 10, 'samples': 200})
+Data variables:
+    year     (years) int32 ...
+    sample   (samples) int64 ...
+    samps    (years, samples) int16 ...
+Coordinates:
+    *empty*
+-------------
+
+DataFILE ==> ar5TE.ipccar5.thermalexpansion_globalsl.nc
+Frozen({'years': 9, 'samples': 200})
+Data variables:
+    year     (years) int32 ...
+    sample   (samples) int64 ...
+    samps    (years, samples) float32 ...
+Coordinates:
+    *empty*
+-------------
+
+DataFILE ==> k14glaciers.kopp14.glaciers_globalsl.nc
+Frozen({'years': 10, 'samples': 200})
+Data variables:
+    year     (years) int32 ...
+    sample   (samples) int64 ...
+    samps    (years, samples) float32 ...
+Coordinates:
+    *empty*
+-------------
+
+DataFILE ==> ar5glaciers.ipccar5.glaciers_globalsl.nc
+Frozen({'years': 9, 'samples': 200, 'locations': 1})
+Data variables:
+    lat               (locations) float32 ...
+    lon               (locations) float32 ...
+    sea_level_change  (samples, years, locations) int16 ...
+Coordinates:
+  * years      (years) int32 2020 2030 2040 2050 2060 2070 2080 2090 2100
+  * samples    (samples) int64 0 1 2 3 4 5 6 7 ... 193 194 195 196 197 198 199
+  * locations  (locations) int64 -1
+-------------
+
+DataFILE ==> ar5icesheets.ipccar5.icesheets_GIS_globalsl.nc
+Frozen({'years': 9, 'samples': 200, 'locations': 1})
+Data variables:
+    lat               (locations) float32 ...
+    lon               (locations) float32 ...
+    sea_level_change  (samples, years, locations) int16 ...
+Coordinates:
+  * years      (years) int32 2020 2030 2040 2050 2060 2070 2080 2090 2100
+  * samples    (samples) int64 0 1 2 3 4 5 6 7 ... 193 194 195 196 197 198 199
+  * locations  (locations) int64 -1
+-------------
+
+DataFILE ==> k14icesheets.kopp14.icesheets_GIS_globalsl.nc
+Frozen({'years': 10, 'samples': 200, 'locations': 1})
+Data variables:
+    lat               (locations) float32 ...
+    lon               (locations) float32 ...
+    sea_level_change  (samples, years, locations) int16 ...
+Coordinates:
+  * years      (years) int32 2005 2020 2030 2040 2050 2060 2070 2080 2090 2100
+  * samples    (samples) int64 0 1 2 3 4 5 6 7 ... 193 194 195 196 197 198 199
+  * locations  (locations) int64 -1
+-------------
+
+DataFILE ==> ar5icesheets.ipccar5.icesheets_AIS_globalsl.nc
+Frozen({'years': 9, 'samples': 200, 'locations': 1})
+Data variables:
+    lat               (locations) float32 ...
+    lon               (locations) float32 ...
+    sea_level_change  (samples, years, locations) int16 ...
+Coordinates:
+  * years      (years) int32 2020 2030 2040 2050 2060 2070 2080 2090 2100
+  * samples    (samples) int64 0 1 2 3 4 5 6 7 ... 193 194 195 196 197 198 199
+  * locations  (locations) int64 -1
+-------------
+
+DataFILE ==> deconto16.deconto16.AIS_AIS_globalsl.nc
+Frozen({'years': 9, 'samples': 200})
+Data variables:
+    year     (years) int32 ...
+    sample   (samples) int64 ...
+    samps    (years, samples) float32 ...
+Coordinates:
+    *empty*
+-------------
+
+DataFILE ==> ar5icesheets.ipccar5.icesheets_EAIS_globalsl.nc
+Frozen({'years': 9, 'samples': 200, 'locations': 1})
+Data variables:
+    lat               (locations) float32 ...
+    lon               (locations) float32 ...
+    sea_level_change  (samples, years, locations) int16 ...
+Coordinates:
+  * years      (years) int32 2020 2030 2040 2050 2060 2070 2080 2090 2100
+  * samples    (samples) int64 0 1 2 3 4 5 6 7 ... 193 194 195 196 197 198 199
+  * locations  (locations) int64 -1
+-------------
+
+DataFILE ==> deconto16.deconto16.AIS_EAIS_globalsl.nc
+Frozen({'years': 9, 'samples': 200})
+Data variables:
+    year     (years) int32 ...
+    sample   (samples) int64 ...
+    samps    (years, samples) float32 ...
+Coordinates:
+    *empty*
+-------------
+
+DataFILE ==> k14icesheets.kopp14.icesheets_EAIS_globalsl.nc
+Frozen({'years': 10, 'samples': 200, 'locations': 1})
+Data variables:
+    lat               (locations) float32 ...
+    lon               (locations) float32 ...
+    sea_level_change  (samples, years, locations) int16 ...
+Coordinates:
+  * years      (years) int32 2005 2020 2030 2040 2050 2060 2070 2080 2090 2100
+  * samples    (samples) int64 0 1 2 3 4 5 6 7 ... 193 194 195 196 197 198 199
+  * locations  (locations) int64 -1
+-------------
+
+DataFILE ==> ar5icesheets.ipccar5.icesheets_WAIS_globalsl.nc
+Frozen({'years': 9, 'samples': 200, 'locations': 1})
+Data variables:
+    lat               (locations) float32 ...
+    lon               (locations) float32 ...
+    sea_level_change  (samples, years, locations) int16 ...
+Coordinates:
+  * years      (years) int32 2020 2030 2040 2050 2060 2070 2080 2090 2100
+  * samples    (samples) int64 0 1 2 3 4 5 6 7 ... 193 194 195 196 197 198 199
+  * locations  (locations) int64 -1
+-------------
+
+DataFILE ==> deconto16.deconto16.AIS_WAIS_globalsl.nc
+Frozen({'years': 9, 'samples': 200})
+Data variables:
+    year     (years) int32 ...
+    sample   (samples) int64 ...
+    samps    (years, samples) float32 ...
+Coordinates:
+    *empty*
+-------------
+
+DataFILE ==> k14icesheets.kopp14.icesheets_WAIS_globalsl.nc
+Frozen({'years': 10, 'samples': 200, 'locations': 1})
+Data variables:
+    lat               (locations) float32 ...
+    lon               (locations) float32 ...
+    sea_level_change  (samples, years, locations) int16 ...
+Coordinates:
+  * years      (years) int32 2005 2020 2030 2040 2050 2060 2070 2080 2090 2100
+  * samples    (samples) int64 0 1 2 3 4 5 6 7 ... 193 194 195 196 197 198 199
+  * locations  (locations) int64 -1
+-------------
+
+DataFILE ==> k14lws.kopp14.landwaterstorage_globalsl.nc
+Frozen({'years': 10, 'samples': 200, 'locations': 1})
+Data variables:
+    lat               (locations) float32 ...
+    lon               (locations) float32 ...
+    sea_level_change  (samples, years, locations) int16 ...
+Coordinates:
+  * years      (years) int32 2005 2020 2030 2040 2050 2060 2070 2080 2090 2100
+  * samples    (samples) int64 0 1 2 3 4 5 6 7 ... 193 194 195 196 197 198 199
+  * locations  (locations) int64 -1
+-------------
+

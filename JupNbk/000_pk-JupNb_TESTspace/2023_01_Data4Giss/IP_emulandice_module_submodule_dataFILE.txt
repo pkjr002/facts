@@ -1,0 +1,9 @@
+Component            Module                subModule                DataFile
+#Glaciers             emulandice            glaciers                 emuglaciers.emulandice.glaciers_globalsl.nc    
+#
+GrIS                 emulandice            GrIS                     emuGrIS.emulandice.GrIS_globalsl.nc
+#
+AIS                  emulandice            AIS                      emuAIS.emulandice.AIS_globalsl.nc
+EAIS                 emulandice            AIS                      emuAIS.emulandice.AIS_EAIS_globalsl.nc
+WAIS                 emulandice            AIS                      emuAIS.emulandice.AIS_WAIS_globalsl.nc
+PEN                  emulandice            AIS                      emuAIS.emulandice.AIS_PEN_globalsl.nc

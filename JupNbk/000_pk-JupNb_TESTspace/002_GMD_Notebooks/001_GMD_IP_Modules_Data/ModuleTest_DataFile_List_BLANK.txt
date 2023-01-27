@@ -1,0 +1,57 @@
+Component            Module                sub_Module               DataFile
+GSAT                 fair                  temperature              XXX
+TE                   tlm                   oceandynamics            XXX
+TE                   ipccar5               thermalexpansion         XXX
+Glaciers             kopp14                glaciers                 XXX
+Glaciers             ipccar5               glaciers                 XXX
+Glaciers             ipccar5               glacierscmip6            XXX
+Glaciers             ipccar5               glaciersfair             XXX
+Glaciers             ipccar6               gmipemuglaciers          XXX
+Glaciers             emulandice            glaciers                 XXX             
+GrIS                 ipccar5               icesheets                XXX
+GrIS                 ipccar5               icesheets                XXX
+GrIS                 ipccar5               icesheets                XXX
+GrIS                 bamber19              icesheets                XXX
+GrIS                 bamber19              icesheets                XXX
+GrIS                 bamber19              icesheets                XXX
+GrIS                 ipccar6               ismipemuicesheets        XXX
+GrIS                 ipccar6               ismipemuicesheets        XXX
+GrIS                 ipccar6               ismipemuicesheets        XXX
+GrIS                 ipccar6               ismipemuicesheets        XXX
+GrIS                 kopp14                icesheets                XXX
+GrIS                 kopp14                icesheets                XXX
+GrIS                 kopp14                icesheets                XXX
+GrIS                 FittedISMIP           GrIS                     XXX
+GrIS                 emulandice            GrIS                     XXX                  
+AIS                  ipccar5               icesheets                XXX
+AIS                  bamber19              icesheets                XXX
+AIS                  ipccar6               ismipemuicesheets        XXX
+AIS                  kopp14                icesheets                XXX
+AIS                  deconto16             AIS                      XXX
+AIS                  deconto16             AIS                      XXX
+AIS                  deconto16             AIS                      XXX
+AIS                  deconto21             AIS                      XXX
+AIS                  deconto21             AIS                      XXX
+AIS                  deconto21             AIS                      XXX
+AIS                  emulandice            AIS                      XXX
+AIS                  ipccar6               larmipAIS                XXX
+AIS                  ipccar6               larmipAIS                XXX
+AIS                  ipccar6               larmipAIS                XXX
+AIS                  ipccar6               larmipAIS                XXX
+AIS                  ipccar6               larmipAIS                XXX
+AIS                  ipccar6               larmipAIS                XXX
+AIS                  larmip                AIS                      XXX
+AIS                  larmip                AIS                      XXX
+AIS                  larmip                AIS                      XXX
+AIS                  larmip                AIS                      XXX
+AIS                  larmip                AIS                      XXX
+EAIS                 ipccar5               icesheets                XXX
+WAIS                 ipccar5               icesheets                XXX
+LWS                  kopp14                landwaterstorage         XXX
+LWS                  ssp                   landwaterstorage         XXX
+  
+     
+           
+  
+               
+ 

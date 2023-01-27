@@ -1,0 +1,5 @@
+Component           Workflow               Data_File
+total               wf1e                   total.workflow.wf1e.global.nc
+total               wf1f                   total.workflow.wf1f.global.nc
+total               wf2e                   total.workflow.wf2e.global.nc
+total               wf2f                   total.workflow.wf2f.global.nc

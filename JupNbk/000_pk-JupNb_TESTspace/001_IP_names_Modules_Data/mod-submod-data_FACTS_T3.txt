@@ -1,0 +1,55 @@
+di                   Module                sub_Module               O/P_Data
+GSAT                 fair                  temperature              fair-temperature-fair-ssp585_gsat.nc    
+TE                   tlm                   oceandynamics            oceandynamics-tlm-oceandynamics-ssp585_globalsl.nc
+TE                   ipccar5               thermalexpansion         thermalexpansion-ar5-thermalexpansion-ssp585_globalsl.nc    
+Glaciers             kopp14                glaciers                 glaciers-kopp14-glaciers-rcp85_globalsl.nc        
+Glaciers             ipccar5               glaciers                 glaciers-ar5-glaciers-ssp585_globalsl.nc    
+Glaciers             ipccar5               glacierscmip6            glaciers-ar5-glacierscmip6-ssp585_globalsl.nc    
+Glaciers             ipccar5               glaciersfair             glaciers-ar5-glaciersfair-ssp585_globalsl.nc           
+Glaciers             ipccar6               gmipemuglaciers          glaciers-ipccar6-gmipemuglaciers-ssp585_globalsl.nc                   
+Glaciers             emulandice            glaciers                 XXX             
+GrIS                 ipccar5               icesheets                icesheets-ar5-icesheets-ssp585_EAIS_globalsl.nc
+GrIS                 ipccar5               icesheets                icesheets-ar5-icesheets-ssp585_GIS_globalsl.nc
+GrIS                 ipccar5               icesheets                icesheets-ar5-icesheets-ssp585_WAIS_globalsl.nc
+GrIS                 bamber19              icesheets                icesheets-ipccar6-bambericesheet-ssp585_EAIS_globalsl.nc
+GrIS                 bamber19              icesheets                icesheets-ipccar6-bambericesheet-ssp585_GIS_globalsl.nc
+GrIS                 bamber19              icesheets                icesheets-ipccar6-bambericesheet-ssp585_WAIS_globalsl.nc               
+GrIS                 ipccar6               ismipemuicesheets        icesheets-ipccar6-ismipemuicesheet-ssp585_EAIS_globalsl.nc
+GrIS                 ipccar6               ismipemuicesheets        icesheets-ipccar6-ismipemuicesheet-ssp585_GIS_globalsl.nc
+GrIS                 ipccar6               ismipemuicesheets        icesheets-ipccar6-ismipemuicesheet-ssp585_PEN_globalsl.nc
+GrIS                 ipccar6               ismipemuicesheets        icesheets-ipccar6-ismipemuicesheet-ssp585_WAIS_globalsl.nc           
+GrIS                 kopp14                icesheets                icesheets-kopp14-icesheets-rcp85_EAIS_globalsl.nc
+GrIS                 kopp14                icesheets                icesheets-kopp14-icesheets-rcp85_GIS_globalsl.nc
+GrIS                 kopp14                icesheets                icesheets-kopp14-icesheets-rcp85_WAIS_globalsl.nc
+GrIS                 FittedISMIP           GrIS                     icesheets-FittedISMIP-icesheets-ssp585_GIS_globalsl.nc
+GrIS                 emulandice            GrIS                     XXX                  
+AIS                  ipccar5               icesheets                icesheets-ar5-icesheets-ssp585_AIS_globalsl.nc    
+AIS                  bamber19              icesheets                icesheets-ipccar6-bambericesheet-ssp585_AIS_globalsl.nc    
+AIS                  ipccar6               ismipemuicesheets        icesheets-ipccar6-ismipemuicesheet-ssp585_AIS_globalsl.nc       
+AIS                  kopp14                icesheets                icesheets-kopp14-icesheets-rcp85_AIS_globalsl.nc    
+AIS                  deconto16             AIS                      icesheets-dp16-icesheet-ssp585_AIS_globalsl.nc                   
+AIS                  deconto16             AIS                      icesheets-dp16-icesheet-ssp585_EAIS_globalsl.nc
+AIS                  deconto16             AIS                      icesheets-dp16-icesheet-ssp585_WAIS_globalsl.nc
+AIS                  deconto21             AIS                      icesheets-dp21-icesheet-ssp585_AIS_globalsl.nc                   
+AIS                  deconto21             AIS                      icesheets-dp21-icesheet-ssp585_EAIS_globalsl.nc
+AIS                  deconto21             AIS                      icesheets-dp21-icesheet-ssp585_WAIS_globalsl.nc
+AIS                  emulandice            AIS                      XXX
+AIS                  ipccar6               larmipAIS                icesheets-ipccar6-larmipicesheet-ssp245_AIS_globalsl.nc           
+AIS                  ipccar6               larmipAIS                icesheets-ipccar6-larmipicesheet-ssp245_EAIS_globalsl.nc
+AIS                  ipccar6               larmipAIS                icesheets-ipccar6-larmipicesheet-ssp245_PEN_globalsl.nc
+AIS                  ipccar6               larmipAIS                icesheets-ipccar6-larmipicesheet-ssp245_SMB_globalsl.nc
+AIS                  ipccar6               larmipAIS                icesheets-ipccar6-larmipicesheet-ssp245_TOT_globalsl.nc
+AIS                  ipccar6               larmipAIS                icesheets-ipccar6-larmipicesheet-ssp245_WAIS_globalsl.nc
+AIS                  larmip                AIS                      AIS-larmip-AIS-ssp585_EAIS_globalsl.nc                           
+AIS                  larmip                AIS                      AIS-larmip-AIS-ssp585_globalsl.nc
+AIS                  larmip                AIS                      AIS-larmip-AIS-ssp585_PEN_globalsl.nc
+AIS                  larmip                AIS                      AIS-larmip-AIS-ssp585_SMB_globalsl.nc
+AIS                  larmip                AIS                      AIS-larmip-AIS-ssp585_WAIS_globalsl.nc
+LWS                  kopp14                landwaterstorage         landwaterstorage-kopp14-landwaterstorage_globalsl.nc                   
+LWS                  ssp                   landwaterstorage         landwaterstorage-ssp-landwaterstorage-ssp5_globalsl.nc
+  
+     
+           
+  
+               
+ 

@@ -1,0 +1,128 @@
+SCENARIO = ssp126 || WORKFLOW =wf1f || YEAR = 2050
+mhhw_freq = 182.625
+mhhw = 0.8212
+gpd_location = 1.1518
+gpd_scale = 0.1279
+gpd_shape = 0.1568
+-------------
+
+SCENARIO = ssp126 || WORKFLOW =wf1f || YEAR = 2100
+mhhw_freq = 182.625
+mhhw = 0.8212
+gpd_location = 1.1518
+gpd_scale = 0.1279
+gpd_shape = 0.1568
+-------------
+
+SCENARIO = ssp126 || WORKFLOW =wf2f || YEAR = 2050
+mhhw_freq = 182.625
+mhhw = 0.8212
+gpd_location = 1.1518
+gpd_scale = 0.1279
+gpd_shape = 0.1568
+-------------
+
+SCENARIO = ssp126 || WORKFLOW =wf2f || YEAR = 2100
+mhhw_freq = 182.625
+mhhw = 0.8212
+gpd_location = 1.1518
+gpd_scale = 0.1279
+gpd_shape = 0.1568
+-------------
+
+SCENARIO = ssp126 || WORKFLOW =wf3f || YEAR = 2050
+mhhw_freq = 182.625
+mhhw = 0.8212
+gpd_location = 1.1518
+gpd_scale = 0.1279
+gpd_shape = 0.1568
+-------------
+
+SCENARIO = ssp126 || WORKFLOW =wf3f || YEAR = 2100
+mhhw_freq = 182.625
+mhhw = 0.8212
+gpd_location = 1.1518
+gpd_scale = 0.1279
+gpd_shape = 0.1568
+-------------
+
+SCENARIO = ssp126 || WORKFLOW =wf4 || YEAR = 2050
+mhhw_freq = 182.625
+mhhw = 0.8212
+gpd_location = 1.1518
+gpd_scale = 0.1279
+gpd_shape = 0.1568
+-------------
+
+SCENARIO = ssp126 || WORKFLOW =wf4 || YEAR = 2100
+mhhw_freq = 182.625
+mhhw = 0.8212
+gpd_location = 1.1518
+gpd_scale = 0.1279
+gpd_shape = 0.1568
+-------------
+
+SCENARIO = ssp585 || WORKFLOW =wf1f || YEAR = 2050
+mhhw_freq = 182.625
+mhhw = 0.8212
+gpd_location = 1.1518
+gpd_scale = 0.1279
+gpd_shape = 0.1568
+-------------
+
+SCENARIO = ssp585 || WORKFLOW =wf1f || YEAR = 2100
+mhhw_freq = 182.625
+mhhw = 0.8212
+gpd_location = 1.1518
+gpd_scale = 0.1279
+gpd_shape = 0.1568
+-------------
+
+SCENARIO = ssp585 || WORKFLOW =wf2f || YEAR = 2050
+mhhw_freq = 182.625
+mhhw = 0.8212
+gpd_location = 1.1518
+gpd_scale = 0.1279
+gpd_shape = 0.1568
+-------------
+
+SCENARIO = ssp585 || WORKFLOW =wf2f || YEAR = 2100
+mhhw_freq = 182.625
+mhhw = 0.8212
+gpd_location = 1.1518
+gpd_scale = 0.1279
+gpd_shape = 0.1568
+-------------
+
+SCENARIO = ssp585 || WORKFLOW =wf3f || YEAR = 2050
+mhhw_freq = 182.625
+mhhw = 0.8212
+gpd_location = 1.1518
+gpd_scale = 0.1279
+gpd_shape = 0.1568
+-------------
+
+SCENARIO = ssp585 || WORKFLOW =wf3f || YEAR = 2100
+mhhw_freq = 182.625
+mhhw = 0.8212
+gpd_location = 1.1518
+gpd_scale = 0.1279
+gpd_shape = 0.1568
+-------------
+
+SCENARIO = ssp585 || WORKFLOW =wf4 || YEAR = 2050
+mhhw_freq = 182.625
+mhhw = 0.8212
+gpd_location = 1.1518
+gpd_scale = 0.1279
+gpd_shape = 0.1568
+-------------
+
+SCENARIO = ssp585 || WORKFLOW =wf4 || YEAR = 2100
+mhhw_freq = 182.625
+mhhw = 0.8212
+gpd_location = 1.1518
+gpd_scale = 0.1279
+gpd_shape = 0.1568
+-------------
+

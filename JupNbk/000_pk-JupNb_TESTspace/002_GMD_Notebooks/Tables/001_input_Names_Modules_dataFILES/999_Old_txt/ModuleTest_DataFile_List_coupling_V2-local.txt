@@ -1,0 +1,33 @@
+dataID        Component      Module              sub_Module              DataFile
+cplng         TE             tlm                 sterodynamics           ocean.tlm.sterodynamics_localsl.nc
+#Bob asked to drop, dec24 ar5k14        TE             ipccar5             thermalexpansion        ar5TE.ipccar5.thermalexpansion_localsl.nc
+ar5k14        Glaciers       kopp14              glaciers                k14glaciers.kopp14.glaciers_localsl.nc
+cplng         Glaciers       ipccar5             glaciers                ar5glaciers.ipccar5.glaciers_localsl.nc
+ar5k14        Glaciers       ipccar5             glaciers                ar5glaciers.ipccar5.glaciers_localsl.nc
+ar5k14        Glaciers       ipccar6             gmipemuglaciers         XXX
+cplng         Glaciers       emulandice          glaciers                emuglaciers.emulandice.glaciers_localsl.nc             
+ar5k14        GrIS           ipccar5             icesheets               ar5icesheets.ipccar5.icesheets_GIS_localsl.nc
+ar5k14        GrIS           ipccar6             ismipemuicesheets       XXX
+ar5k14        GrIS           kopp14              icesheets               k14icesheets.kopp14.icesheets_GIS_localsl.nc
+cplng         GrIS           FittedISMIP         GrIS                    GrIS1f.FittedISMIP.GrIS_GIS_localsl.nc
+cplng         GrIS           emulandice          GrIS                    emuGrIS.emulandice.GrIS_localsl.nc   
+cplng         AIS            ipccar5             icesheets               XXX
+ar5k14        AIS            ipccar5             icesheets               XXX
+ar5k14        AIS            ipccar6             ismipemuicesheets       XXX
+ar5k14        AIS            kopp14              icesheets               XXX
+ar5k14        AIS            deconto16           AIS                     XXX
+cplng         AIS            deconto21           AIS                     deconto21.deconto21.AIS_AIS_localsl.nc
+cplng         AIS            emulandice          AIS                     emuAIS.emulandice.AIS_localsl.nc
+ar5k14        AIS            ipccar6             larmipAIS               XXX
+cplng         AIS            larmip              AIS                     larmip.larmip.AIS_localsl.nc
+ar5k14        LWS            kopp14              landwaterstorage        k14lws.kopp14.landwaterstorage_localsl.nc
+cplng         LWS            ssp                 landwaterstorage        lws.ssp.landwaterstorage_localsl.nc
+cplng         VLM            kopp14              verticallandmotion      k14vlm.kopp14.verticallandmotion_localsl.nc
+ar5k14        VLM            kopp14              verticallandmotion      k14vlm.kopp14.verticallandmotion_localsl.nc
+
+
+
+
+
+
+

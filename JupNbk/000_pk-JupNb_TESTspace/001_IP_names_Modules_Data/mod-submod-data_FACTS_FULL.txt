@@ -1,0 +1,35 @@
+Module                sub_Module               O/P_Data
+FittedISMIP           icesheet                 XXX 
+NZInsarGPS            verticallandmotion       XXX                                 
+ar5                   thermalexpansion         XXX                                 
+ar5                   glaciers                 XXX                     
+ar5                   glacierscmip6            XXX                         
+ar5                   glaciersfair             XXX                         
+ar5                   icesheets                XXX                     
+ar5                   thermalexpansion         XXX                             
+dp16                  icesheet                 XXX                         
+dp21                  icesheet                 XXX                         
+emulandice            AIS                      XXX                     
+emulandice            glaciers                 XXX                         
+emulandice            GrIS                     XXX                     
+extremesealevel       pointsoverthreshold      XXX                                 
+genmod                directsample             XXX                             
+ipccar6               bambericesheet           XXX                             
+ipccar6               gmipemuglaciers          XXX                             
+ipccar6               ismipemuicesheet         XXX                                 
+ipccar6               larmipicesheet           XXX                             
+kopp14                glaciers                 XXX                         
+kopp14                icesheets                XXX                         
+kopp14                landwaterstorage         XXX                                 
+kopp14                oceandynamics            XXX                             
+kopp14                thermalexpansion         XXX                                 
+kopp14                verticallandmotion       XXX                                 
+larmip                icesheet                 XXX                         
+ssp                   landwaterstorage         XXX                                 
+tlm                   oceandynamics            XXX                         
+  
+     
+           
+  
+               
+ 
