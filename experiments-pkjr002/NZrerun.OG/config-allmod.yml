@@ -1,5 +1,5 @@
 global-options:
-    nsamps: 2000
+    nsamps: 20
     scenario: ssp585
     pyear_start: 2020
     pyear_end: 2150
@@ -118,8 +118,8 @@ sealevel_step:
             - "wf3f"
             - "wf4"
 
-    k14vlm:
-        module_set: "kopp14"
+    NZInsarGPS:
+        module_set: "NZInsarGPS"
         module: "verticallandmotion"
         include_in_workflow:
             - "wf1f"
