@@ -2,114 +2,114 @@
 #
 wf1e:
   global:
-  - global/NZrerun.OG.emuAIS.emulandice.AIS_globalsl.nc
-  - global/NZrerun.OG.emuGrIS.emulandice.GrIS_globalsl.nc
-  - global/NZrerun.OG.emuglaciers.emulandice.glaciers_globalsl.nc
-  - global/NZrerun.OG.ocean.tlm.sterodynamics_globalsl.nc
-  - global/NZrerun.OG.lws.ssp.landwaterstorage_globalsl.nc
+  - global/NZrerun.OG.NZ.TG.emuAIS.emulandice.AIS_globalsl.nc
+  - global/NZrerun.OG.NZ.TG.emuGrIS.emulandice.GrIS_globalsl.nc
+  - global/NZrerun.OG.NZ.TG.emuglaciers.emulandice.glaciers_globalsl.nc
+  - global/NZrerun.OG.NZ.TG.ocean.tlm.sterodynamics_globalsl.nc
+  - global/NZrerun.OG.NZ.TG.lws.ssp.landwaterstorage_globalsl.nc
   local:
-  - local/NZrerun.OG.emuAIS.emulandice.AIS_localsl.nc
-  - local/NZrerun.OG.emuGrIS.emulandice.GrIS_localsl.nc
-  - local/NZrerun.OG.emuglaciers.emulandice.glaciers_localsl.nc
-  - local/NZrerun.OG.ocean.tlm.sterodynamics_localsl.nc
-  - local/NZrerun.OG.NZInsarGPS.NZInsarGPS.verticallandmotion_localsl.nc
-  - local/NZrerun.OG.lws.ssp.landwaterstorage_localsl.nc
+  - local/NZrerun.OG.NZ.TG.emuAIS.emulandice.AIS_localsl.nc
+  - local/NZrerun.OG.NZ.TG.emuGrIS.emulandice.GrIS_localsl.nc
+  - local/NZrerun.OG.NZ.TG.emuglaciers.emulandice.glaciers_localsl.nc
+  - local/NZrerun.OG.NZ.TG.ocean.tlm.sterodynamics_localsl.nc
+  - local/NZrerun.OG.NZ.TG.NZInsarGPS.NZInsarGPS.verticallandmotion_localsl.nc
+  - local/NZrerun.OG.NZ.TG.lws.ssp.landwaterstorage_localsl.nc
   options:
     pyear_end: 2100
 wf1f:
   global:
-  - global/NZrerun.OG.GrIS1f.FittedISMIP.GrIS_GIS_globalsl.nc
-  - global/NZrerun.OG.ar5glaciers.ipccar5.glaciers_globalsl.nc
-  - global/NZrerun.OG.ar5AIS.ipccar5.icesheets_AIS_globalsl.nc
-  - global/NZrerun.OG.ocean.tlm.sterodynamics_globalsl.nc
-  - global/NZrerun.OG.lws.ssp.landwaterstorage_globalsl.nc
+  - global/NZrerun.OG.NZ.TG.GrIS1f.FittedISMIP.GrIS_GIS_globalsl.nc
+  - global/NZrerun.OG.NZ.TG.ar5glaciers.ipccar5.glaciers_globalsl.nc
+  - global/NZrerun.OG.NZ.TG.ar5AIS.ipccar5.icesheets_AIS_globalsl.nc
+  - global/NZrerun.OG.NZ.TG.ocean.tlm.sterodynamics_globalsl.nc
+  - global/NZrerun.OG.NZ.TG.lws.ssp.landwaterstorage_globalsl.nc
   local:
-  - local/NZrerun.OG.GrIS1f.FittedISMIP.GrIS_GIS_localsl.nc
-  - local/NZrerun.OG.ar5glaciers.ipccar5.glaciers_localsl.nc
-  - local/NZrerun.OG.ar5AIS.ipccar5.icesheets_WAIS_localsl.nc
-  - local/NZrerun.OG.ar5AIS.ipccar5.icesheets_EAIS_localsl.nc
-  - local/NZrerun.OG.ocean.tlm.sterodynamics_localsl.nc
-  - local/NZrerun.OG.NZInsarGPS.NZInsarGPS.verticallandmotion_localsl.nc
-  - local/NZrerun.OG.lws.ssp.landwaterstorage_localsl.nc
+  - local/NZrerun.OG.NZ.TG.GrIS1f.FittedISMIP.GrIS_GIS_localsl.nc
+  - local/NZrerun.OG.NZ.TG.ar5glaciers.ipccar5.glaciers_localsl.nc
+  - local/NZrerun.OG.NZ.TG.ar5AIS.ipccar5.icesheets_WAIS_localsl.nc
+  - local/NZrerun.OG.NZ.TG.ar5AIS.ipccar5.icesheets_EAIS_localsl.nc
+  - local/NZrerun.OG.NZ.TG.ocean.tlm.sterodynamics_localsl.nc
+  - local/NZrerun.OG.NZ.TG.NZInsarGPS.NZInsarGPS.verticallandmotion_localsl.nc
+  - local/NZrerun.OG.NZ.TG.lws.ssp.landwaterstorage_localsl.nc
   options:
     pyear_end: 2150
 wf2e:
   global:
-  - global/NZrerun.OG.emuGrIS.emulandice.GrIS_globalsl.nc
-  - global/NZrerun.OG.emuglaciers.emulandice.glaciers_globalsl.nc
-  - global/NZrerun.OG.larmip.larmip.AIS_globalsl.nc
-  - global/NZrerun.OG.ocean.tlm.sterodynamics_globalsl.nc
-  - global/NZrerun.OG.lws.ssp.landwaterstorage_globalsl.nc
+  - global/NZrerun.OG.NZ.TG.emuGrIS.emulandice.GrIS_globalsl.nc
+  - global/NZrerun.OG.NZ.TG.emuglaciers.emulandice.glaciers_globalsl.nc
+  - global/NZrerun.OG.NZ.TG.larmip.larmip.AIS_globalsl.nc
+  - global/NZrerun.OG.NZ.TG.ocean.tlm.sterodynamics_globalsl.nc
+  - global/NZrerun.OG.NZ.TG.lws.ssp.landwaterstorage_globalsl.nc
   local:
-  - local/NZrerun.OG.emuGrIS.emulandice.GrIS_localsl.nc
-  - local/NZrerun.OG.emuglaciers.emulandice.glaciers_localsl.nc
-  - local/NZrerun.OG.larmip.larmip.AIS_localsl.nc
-  - local/NZrerun.OG.ocean.tlm.sterodynamics_localsl.nc
-  - local/NZrerun.OG.NZInsarGPS.NZInsarGPS.verticallandmotion_localsl.nc
-  - local/NZrerun.OG.lws.ssp.landwaterstorage_localsl.nc
+  - local/NZrerun.OG.NZ.TG.emuGrIS.emulandice.GrIS_localsl.nc
+  - local/NZrerun.OG.NZ.TG.emuglaciers.emulandice.glaciers_localsl.nc
+  - local/NZrerun.OG.NZ.TG.larmip.larmip.AIS_localsl.nc
+  - local/NZrerun.OG.NZ.TG.ocean.tlm.sterodynamics_localsl.nc
+  - local/NZrerun.OG.NZ.TG.NZInsarGPS.NZInsarGPS.verticallandmotion_localsl.nc
+  - local/NZrerun.OG.NZ.TG.lws.ssp.landwaterstorage_localsl.nc
   options:
     pyear_end: 2100
 wf2f:
   global:
-  - global/NZrerun.OG.GrIS1f.FittedISMIP.GrIS_GIS_globalsl.nc
-  - global/NZrerun.OG.larmip.larmip.AIS_globalsl.nc
-  - global/NZrerun.OG.ar5glaciers.ipccar5.glaciers_globalsl.nc
-  - global/NZrerun.OG.ocean.tlm.sterodynamics_globalsl.nc
-  - global/NZrerun.OG.lws.ssp.landwaterstorage_globalsl.nc
+  - global/NZrerun.OG.NZ.TG.GrIS1f.FittedISMIP.GrIS_GIS_globalsl.nc
+  - global/NZrerun.OG.NZ.TG.larmip.larmip.AIS_globalsl.nc
+  - global/NZrerun.OG.NZ.TG.ar5glaciers.ipccar5.glaciers_globalsl.nc
+  - global/NZrerun.OG.NZ.TG.ocean.tlm.sterodynamics_globalsl.nc
+  - global/NZrerun.OG.NZ.TG.lws.ssp.landwaterstorage_globalsl.nc
   local:
-  - local/NZrerun.OG.GrIS1f.FittedISMIP.GrIS_GIS_localsl.nc
-  - local/NZrerun.OG.larmip.larmip.AIS_localsl.nc
-  - local/NZrerun.OG.ar5glaciers.ipccar5.glaciers_localsl.nc
-  - local/NZrerun.OG.ocean.tlm.sterodynamics_localsl.nc
-  - local/NZrerun.OG.NZInsarGPS.NZInsarGPS.verticallandmotion_localsl.nc
-  - local/NZrerun.OG.lws.ssp.landwaterstorage_localsl.nc
+  - local/NZrerun.OG.NZ.TG.GrIS1f.FittedISMIP.GrIS_GIS_localsl.nc
+  - local/NZrerun.OG.NZ.TG.larmip.larmip.AIS_localsl.nc
+  - local/NZrerun.OG.NZ.TG.ar5glaciers.ipccar5.glaciers_localsl.nc
+  - local/NZrerun.OG.NZ.TG.ocean.tlm.sterodynamics_localsl.nc
+  - local/NZrerun.OG.NZ.TG.NZInsarGPS.NZInsarGPS.verticallandmotion_localsl.nc
+  - local/NZrerun.OG.NZ.TG.lws.ssp.landwaterstorage_localsl.nc
   options:
     pyear_end: 2150
 wf3e:
   global:
-  - global/NZrerun.OG.deconto21.deconto21.AIS_AIS_globalsl.nc
-  - global/NZrerun.OG.emuGrIS.emulandice.GrIS_globalsl.nc
-  - global/NZrerun.OG.emuglaciers.emulandice.glaciers_globalsl.nc
-  - global/NZrerun.OG.ocean.tlm.sterodynamics_globalsl.nc
-  - global/NZrerun.OG.lws.ssp.landwaterstorage_globalsl.nc
+  - global/NZrerun.OG.NZ.TG.deconto21.deconto21.AIS_AIS_globalsl.nc
+  - global/NZrerun.OG.NZ.TG.emuGrIS.emulandice.GrIS_globalsl.nc
+  - global/NZrerun.OG.NZ.TG.emuglaciers.emulandice.glaciers_globalsl.nc
+  - global/NZrerun.OG.NZ.TG.ocean.tlm.sterodynamics_globalsl.nc
+  - global/NZrerun.OG.NZ.TG.lws.ssp.landwaterstorage_globalsl.nc
   local:
-  - local/NZrerun.OG.deconto21.deconto21.AIS_AIS_localsl.nc
-  - local/NZrerun.OG.emuGrIS.emulandice.GrIS_localsl.nc
-  - local/NZrerun.OG.emuglaciers.emulandice.glaciers_localsl.nc
-  - local/NZrerun.OG.ocean.tlm.sterodynamics_localsl.nc
-  - local/NZrerun.OG.NZInsarGPS.NZInsarGPS.verticallandmotion_localsl.nc
-  - local/NZrerun.OG.lws.ssp.landwaterstorage_localsl.nc
+  - local/NZrerun.OG.NZ.TG.deconto21.deconto21.AIS_AIS_localsl.nc
+  - local/NZrerun.OG.NZ.TG.emuGrIS.emulandice.GrIS_localsl.nc
+  - local/NZrerun.OG.NZ.TG.emuglaciers.emulandice.glaciers_localsl.nc
+  - local/NZrerun.OG.NZ.TG.ocean.tlm.sterodynamics_localsl.nc
+  - local/NZrerun.OG.NZ.TG.NZInsarGPS.NZInsarGPS.verticallandmotion_localsl.nc
+  - local/NZrerun.OG.NZ.TG.lws.ssp.landwaterstorage_localsl.nc
   options:
     pyear_end: 2100
 wf3f:
   global:
-  - global/NZrerun.OG.GrIS1f.FittedISMIP.GrIS_GIS_globalsl.nc
-  - global/NZrerun.OG.deconto21.deconto21.AIS_AIS_globalsl.nc
-  - global/NZrerun.OG.ar5glaciers.ipccar5.glaciers_globalsl.nc
-  - global/NZrerun.OG.ocean.tlm.sterodynamics_globalsl.nc
-  - global/NZrerun.OG.lws.ssp.landwaterstorage_globalsl.nc
+  - global/NZrerun.OG.NZ.TG.GrIS1f.FittedISMIP.GrIS_GIS_globalsl.nc
+  - global/NZrerun.OG.NZ.TG.deconto21.deconto21.AIS_AIS_globalsl.nc
+  - global/NZrerun.OG.NZ.TG.ar5glaciers.ipccar5.glaciers_globalsl.nc
+  - global/NZrerun.OG.NZ.TG.ocean.tlm.sterodynamics_globalsl.nc
+  - global/NZrerun.OG.NZ.TG.lws.ssp.landwaterstorage_globalsl.nc
   local:
-  - local/NZrerun.OG.GrIS1f.FittedISMIP.GrIS_GIS_localsl.nc
-  - local/NZrerun.OG.deconto21.deconto21.AIS_AIS_localsl.nc
-  - local/NZrerun.OG.ar5glaciers.ipccar5.glaciers_localsl.nc
-  - local/NZrerun.OG.ocean.tlm.sterodynamics_localsl.nc
-  - local/NZrerun.OG.NZInsarGPS.NZInsarGPS.verticallandmotion_localsl.nc
-  - local/NZrerun.OG.lws.ssp.landwaterstorage_localsl.nc
+  - local/NZrerun.OG.NZ.TG.GrIS1f.FittedISMIP.GrIS_GIS_localsl.nc
+  - local/NZrerun.OG.NZ.TG.deconto21.deconto21.AIS_AIS_localsl.nc
+  - local/NZrerun.OG.NZ.TG.ar5glaciers.ipccar5.glaciers_localsl.nc
+  - local/NZrerun.OG.NZ.TG.ocean.tlm.sterodynamics_localsl.nc
+  - local/NZrerun.OG.NZ.TG.NZInsarGPS.NZInsarGPS.verticallandmotion_localsl.nc
+  - local/NZrerun.OG.NZ.TG.lws.ssp.landwaterstorage_localsl.nc
   options:
     pyear_end: 2150
 wf4:
   global:
-  - global/NZrerun.OG.bamber19.bamber19.icesheets_GIS_globalsl.nc
-  - global/NZrerun.OG.bamber19.bamber19.icesheets_AIS_globalsl.nc
-  - global/NZrerun.OG.ar5glaciers.ipccar5.glaciers_globalsl.nc
-  - global/NZrerun.OG.ocean.tlm.sterodynamics_globalsl.nc
-  - global/NZrerun.OG.lws.ssp.landwaterstorage_globalsl.nc
+  - global/NZrerun.OG.NZ.TG.bamber19.bamber19.icesheets_GIS_globalsl.nc
+  - global/NZrerun.OG.NZ.TG.bamber19.bamber19.icesheets_AIS_globalsl.nc
+  - global/NZrerun.OG.NZ.TG.ar5glaciers.ipccar5.glaciers_globalsl.nc
+  - global/NZrerun.OG.NZ.TG.ocean.tlm.sterodynamics_globalsl.nc
+  - global/NZrerun.OG.NZ.TG.lws.ssp.landwaterstorage_globalsl.nc
   local:
-  - local/NZrerun.OG.bamber19.bamber19.icesheets_GIS_localsl.nc
-  - local/NZrerun.OG.bamber19.bamber19.icesheets_AIS_localsl.nc
-  - local/NZrerun.OG.ar5glaciers.ipccar5.glaciers_localsl.nc
-  - local/NZrerun.OG.ocean.tlm.sterodynamics_localsl.nc
-  - local/NZrerun.OG.NZInsarGPS.NZInsarGPS.verticallandmotion_localsl.nc
-  - local/NZrerun.OG.lws.ssp.landwaterstorage_localsl.nc
+  - local/NZrerun.OG.NZ.TG.bamber19.bamber19.icesheets_GIS_localsl.nc
+  - local/NZrerun.OG.NZ.TG.bamber19.bamber19.icesheets_AIS_localsl.nc
+  - local/NZrerun.OG.NZ.TG.ar5glaciers.ipccar5.glaciers_localsl.nc
+  - local/NZrerun.OG.NZ.TG.ocean.tlm.sterodynamics_localsl.nc
+  - local/NZrerun.OG.NZ.TG.NZInsarGPS.NZInsarGPS.verticallandmotion_localsl.nc
+  - local/NZrerun.OG.NZ.TG.lws.ssp.landwaterstorage_localsl.nc
   options:
     pyear_end: 2150
