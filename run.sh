@@ -6,7 +6,7 @@ source ../ve3/bin/activate
 #
 #
 # Experiment
-EXP='NZrerun.OG.NZ.TG'
+EXP='NZrerun.OG.FULL'
 EXP_FOLDER='experiments-pkjr002'
 #
 # RUN facts.
