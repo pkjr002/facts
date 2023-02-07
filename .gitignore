@@ -52,3 +52,6 @@ makefile
 Q-err.txt
 *.nc
 modules/emulandice/shared/.Rprofile
+
+.ipynb_checkpoints
+__pycache__
