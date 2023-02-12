@@ -6,11 +6,12 @@ EXP_FOLDER='experiments-pkjr002'
 current_dir=$(pwd)
 
 # SANDBOX files.
-[ -d "/scratch/pk695/radical.pilot.sandbox" ] && rm -rf "/scratch/pk695/radical.pilot.sandbox/*"
+#[ -d /scratch/pk695/radical.pilot.sandbox ] && rm -rf /scratch/pk695/radical.pilot.sandbox/*
 
 
 # FACTS ./ files
-# rm -r 
+#[ -d /scratch/pk695/FACTS/002_fork/facts/re.session.* ] && rm -rf /scratch/pk695/FACTS/002_fork/facts/re.session.*
+
 
 for exp in "${EXP[@]}"; do
   cd "$current_dir/$EXP_FOLDER/$exp"

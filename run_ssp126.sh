@@ -12,7 +12,7 @@ EXP_FOLDER='experiments-pkjr002'
 current_dir=$(pwd)
 
 # LOG file
-outpt="Tlog_$EXP_FOLDER.$exp.txt"
+outpt="Tlog_$EXP_FOLDER.$EXP.txt"
 echo -e "==> Started at: $(date --date=@$start)" > "$outpt"
 echo -e "::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: \n" >> "$outpt"
 
@@ -52,7 +52,7 @@ for exp in "${EXP[@]}"; do
     echo -e "experiment NAME:: $exp  |:|  experiment folder:: $EXP_FOLDER" >> "$outpt"
     echo -e "location.lst:: lines_to_copy=$lines_to_copy lines_copied=$lines_copied \n" >> "$outpt"
     #
-    python3 runFACTS.py $EXP_FOLDER/$exp 2>&1 | tee -a $output
+    python3 runFACTS.py $EXP_FOLDER/$exp 2>&1 | tee -a $outpt
     #
     echo -e "\n ==> end \n" >> "$outpt"
     
