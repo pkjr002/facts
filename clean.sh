@@ -1,14 +1,25 @@
 #!/bin/bash
 
-EXP=('NZrerun.ssp119')
+EXP=('NZrerun.ssp119' 'NZrerun.ssp126' 'NZrerun.ssp245')
 EXP_FOLDER='experiments-pkjr002'
 #
 current_dir=$(pwd)
 
+# SANDBOX files.
+[ -d "/scratch/pk695/radical.pilot.sandbox" ] && rm -rf "/scratch/pk695/radical.pilot.sandbox/*"
 
-rm -r /scratch/pk695/radical.pilot.sandbox/*
+
+# FACTS ./ files
+# rm -r 
 
 for exp in "${EXP[@]}"; do
   cd "$current_dir/$EXP_FOLDER/$exp"
 
-  rm -rf output/ workflows.yml location.lst
+  # Remove the generated FACTS experiment output files
+  [ $(ls *output* 2> /dev/null) ] && rm -rf *output*
+  #
+  [ -e workflows.yml ] && rm -rf workflows.yml
+  [ -e location.lst ] && rm -rf location.lst
+
+done
+cd "$current_dir"
