@@ -1,19 +1,27 @@
 #!/bin/bash
 
-current_dir=$(pwd)
+start=$(date +%s)
 
 # Activate the vene
 source ../ve3/bin/activate
 
-
-# Experiment
-EXP=('NZrerun.ssp119' 'NZrerun.ssp126' 'NZrerun.ssp245' 'NZrerun.ssp370' 'NZrerun.ssp585')
+# FOLDERS
+EXP=('NZrerun.ssp245')
 EXP_FOLDER='experiments-pkjr002'
+#
+current_dir=$(pwd)
+
+# LOG file
+outpt="Tlog_$EXP_FOLDER.$exp.txt"
+echo -e "==> Started at: $(date --date=@$start)" > "$outpt"
+echo -e "::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: \n" >> "$outpt"
+
 
 # Loop over the experiments
 for exp in "${EXP[@]}"; do
   cd "$current_dir/$EXP_FOLDER/$exp"
 
+  # Large location file
   source_file="latlon_basedON_2kmNZInsar_IPdata_.txt"
   
   lines_per_iteration=500
@@ -38,11 +46,19 @@ for exp in "${EXP[@]}"; do
     lines_copied=$((lines_copied+lines_to_copy))
   
     cd "$current_dir"
-    python3 runFACTS.py $EXP_FOLDER/$exp 
+
+    echo -e " ______________________________________________________________ " >> "$outpt"
+    echo -e "==> begin loop $i ... " >> "$outpt"
+    echo -e "experiment NAME:: $exp  |:|  experiment folder:: $EXP_FOLDER" >> "$outpt"
+    echo -e "location.lst:: lines_to_copy=$lines_to_copy lines_copied=$lines_copied \n" >> "$outpt"
+    #
+    python3 runFACTS.py $EXP_FOLDER/$exp 2>&1 | tee -a $output
+    #
+    echo -e "\n ==> end \n" >> "$outpt"
     
     # Rename op
     cd "$current_dir/$EXP_FOLDER/$exp"
-    output_set="output_$((i/lines_per_iteration)).txt"
+    output_set="output_set_$((i/lines_per_iteration))"
     mv output/ "$output_set"
     rm -rf output/
     
@@ -57,9 +73,6 @@ for exp in "${EXP[@]}"; do
 done
 cd "$current_dir"
 
-
-# RUN facts.
-# python3 runFACTS.py $EXP_FOLDER/$EXP/ 
 
 
 
@@ -83,3 +96,22 @@ cd "$current_dir"
 # DO NOT USE Unless checked path
 ##rm -r re.session.amarel1.amarel.rutgers.edu.pk695.*
 ##rm -r /scratch/pk695/radical.pilot.sandbox/re.session.amarel1.amarel.rutgers.edu.pk695.019393.0003*
+
+
+
+
+echo -e "\n :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" >> "$outpt"
+echo "!! End of Program !!" >> "$outpt"
+end=$(date +%s)
+# Calculate the duration in seconds
+duration=$((end - start))
+duration_min=$((duration / 60))
+#
+# Print the start time, end time, and duration to a file
+
+echo -e "\nEXPERIMENT FOLDER:: "$EXP_FOLDER >> "$outpt"
+echo "EXPERIMENT:: "$exp >> "$outpt"
+echo " ............... " >> "$outpt"
+echo "Started at: $(date --date=@$start)" >> "$outpt"
+echo "Ended at: $(date --date=@$end)" >> "$outpt"
+echo "Duration: $duration_min minutes" >> "$outpt"

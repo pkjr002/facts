@@ -7,7 +7,7 @@ source ../ve3/bin/activate
 
 
 # Experiment
-EXP=('NZrerun.ssp119' 'NZrerun.ssp126' 'NZrerun.ssp245' 'NZrerun.ssp370' 'NZrerun.ssp585')
+EXP=('NZrerun.ssp370' 'NZrerun.ssp585')
 EXP_FOLDER='experiments-pkjr002'
 
 # Loop over the experiments
