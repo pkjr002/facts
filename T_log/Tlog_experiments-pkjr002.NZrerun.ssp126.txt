@@ -1,9 +1,9 @@
-==> Started at: Sun Feb 12 06:34:37 EST 2023
+==> Started at: Sun Feb 12 06:34:09 EST 2023
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: 
 
  ______________________________________________________________ 
 ==> begin loop 0 ... 
-experiment NAME:: NZrerun.ssp245  |:|  experiment folder:: experiments-pkjr002
+experiment NAME:: NZrerun.ssp126  |:|  experiment folder:: experiments-pkjr002
 location.lst:: lines_to_copy=500 lines_copied=500 
 
 
@@ -11,7 +11,7 @@ location.lst:: lines_to_copy=500 lines_copied=500
 
  ______________________________________________________________ 
 ==> begin loop 500 ... 
-experiment NAME:: NZrerun.ssp245  |:|  experiment folder:: experiments-pkjr002
+experiment NAME:: NZrerun.ssp126  |:|  experiment folder:: experiments-pkjr002
 location.lst:: lines_to_copy=500 lines_copied=1000 
 
 
@@ -19,7 +19,7 @@ location.lst:: lines_to_copy=500 lines_copied=1000
 
  ______________________________________________________________ 
 ==> begin loop 1000 ... 
-experiment NAME:: NZrerun.ssp245  |:|  experiment folder:: experiments-pkjr002
+experiment NAME:: NZrerun.ssp126  |:|  experiment folder:: experiments-pkjr002
 location.lst:: lines_to_copy=500 lines_copied=1500 
 
 
@@ -27,7 +27,7 @@ location.lst:: lines_to_copy=500 lines_copied=1500
 
  ______________________________________________________________ 
 ==> begin loop 1500 ... 
-experiment NAME:: NZrerun.ssp245  |:|  experiment folder:: experiments-pkjr002
+experiment NAME:: NZrerun.ssp126  |:|  experiment folder:: experiments-pkjr002
 location.lst:: lines_to_copy=500 lines_copied=2000 
 
 
@@ -35,7 +35,7 @@ location.lst:: lines_to_copy=500 lines_copied=2000
 
  ______________________________________________________________ 
 ==> begin loop 2000 ... 
-experiment NAME:: NZrerun.ssp245  |:|  experiment folder:: experiments-pkjr002
+experiment NAME:: NZrerun.ssp126  |:|  experiment folder:: experiments-pkjr002
 location.lst:: lines_to_copy=500 lines_copied=2500 
 
 
@@ -43,7 +43,7 @@ location.lst:: lines_to_copy=500 lines_copied=2500
 
  ______________________________________________________________ 
 ==> begin loop 2500 ... 
-experiment NAME:: NZrerun.ssp245  |:|  experiment folder:: experiments-pkjr002
+experiment NAME:: NZrerun.ssp126  |:|  experiment folder:: experiments-pkjr002
 location.lst:: lines_to_copy=500 lines_copied=3000 
 
 
@@ -51,7 +51,7 @@ location.lst:: lines_to_copy=500 lines_copied=3000
 
  ______________________________________________________________ 
 ==> begin loop 3000 ... 
-experiment NAME:: NZrerun.ssp245  |:|  experiment folder:: experiments-pkjr002
+experiment NAME:: NZrerun.ssp126  |:|  experiment folder:: experiments-pkjr002
 location.lst:: lines_to_copy=500 lines_copied=3500 
 
 
@@ -59,7 +59,7 @@ location.lst:: lines_to_copy=500 lines_copied=3500
 
  ______________________________________________________________ 
 ==> begin loop 3500 ... 
-experiment NAME:: NZrerun.ssp245  |:|  experiment folder:: experiments-pkjr002
+experiment NAME:: NZrerun.ssp126  |:|  experiment folder:: experiments-pkjr002
 location.lst:: lines_to_copy=500 lines_copied=4000 
 
 
@@ -67,7 +67,7 @@ location.lst:: lines_to_copy=500 lines_copied=4000
 
  ______________________________________________________________ 
 ==> begin loop 4000 ... 
-experiment NAME:: NZrerun.ssp245  |:|  experiment folder:: experiments-pkjr002
+experiment NAME:: NZrerun.ssp126  |:|  experiment folder:: experiments-pkjr002
 location.lst:: lines_to_copy=500 lines_copied=4500 
 
 
@@ -75,7 +75,7 @@ location.lst:: lines_to_copy=500 lines_copied=4500
 
  ______________________________________________________________ 
 ==> begin loop 4500 ... 
-experiment NAME:: NZrerun.ssp245  |:|  experiment folder:: experiments-pkjr002
+experiment NAME:: NZrerun.ssp126  |:|  experiment folder:: experiments-pkjr002
 location.lst:: lines_to_copy=500 lines_copied=5000 
 
 
@@ -83,7 +83,7 @@ location.lst:: lines_to_copy=500 lines_copied=5000
 
  ______________________________________________________________ 
 ==> begin loop 5000 ... 
-experiment NAME:: NZrerun.ssp245  |:|  experiment folder:: experiments-pkjr002
+experiment NAME:: NZrerun.ssp126  |:|  experiment folder:: experiments-pkjr002
 location.lst:: lines_to_copy=500 lines_copied=5500 
 
 
@@ -91,7 +91,7 @@ location.lst:: lines_to_copy=500 lines_copied=5500
 
  ______________________________________________________________ 
 ==> begin loop 5500 ... 
-experiment NAME:: NZrerun.ssp245  |:|  experiment folder:: experiments-pkjr002
+experiment NAME:: NZrerun.ssp126  |:|  experiment folder:: experiments-pkjr002
 location.lst:: lines_to_copy=500 lines_copied=6000 
 
 
@@ -99,7 +99,7 @@ location.lst:: lines_to_copy=500 lines_copied=6000
 
  ______________________________________________________________ 
 ==> begin loop 6000 ... 
-experiment NAME:: NZrerun.ssp245  |:|  experiment folder:: experiments-pkjr002
+experiment NAME:: NZrerun.ssp126  |:|  experiment folder:: experiments-pkjr002
 location.lst:: lines_to_copy=500 lines_copied=6500 
 
 
@@ -107,6 +107,27 @@ location.lst:: lines_to_copy=500 lines_copied=6500
 
  ______________________________________________________________ 
 ==> begin loop 6500 ... 
-experiment NAME:: NZrerun.ssp245  |:|  experiment folder:: experiments-pkjr002
+experiment NAME:: NZrerun.ssp126  |:|  experiment folder:: experiments-pkjr002
 location.lst:: lines_to_copy=500 lines_copied=7000 
 
+
+ ==> end 
+
+ ______________________________________________________________ 
+==> begin loop 7000 ... 
+experiment NAME:: NZrerun.ssp126  |:|  experiment folder:: experiments-pkjr002
+location.lst:: lines_to_copy=435 lines_copied=7435 
+
+
+ ==> end 
+
+
+ :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+!! End of Program !!
+
+EXPERIMENT FOLDER:: experiments-pkjr002
+EXPERIMENT:: NZrerun.ssp126
+ ............... 
+Started at: Sun Feb 12 06:34:09 EST 2023
+Ended at: Sun Feb 12 17:58:14 EST 2023
+Duration: 684 minutes
