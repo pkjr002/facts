@@ -47,7 +47,7 @@ nosetests.xml
 makefile
 
 # File for running runFACTS.py
-/resources/resource_amarel.yml
+/resources/resource_amarel*.yml
 
 Q-err.txt
 *.nc
