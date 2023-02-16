@@ -1,0 +1,82 @@
+==> Started at: Thu Feb 16 00:43:04 EST 2023
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: 
+
+ ______________________________________________________________ 
+==> begin (single loop) ... 
+Started at:: Thu Feb 16 00:43:04 EST 2023
+experiment NAME:: onemodule  |:|  experiment folder:: experiments-pkjr002
+[94mEnTK session: re.session.hal0261.amarel.rutgers.edu.pk695.019404.0012
+[39m[0m[94mCreating AppManager
+[39m[0m[94mSetting up ZMQ queues[39m[0m[92m                                                         ok
+[39m[0m[94mAppManager initialized[39m[0m[92m                                                        ok
+[39m[0m[94mValidating and assigning resource manager[39m[0m[92m                                     ok
+[39m[0m[94mSetting up ZMQ queues[39m[0m[92m                                                        n/a
+[39m[0m[94mnew session: [39m[0m[re.session.hal0261.amarel.rutgers.edu.pk695.019404.0012][39m[0m[94m         \
+database   : [39m[0m[mongodb://facts:****@95.217.193.116:27017/facts][39m[0m[92m                ok
+[39m[0m[94mcreate pilot manager[39m[0m[92m                                                          ok
+[39m[0m[94msubmit 1 pilot(s)[39m[0m
+        pilot.0000   rutgers.amarel           16 cores       0 gpus[39m[0m[92m           ok
+[39m[0m[92mAll components created
+[39m[0m[92mUpdate: [39m[0m[94monemodule.deconto16.deconto16.AIS state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94monemodule.deconto16.deconto16.AIS.preprocess state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94monemodule.deconto16.deconto16.AIS.preprocess.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94monemodule.deconto16.deconto16.AIS.preprocess.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94monemodule.deconto16.deconto16.AIS.preprocess state: SCHEDULED
+[39m[0m****** STEP: sealevel_step ******
+[94mcreate task manager[39m[0m/scratch/pk695/FACTS/002_fork/ve3T/lib/python3.9/site-packages/pymongo/topology.py:175: UserWarning: MongoClient opened before fork. Create MongoClient only after forking. See PyMongo's documentation for details: https://pymongo.readthedocs.io/en/stable/faq.html#is-pymongo-fork-safe
+  warnings.warn(
+[92m                                                           ok
+[39m[0msubmit: [39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m
+[39m[0m[92mUpdate: [39m[0m[94monemodule.deconto16.deconto16.AIS.preprocess.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94monemodule.deconto16.deconto16.AIS.preprocess.task1 state: DONE
+[39m[0m[92mUpdate: [39m[0m[94monemodule.deconto16.deconto16.AIS.preprocess state: DONE
+[39m[0m[92mUpdate: [39m[0m[94monemodule.deconto16.deconto16.AIS.fit state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94monemodule.deconto16.deconto16.AIS.fit.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94monemodule.deconto16.deconto16.AIS.fit.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94monemodule.deconto16.deconto16.AIS.fit state: SCHEDULED
+[39m[0msubmit: [39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m
+[39m[0m[92mUpdate: [39m[0m[94monemodule.deconto16.deconto16.AIS.fit.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94monemodule.deconto16.deconto16.AIS.fit.task1 state: EXECUTED
+[39m[0m[92mUpdate: [39m[0m[94monemodule.deconto16.deconto16.AIS.fit.task1 state: DONE
+[39m[0m[92mUpdate: [39m[0m[94monemodule.deconto16.deconto16.AIS.fit state: DONE
+[39m[0m[92mUpdate: [39m[0m[94monemodule.deconto16.deconto16.AIS.project state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94monemodule.deconto16.deconto16.AIS.project.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94monemodule.deconto16.deconto16.AIS.project.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94monemodule.deconto16.deconto16.AIS.project state: SCHEDULED
+[39m[0msubmit: [39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m
+[39m[0m[92mUpdate: [39m[0m[94monemodule.deconto16.deconto16.AIS.project.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94monemodule.deconto16.deconto16.AIS.project.task1 state: DONE
+[39m[0m[92mUpdate: [39m[0m[94monemodule.deconto16.deconto16.AIS.project state: DONE
+[39m[0m[92mUpdate: [39m[0m[94monemodule.deconto16.deconto16.AIS.postprocess state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94monemodule.deconto16.deconto16.AIS.postprocess.task1 state: SCHEDULING
+[39m[0msubmit: [39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m
+[39m[0m[92mUpdate: [39m[0m[94monemodule.deconto16.deconto16.AIS.postprocess.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94monemodule.deconto16.deconto16.AIS.postprocess state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94monemodule.deconto16.deconto16.AIS.postprocess.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94monemodule.deconto16.deconto16.AIS.postprocess.task1 state: EXECUTED
+[39m[0m[92mUpdate: [39m[0m[94monemodule.deconto16.deconto16.AIS.postprocess.task1 state: DONE
+[39m[0m[92mUpdate: [39m[0m[94monemodule.deconto16.deconto16.AIS.postprocess state: DONE
+[39m[0m[92mUpdate: [39m[0m[94monemodule.deconto16.deconto16.AIS state: DONE
+[39m[0m[94mclose task manager[39m[0m[92m                                                            ok
+[39m[0m[94mclosing session re.session.hal0261.amarel.rutgers.edu.pk695.019404.0012[39m[0m[94m        \
+close pilot manager[39m[0m[94m                                                            \
+wait for 1 pilot(s)
+        [39m[0mO[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m      0[39m[0m[93m                                                          timeout
+[39m[0m[92m                                                                              ok
+[39m[0m[94msession lifetime: 225.1s[39m[0m[92m                                                      ok
+[39m[0m[94mAll components terminated
+[39m[0mEnded at:: Thu Feb 16 00:46:57 EST 2023
+
+ ==> end 
+
+
+ :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+!! End of Program !!
+
+EXPERIMENT FOLDER:: experiments-pkjr002
+EXPERIMENT subFOLDER:: onemodule
+EXPERIMENT:: onemodule
+ ............... 
+Started at:: Thu Feb 16 00:43:04 EST 2023
+Ended at:: Thu Feb 16 00:46:57 EST 2023
+Duration:: 3 minutes
