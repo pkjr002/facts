@@ -19,7 +19,7 @@ climate_step:
 
 sealevel_step:
 
-    NZInsarGPS:
-        module_set: "NZInsarGPS"
+    NZInsarGPS1:
+        module_set: "NZInsarGPS1"
         module: "verticallandmotion"
         
