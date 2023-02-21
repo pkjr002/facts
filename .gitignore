@@ -48,10 +48,16 @@ makefile
 
 # File for running runFACTS.py
 /resources/resource_amarel*.yml
-
+# Error Logs
 Q-err.txt
+Q-err.log/
 *.nc
 modules/emulandice/shared/.Rprofile
+Terminal_log/      #terminal log of exp
+Terminal_log/**
+#        
+T_test.sh
+T_cleandir.sh 
 
 .ipynb_checkpoints
 __pycache__
