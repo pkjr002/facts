@@ -80,7 +80,8 @@ def ReadNZVLM(infile, qfmin = 5):
 	return(lats, lons, vlm_rates, sigmas, qfs)
 
 
-def NZInsarGPS_preprocess_verticallandmotion(pipeline_id, min_quality_flag, use_boprates):
+#def NZInsarGPS_preprocess_verticallandmotion(pipeline_id, min_quality_flag, use_boprates):
+def NZInsarGPS_preprocess_verticallandmotion(pipeline_id, min_quality_flag):
 
 	# Define the input file based on input type
 	#type2file = {"grid_insar": "VLM-grid_insar.dat", "grid_gps": "VLM-grid_gps.dat", "hires": "coast_ins.dat"}
@@ -93,16 +94,20 @@ def NZInsarGPS_preprocess_verticallandmotion(pipeline_id, min_quality_flag, use_
 	(lats, lons, vlm_rates, sigmas, qfs) = ReadNZVLM(inputfile, min_quality_flag)
 
 	# Which rates does the user want to use?
-	if(use_boprates):
-		rates = bop_rates
-	else:
-		rates = vlm_rates
+	#if(use_boprates):
+	#	rates = bop_rates
+	#else:
+	#	rates = vlm_rates
+	rates = vlm_rates
 
 	# Populate the output dictionary
 	# Note: Rates are provided as explicit vertical land motion, so relative sea-level
 	# change should have the sign of the rates flipped.
+	#outdata = {'lats': lats, 'lons': lons, 'rates': -1*rates, 'sds': sigmas,\
+	#			'min_qf': min_quality_flag, 'use_boprates': use_boprates}
+	#
 	outdata = {'lats': lats, 'lons': lons, 'rates': -1*rates, 'sds': sigmas,\
-				'min_qf': min_quality_flag, 'use_boprates': use_boprates}
+				'min_qf': min_quality_flag}
 
 	# Define the data directory
 	outdir = os.path.dirname(__file__)
@@ -122,14 +127,15 @@ if __name__ == '__main__':
 	# Define the command line arguments to be expected
 	parser.add_argument('--pipeline_id', help="Unique identifier for this instance of the module")
 	parser.add_argument('--min_qf', help="Minimum value of data quality to use (default = 5)", type=float, default=5.0)
-	parser.add_argument('--use_boprates', help="Use the BOP corrected rates instead of the raw VLM rates (default = 1)", type=int, choices=[0,1], default=1)
+	#parser.add_argument('--use_boprates', help="Use the BOP corrected rates instead of the raw VLM rates (default = 1)", type=int, choices=[0,1], default=1)
 
 
 	# Parse the arguments
 	args = parser.parse_args()
 
 	# Run the preprocessing stage with the user defined RCP scenario
-	NZInsarGPS_preprocess_verticallandmotion(args.pipeline_id, args.min_qf, args.use_boprates)
+	#NZInsarGPS_preprocess_verticallandmotion(args.pipeline_id, args.min_qf, args.use_boprates)
+	NZInsarGPS_preprocess_verticallandmotion(args.pipeline_id, args.min_qf)
 
 	# Done
 	exit()

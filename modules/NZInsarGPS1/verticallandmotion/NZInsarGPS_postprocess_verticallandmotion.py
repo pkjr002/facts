@@ -84,7 +84,7 @@ def NZInsarGPS_postprocess_verticallandmotion(nsamps, rng_seed, locationfilename
 	rates = my_data['rates']
 	sds = my_data['sds']
 	min_qf = my_data['min_qf']
-	use_boprates = my_data['use_boprates']
+	#use_boprates = my_data['use_boprates']
 
 	# Define the target years
 	targyears = np.arange(pyear_start, pyear_end+1, pyear_step)
