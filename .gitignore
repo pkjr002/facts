@@ -61,3 +61,6 @@ T_cleandir.sh
 
 .ipynb_checkpoints
 __pycache__
+T_cleandir.sh
+experiments-pkjr002/NZrerun/NZrerun1__230220_Backup/*
+experiments-pkjr002/NZrerun/000_TEST_NZInsarGPS/000_TEST_NZInsarGPS_230220_Backup/*
