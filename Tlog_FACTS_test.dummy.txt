@@ -1,0 +1,28 @@
+!!! Start of Program !!! Fri Feb 24 13:22:27 EST 2023
+venv --> memfix
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: 
+
+ ___________________________________________________________________________________________ 
+==> begin (single loop) ... 
+Started at:: Fri Feb 24 13:22:27 EST 2023
+exp NAME:: dummy  |:|  exp sub-FOLDER:: FACTS_test |:|  exp FOLDER:: experiments-pkjr002
+ ___________________________________________________________________________________________ 
+
+%s does not exist
+
+ Ended at:: Fri Feb 24 13:22:32 EST 2023
+
+ ==> end 
+
+
+ :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+!!! End of Program !!!
+
+EXPERIMENT FOLDER:: experiments-pkjr002
+EXPERIMENT subFOLDER:: FACTS_test
+EXPERIMENT:: dummy
+venv --> memfix
+ ............... 
+Started at:: Fri Feb 24 13:22:27 EST 2023
+Ended at:: Fri Feb 24 13:22:32 EST 2023
+Duration:: 0 minutes
