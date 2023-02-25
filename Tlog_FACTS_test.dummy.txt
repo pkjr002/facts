@@ -1,16 +1,21 @@
-!!! Start of Program !!! Fri Feb 24 13:22:27 EST 2023
+!!! Start of Program !!! Fri Feb 24 13:26:51 EST 2023
 venv --> memfix
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: 
 
  ___________________________________________________________________________________________ 
 ==> begin (single loop) ... 
-Started at:: Fri Feb 24 13:22:27 EST 2023
+Started at:: Fri Feb 24 13:26:51 EST 2023
 exp NAME:: dummy  |:|  exp sub-FOLDER:: FACTS_test |:|  exp FOLDER:: experiments-pkjr002
  ___________________________________________________________________________________________ 
 
-%s does not exist
-
- Ended at:: Fri Feb 24 13:22:32 EST 2023
+[94mEnTK session: re.session.hal0262.amarel.rutgers.edu.pk695.019412.0005
+[39m[0m[94mCreating AppManager
+[39m[0m[94mSetting up ZMQ queues[39m[0m[92m                                                         ok
+[39m[0m[94mAppManager initialized[39m[0m[92m                                                        ok
+[39m[0m[94mValidating and assigning resource manager[39m[0m[92m                                     ok
+[39m[0m[94mAll components terminated
+[39m[0m
+ Ended at:: Fri Feb 24 13:26:53 EST 2023
 
  ==> end 
 
@@ -23,6 +28,6 @@ EXPERIMENT subFOLDER:: FACTS_test
 EXPERIMENT:: dummy
 venv --> memfix
  ............... 
-Started at:: Fri Feb 24 13:22:27 EST 2023
-Ended at:: Fri Feb 24 13:22:32 EST 2023
+Started at:: Fri Feb 24 13:26:51 EST 2023
+Ended at:: Fri Feb 24 13:26:53 EST 2023
 Duration:: 0 minutes

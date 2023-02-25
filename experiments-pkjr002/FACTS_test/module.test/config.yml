@@ -18,15 +18,8 @@ climate_step:
 #              rcmip_file: emissions.csv
 
 sealevel_step:
-    deconto21:
-        module_set: "deconto21"
-        module: "AIS"
-        options:
-            scenario: "rcp85"
-
-    NZInsarGPS:
-        module_set: "NZInsarGPS"
-        module: "verticallandmotion"
-
-
-
+    ocean:
+        module_set: "tlm"
+        module: "sterodynamics"
+        options_allowoverwrite:
+            climate_data_file: "%CLIMATE_DATA_FILE%"
