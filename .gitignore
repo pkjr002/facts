@@ -51,3 +51,6 @@ makefile
 
 Q-err.txt
 *.nc
+
+Tlog_
+z_Run_
