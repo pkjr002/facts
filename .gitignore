@@ -52,5 +52,6 @@ makefile
 Q-err.txt
 *.nc
 
-Tlog_
-z_Run_
+
+modules/emulandice/shared/emulandice_bundle_dependencies.R
+.gitignore
