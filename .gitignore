@@ -55,3 +55,4 @@ Q-err.txt
 
 modules/emulandice/shared/emulandice_bundle_dependencies.R
 .gitignore
+modules/emulandice/shared/.Rprofile
