@@ -1,0 +1,169 @@
+!!! Start of Program !!! Wed Mar  1 05:58:34 EST 2023
+venv --> memfix
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: 
+
+ ___________________________________________________________________________________________ 
+==> begin (single loop) ... 
+Started at:: Wed Mar  1 05:58:34 EST 2023
+exp NAME:: module.test  |:|  exp sub-FOLDER:: FACTS.test |:|  exp FOLDER:: experiments.pkjr002
+ ___________________________________________________________________________________________ 
+
+[94mEnTK session: re.session.hal0262.amarel.rutgers.edu.pk695.019417.0007
+[39m[0m[94mCreating AppManager
+[39m[0m[94mSetting up ZMQ queues[39m[0m[92m                                                         ok
+[39m[0m[94mAppManager initialized[39m[0m[92m                                                        ok
+[39m[0m[94mValidating and assigning resource manager[39m[0m[92m                                     ok
+[39m[0m[94mSetting up ZMQ queues[39m[0m[92m                                                        n/a
+[39m[0m[94mnew session: [39m[0m[re.session.hal0262.amarel.rutgers.edu.pk695.019417.0007][39m[0m[94m         \
+database   : [39m[0m[mongodb://facts:****@95.217.193.116:27017/facts][39m[0m[92m                ok
+[39m[0m[94mcreate pilot manager[39m[0m[92m                                                          ok
+[39m[0m[94msubmit 1 pilot(s)[39m[0m
+        pilot.0000   rutgers.amarel           16 cores       0 gpus[39m[0m[92m           ok
+[39m[0m[92mAll components created
+[39m[0m[92mUpdate: [39m[0m[94mmodule.test.temperature.fair.temperature state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mmodule.test.temperature.fair.temperature.preprocess state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mmodule.test.temperature.fair.temperature.preprocess.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mmodule.test.temperature.fair.temperature.preprocess.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mmodule.test.temperature.fair.temperature.preprocess state: SCHEDULED
+[39m[0m****** STEP: climate_step ******
+[94mcreate task manager[39m[0m/scratch/pk695/FACTS/230223_memfix_FACTS/memfix/lib/python3.9/site-packages/pymongo/topology.py:175: UserWarning: MongoClient opened before fork. Create MongoClient only after forking. See PyMongo's documentation for details: https://pymongo.readthedocs.io/en/stable/faq.html#is-pymongo-fork-safe
+  warnings.warn(
+[92m                                                           ok
+[39m[0msubmit: [39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m
+[39m[0m[92mUpdate: [39m[0m[94mmodule.test.temperature.fair.temperature.preprocess.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mmodule.test.temperature.fair.temperature.preprocess.task1 state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mmodule.test.temperature.fair.temperature.preprocess state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mmodule.test.temperature.fair.temperature.fit state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mmodule.test.temperature.fair.temperature.fit.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mmodule.test.temperature.fair.temperature.fit.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mmodule.test.temperature.fair.temperature.fit state: SCHEDULED
+[39m[0msubmit: [39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m
+[39m[0m[92mUpdate: [39m[0m[94mmodule.test.temperature.fair.temperature.fit.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mmodule.test.temperature.fair.temperature.fit.task1 state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mmodule.test.temperature.fair.temperature.fit state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mmodule.test.temperature.fair.temperature.project state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mmodule.test.temperature.fair.temperature.project.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mmodule.test.temperature.fair.temperature.project.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mmodule.test.temperature.fair.temperature.project state: SCHEDULED
+[39m[0msubmit: [39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m
+[39m[0m[92mUpdate: [39m[0m[94mmodule.test.temperature.fair.temperature.project.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mmodule.test.temperature.fair.temperature.project.task1 state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mmodule.test.temperature.fair.temperature.project state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mmodule.test.temperature.fair.temperature.postprocess state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mmodule.test.temperature.fair.temperature.postprocess.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mmodule.test.temperature.fair.temperature.postprocess.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mmodule.test.temperature.fair.temperature.postprocess state: SCHEDULED
+submit: [39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m
+[39m[0m[39m[0m[92mUpdate: [39m[0m[94mmodule.test.temperature.fair.temperature.postprocess.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mmodule.test.temperature.fair.temperature.postprocess.task1 state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mmodule.test.temperature.fair.temperature.postprocess state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mmodule.test.temperature.fair.temperature state: DONE
+[39m[0m[94mSetting up ZMQ queues[39m[0m[92m                                                        n/a
+[39m[0m[92mUpdate: [39m[0m[94mmodule.test.ocean.tlm.sterodynamics state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mmodule.test.ocean.tlm.sterodynamics.preprocess state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mmodule.test.ocean.tlm.sterodynamics.preprocess.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mmodule.test.ocean.tlm.sterodynamics.preprocess.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mmodule.test.ocean.tlm.sterodynamics.preprocess state: SCHEDULED
+submit: [39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m
+[39m[0m[39m[0m[92mUpdate: [39m[0m[94mmodule.test.ocean.tlm.sterodynamics.preprocess.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mmodule.test.ocean.tlm.sterodynamics.preprocess.task1 state: EXECUTED
+[39m[0m[92mUpdate: [39m[0m[94mmodule.test.ocean.tlm.sterodynamics.preprocess.task1 state: FAILED
+[39m[0m[91mtask task.0004 failed: RuntimeError("task failed")
+exit code: 1
+[39m[0m[92mUpdate: [39m[0m[94mmodule.test.ocean.tlm.sterodynamics.preprocess state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mmodule.test.ocean.tlm.sterodynamics.fit state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mmodule.test.ocean.tlm.sterodynamics.fit.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mmodule.test.ocean.tlm.sterodynamics.fit.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mmodule.test.ocean.tlm.sterodynamics.fit state: SCHEDULED
+[39m[0msubmit: [39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m
+[39m[0m[92mUpdate: [39m[0m[94mmodule.test.ocean.tlm.sterodynamics.fit.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mmodule.test.ocean.tlm.sterodynamics.fit.task1 state: EXECUTED
+[39m[0m[92mUpdate: [39m[0m[94mmodule.test.ocean.tlm.sterodynamics.fit.task1 state: FAILED
+[39m[0m[91mtask task.0005 failed: FileNotFoundError(2, 'No such file or directory')
+Traceback (most recent call last):
+  File "/scratch/pk695/radical.pilot.sandbox/re.session.hal0262.amarel.rutgers.edu.pk695.019417.0007/pilot.0000/rp_install/lib/python3.6/site-packages/radical/pilot/utils/component.py", line 1135, in work_cb
+    self._workers[state](things)
+  File "/scratch/pk695/radical.pilot.sandbox/re.session.hal0262.amarel.rutgers.edu.pk695.019417.0007/pilot.0000/rp_install/lib/python3.6/site-packages/radical/pilot/agent/staging_input/base.py", line 77, in work
+    self._work(tasks)
+  File "/scratch/pk695/radical.pilot.sandbox/re.session.hal0262.amarel.rutgers.edu.pk695.019417.0007/pilot.0000/rp_install/lib/python3.6/site-packages/radical/pilot/agent/staging_input/default.py", line 83, in _work
+    self._handle_task(task, actionables)
+  File "/scratch/pk695/radical.pilot.sandbox/re.session.hal0262.amarel.rutgers.edu.pk695.019417.0007/pilot.0000/rp_install/lib/python3.6/site-packages/radical/pilot/agent/staging_input/default.py", line 195, in _handle_task
+    shutil.copytree(src.path, tgt.path)
+  File "/scratch/pk695/radical.pilot.sandbox/ve.rutgers.amarel.1.22.0/lib/python3.6/shutil.py", line 309, in copytree
+    names = os.listdir(src)
+FileNotFoundError: [Errno 2] No such file or directory: '/scratch/pk695/radical.pilot.sandbox/re.session.hal0262.amarel.rutgers.edu.pk695.019417.0007/pilot.0000/task.0004/module.test.ocean.tlm.sterodynamics_tlmdata.pkl'
+
+[39m[0m[92mUpdate: [39m[0m[94mmodule.test.ocean.tlm.sterodynamics.fit state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mmodule.test.ocean.tlm.sterodynamics.project state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mmodule.test.ocean.tlm.sterodynamics.project.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mmodule.test.ocean.tlm.sterodynamics.project.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mmodule.test.ocean.tlm.sterodynamics.project state: SCHEDULED
+[39m[0msubmit: [39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m
+[39m[0m[92mUpdate: [39m[0m[94mmodule.test.ocean.tlm.sterodynamics.project.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mmodule.test.ocean.tlm.sterodynamics.project.task1 state: EXECUTED
+[39m[0m[92mUpdate: [39m[0m[94mmodule.test.ocean.tlm.sterodynamics.project.task1 state: FAILED
+[39m[0m[91mtask task.0006 failed: FileNotFoundError(2, 'No such file or directory')
+Traceback (most recent call last):
+  File "/scratch/pk695/radical.pilot.sandbox/re.session.hal0262.amarel.rutgers.edu.pk695.019417.0007/pilot.0000/rp_install/lib/python3.6/site-packages/radical/pilot/utils/component.py", line 1135, in work_cb
+    self._workers[state](things)
+  File "/scratch/pk695/radical.pilot.sandbox/re.session.hal0262.amarel.rutgers.edu.pk695.019417.0007/pilot.0000/rp_install/lib/python3.6/site-packages/radical/pilot/agent/staging_input/base.py", line 77, in work
+    self._work(tasks)
+  File "/scratch/pk695/radical.pilot.sandbox/re.session.hal0262.amarel.rutgers.edu.pk695.019417.0007/pilot.0000/rp_install/lib/python3.6/site-packages/radical/pilot/agent/staging_input/default.py", line 83, in _work
+    self._handle_task(task, actionables)
+  File "/scratch/pk695/radical.pilot.sandbox/re.session.hal0262.amarel.rutgers.edu.pk695.019417.0007/pilot.0000/rp_install/lib/python3.6/site-packages/radical/pilot/agent/staging_input/default.py", line 195, in _handle_task
+    shutil.copytree(src.path, tgt.path)
+  File "/scratch/pk695/radical.pilot.sandbox/ve.rutgers.amarel.1.22.0/lib/python3.6/shutil.py", line 309, in copytree
+    names = os.listdir(src)
+FileNotFoundError: [Errno 2] No such file or directory: '/scratch/pk695/radical.pilot.sandbox/re.session.hal0262.amarel.rutgers.edu.pk695.019417.0007/pilot.0000/task.0004/module.test.ocean.tlm.sterodynamics_tlmdata.pkl'
+
+[39m[0m[92mUpdate: [39m[0m[94mmodule.test.ocean.tlm.sterodynamics.project state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mmodule.test.ocean.tlm.sterodynamics.postprocess state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mmodule.test.ocean.tlm.sterodynamics.postprocess.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mmodule.test.ocean.tlm.sterodynamics.postprocess.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mmodule.test.ocean.tlm.sterodynamics.postprocess state: SCHEDULED
+[39m[0msubmit: [39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m
+[39m[0m[92mUpdate: [39m[0m[94mmodule.test.ocean.tlm.sterodynamics.postprocess.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mmodule.test.ocean.tlm.sterodynamics.postprocess.task1 state: EXECUTED
+[39m[0m[92mUpdate: [39m[0m[94mmodule.test.ocean.tlm.sterodynamics.postprocess.task1 state: FAILED
+[39m[0m[91mtask task.0007 failed: FileNotFoundError(2, 'No such file or directory')
+Traceback (most recent call last):
+  File "/scratch/pk695/radical.pilot.sandbox/re.session.hal0262.amarel.rutgers.edu.pk695.019417.0007/pilot.0000/rp_install/lib/python3.6/site-packages/radical/pilot/utils/component.py", line 1135, in work_cb
+    self._workers[state](things)
+  File "/scratch/pk695/radical.pilot.sandbox/re.session.hal0262.amarel.rutgers.edu.pk695.019417.0007/pilot.0000/rp_install/lib/python3.6/site-packages/radical/pilot/agent/staging_input/base.py", line 77, in work
+    self._work(tasks)
+  File "/scratch/pk695/radical.pilot.sandbox/re.session.hal0262.amarel.rutgers.edu.pk695.019417.0007/pilot.0000/rp_install/lib/python3.6/site-packages/radical/pilot/agent/staging_input/default.py", line 83, in _work
+    self._handle_task(task, actionables)
+  File "/scratch/pk695/radical.pilot.sandbox/re.session.hal0262.amarel.rutgers.edu.pk695.019417.0007/pilot.0000/rp_install/lib/python3.6/site-packages/radical/pilot/agent/staging_input/default.py", line 195, in _handle_task
+    shutil.copytree(src.path, tgt.path)
+  File "/scratch/pk695/radical.pilot.sandbox/ve.rutgers.amarel.1.22.0/lib/python3.6/shutil.py", line 309, in copytree
+    names = os.listdir(src)
+FileNotFoundError: [Errno 2] No such file or directory: '/scratch/pk695/radical.pilot.sandbox/re.session.hal0262.amarel.rutgers.edu.pk695.019417.0007/pilot.0000/task.0005/module.test.ocean.tlm.sterodynamics_thermalexp_fit.pkl'
+
+[39m[0m[92mUpdate: [39m[0m[94mmodule.test.ocean.tlm.sterodynamics.postprocess state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mmodule.test.ocean.tlm.sterodynamics state: DONE
+[39m[0m[94mclose task manager[39m[0m[92m                                                            ok
+[39m[0m[94mclosing session re.session.hal0262.amarel.rutgers.edu.pk695.019417.0007[39m[0m[94m        \
+close pilot manager[39m[0m[94m                                                            \
+wait for 1 pilot(s)
+        [39m[0mO[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m      0[39m[0m[93m                                                          timeout
+[39m[0m[92m                                                                              ok
+[39m[0m[94msession lifetime: 9049.4s[39m[0m[92m                                                     ok
+[39m[0m[94mAll components terminated
+[39m[0m****** STEP: sealevel_step ******
+
+ Ended at:: Wed Mar  1 08:29:26 EST 2023
+
+ ==> end 
+
+
+ :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+!!! End of Program !!!
+
+EXPERIMENT FOLDER:: experiments.pkjr002
+EXPERIMENT subFOLDER:: FACTS.test
+EXPERIMENT:: module.test
+venv --> memfix
+ ............... 
+Started at:: Wed Mar  1 05:58:34 EST 2023
+Ended at:: Wed Mar  1 08:29:26 EST 2023
+Duration:: 150 minutes
