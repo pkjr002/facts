@@ -141,5 +141,14 @@ if __name__ == "__main__":
 	larmip_fit_icesheet(pipeline_id=args.pipeline_id)
 	larmip_fit_smb(pipeline_id=args.pipeline_id)
 
+	import psutil as ps
+	peak_mem = ps.Process().memory_info().rss * 1e-9
+	module_set = 'larmip'
+	mod_name = 'AIS'
+	task_name = ['preprocess','fit','project','postprocess']
+	f = open(f'{module_set}_{mod_name}_{task_name[1]}_memory_diagnostic.txt','w')
+	f.write(f'This Task Used: {peak_mem} GB')
+	f.close()
+
 	# Done
 	sys.exit()

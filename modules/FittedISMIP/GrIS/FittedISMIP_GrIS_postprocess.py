@@ -134,5 +134,14 @@ if __name__ == '__main__':
 	# Run the postprocessing for the parameters specified from the command line argument
 	FittedISMIP_postprocess_icesheet(args.locationfile, args.chunksize, args.pipeline_id)
 
+	import psutil as ps
+	peak_mem = ps.Process().memory_info().rss * 1e-9
+	module_set = 'FittedISMIP'
+	mod_name = 'GrIS'
+	task_name = ['preprocess','fit','project','postprocess']
+	f = open(f'{module_set}_{mod_name}_{task_name[3]}_memory_diagnostic.txt','w')
+	f.write(f'This Task Used: {peak_mem} GB')
+	f.close()
+
 	# Done
 	exit()
