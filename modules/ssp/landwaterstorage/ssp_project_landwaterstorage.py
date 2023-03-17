@@ -278,4 +278,13 @@ if __name__ == '__main__':
 	# Run the preprocessing stage with the provided arguments
 	ssp_project_landwaterstorage(args.nsamps, args.seed, args.dcyear_start, args.dcyear_end, args.dcrate_lo, args.dcrate_hi, args.pipeline_id)
 
+	import psutil as ps
+	peak_mem = ps.Process().memory_info().rss * 1e-9
+	module_set = 'ssp'
+	mod_name = 'landwaterstorage'
+	task_name = ['preprocess','fit','project','postprocess']
+	f = open(f'{module_set}_{mod_name}_{task_name[2]}_memory_diagnostic.txt','w')
+	f.write(f'This Task Used: {peak_mem} GB')
+	f.close()
+
 	sys.exit()

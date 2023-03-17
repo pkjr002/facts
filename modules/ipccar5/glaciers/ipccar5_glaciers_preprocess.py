@@ -107,5 +107,14 @@ if __name__ == '__main__':
 	
 	# Run the preprocessing stage with the provided arguments
 	ar5_preprocess_glaciers(args.scenario, args.baseyear, args.tlm_data, args.pipeline_id, args.climate_data_file)
+
+	import psutil as ps
+	peak_mem = ps.Process().memory_info().rss * 1e-9
+	module_set = 'ipccar5'
+	mod_name = 'glaciers'
+	task_name = ['preprocess','fit','project','postprocess']
+	f = open(f'{module_set}_{mod_name}_{task_name[0]}_memory_diagnostic.txt','w')
+	f.write(f'This Task Used: {peak_mem} GB')
+	f.close()
 	
 	exit()

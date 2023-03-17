@@ -258,4 +258,13 @@ if __name__ == '__main__':
 	# Run the projection process on the files specified from the command line argument
 	ar5_project_glaciers(args.seed, args.pyear_start, args.pyear_end, args.pyear_step, args.nmsamps, args.ntsamps, args.nsamps, args.pipeline_id)
 
+	import psutil as ps
+	peak_mem = ps.Process().memory_info().rss * 1e-9
+	module_set = 'ipccar5'
+	mod_name = 'glaciers'
+	task_name = ['preprocess','fit','project','postprocess']
+	f = open(f'{module_set}_{mod_name}_{task_name[2]}_memory_diagnostic.txt','w')
+	f.write(f'This Task Used: {peak_mem} GB')
+	f.close()
+
 	exit()

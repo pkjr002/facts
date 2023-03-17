@@ -98,4 +98,13 @@ if __name__ == '__main__':
 	# Run the projection process on the files specified from the command line argument
 	ssp_postprocess_landwaterstorage(args.locationfile, args.chunksize, args.pipeline_id)
 
+	import psutil as ps
+	peak_mem = ps.Process().memory_info().rss * 1e-9
+	module_set = 'ssp'
+	mod_name = 'landwaterstorage'
+	task_name = ['preprocess','fit','project','postprocess']
+	f = open(f'{module_set}_{mod_name}_{task_name[3]}_memory_diagnostic.txt','w')
+	f.write(f'This Task Used: {peak_mem} GB')
+	f.close()
+
 	exit()

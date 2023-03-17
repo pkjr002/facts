@@ -7,6 +7,7 @@ import time
 from netCDF4 import Dataset
 from scipy.stats import norm
 from scipy.stats import t
+import time
 
 ''' tlm_project_oceandynamics.py
 
@@ -283,6 +284,8 @@ def tlm_project_thermalexpansion(seed, nsamps, pipeline_id):
 
 if __name__ == '__main__':
 
+	t_start = time.time()
+
 	# Initialize the command-line argument parser
 	parser = argparse.ArgumentParser(description="Run the projection stage for the IPCC AR6 ocean dynamics workflow",\
 	epilog="Note: This is meant to be run as part of the Framework for the Assessment of Changes To Sea-level (FACTS)")
@@ -309,6 +312,19 @@ if __name__ == '__main__':
 		tlm_project_thermalexpansion(args.seed, args.nsamps, args.pipeline_id)
 	else:
 		tlm_project_oceandynamics(args.nsamps, args.seed, args.pipeline_id)
+
+	# THIS BLOCK IS USED TO GET THE RSS OF THIS TASK AS WELL AS CALCULATE THE
+	# TIME TO EXECUTION. THESE ARE WRITTEN TO A TXT FILE IN THE TASK.XXXX File
+	tte = time.time() - t_start
+	import psutil as ps
+	peak_mem = ps.Process().memory_info().rss * 1e-9
+	module_set = 'tlm'
+	mod_name = 'sterodynamics'
+	task_name = ['preprocess','fit','project','postprocess']
+	f = open(f'{module_set}_{mod_name}_{task_name[2]}_memory_diagnostic.txt','w')
+	f.write(f'This Task Used: {peak_mem} GB\n'
+	 f'Time to Execution for this Task Was: {tte} seconds')
+	f.close()
 
 	# Done
 	sys.exit()

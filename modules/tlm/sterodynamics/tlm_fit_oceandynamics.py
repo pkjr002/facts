@@ -4,6 +4,7 @@ import sys
 import pickle
 import argparse
 import re
+import time
 
 ''' tlm_fit_oceandynamics.py
 
@@ -305,6 +306,8 @@ def tlm_fit_thermalexpansion(pipeline_id):
 
 if __name__ == '__main__':
 
+	t_start = time.time()
+
 	# Initialize the command-line argument parser
 	parser = argparse.ArgumentParser(description="Run the fitting stage for the TLM ocean dynamics workflow",\
 	epilog="Note: This is meant to be run as part of the Framework for the Assessment of Changes To Sea-level (FACTS)")
@@ -333,9 +336,19 @@ if __name__ == '__main__':
 	else:
 		tlm_fit_thermalexpansion(args.pipeline_id)
 
-
-
-
+	
+	# THIS BLOCK IS USED TO GET THE RSS OF THIS TASK AS WELL AS CALCULATE THE
+	# TIME TO EXECUTION. THESE ARE WRITTEN TO A TXT FILE IN THE TASK.XXXX File
+	tte = time.time() - t_start
+	import psutil as ps
+	peak_mem = ps.Process().memory_info().rss * 1e-9
+	module_set = 'tlm'
+	mod_name = 'sterodynamics'
+	task_name = ['preprocess','fit','project','postprocess']
+	f = open(f'{module_set}_{mod_name}_{task_name[1]}_memory_diagnostic.txt','w')
+	f.write(f'This Task Used: {peak_mem} GB\n'
+	 f'Time to Execution for this Task Was: {tte} seconds')
+	f.close()
 
 
 	# Done
