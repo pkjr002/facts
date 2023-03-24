@@ -37,13 +37,13 @@ sealevel_step:
         options:
             scenario: "rcp45"
 
-    bamber19:
-        module_set: "bamber19"
-        module: "icesheets"
-        include_in_workflow:
-            - "wf4"
-        options:
-            scenario: "rcp45"
+#    bamber19:
+#        module_set: "bamber19"
+#        module: "icesheets"
+#        include_in_workflow:
+#            - "wf4"
+#        options:
+#            scenario: "rcp45"
 
     emuAIS:
         module_set: "emulandice"
@@ -93,7 +93,7 @@ sealevel_step:
             - "wf1f"
             - "wf2f"
             - "wf3f"
-            - "wf4"
+#            - "wf4"
 
     ar5AIS:
         module_set: "ipccar5"
@@ -116,7 +116,7 @@ sealevel_step:
             - "wf2f"
             - "wf3e"
             - "wf3f"
-            - "wf4"
+#            - "wf4"
 
     NZInsarGPS1:
         module_set: "NZInsarGPS1"
@@ -128,7 +128,7 @@ sealevel_step:
             - "wf2f"
             - "wf3e"
             - "wf3f"
-            - "wf4"
+#            - "wf4"
 
     lws:
         module_set: "ssp"
@@ -143,7 +143,7 @@ sealevel_step:
             - "wf2f"
             - "wf3e"
             - "wf3f"
-            - "wf4"
+#            - "wf4"
 
 totaling_step:
     total:

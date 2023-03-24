@@ -1,0 +1,406 @@
+!!! Start of Program !!! Thu Mar 23 22:41:16 EDT 2023
+venv --> ve3T
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: 
+
+ ___________________________________________________________________________________________ 
+==> begin loop 0 of 15 ...
+Started at:: Thu Mar 23 22:41:16 EDT 2023
+exp NAME:: nzOG.ssp126  |:|  exp sub-FOLDER:: nzOG |:|  exp FOLDER:: experimentsNZ
+Source Location File:: latlon_basedON_2kmNZInsar_IPdata_.txt |:| Temp Location File location.lst
+Chunk:: line 0 T line 500
+ ___________________________________________________________________________________________ 
+
+[94mEnTK session: re.session.hal0261.amarel.rutgers.edu.pk695.019440.0015
+[39m[0m[94mCreating AppManager
+[39m[0m[94mSetting up ZMQ queues[39m[0m[92m                                                         ok
+[39m[0m[94mAppManager initialized[39m[0m[92m                                                        ok
+[39m[0m[94mValidating and assigning resource manager[39m[0m[92m                                     ok
+[39m[0m[94mSetting up ZMQ queues[39m[0m[92m                                                        n/a
+[39m[0m[94mnew session: [39m[0m[re.session.hal0261.amarel.rutgers.edu.pk695.019440.0015][39m[0m[94m         \
+database   : [39m[0m[mongodb://facts:****@95.217.193.116:27017/facts][39m[0m[92m                ok
+[39m[0m[94mcreate pilot manager[39m[0m[92m                                                          ok
+[39m[0m[94msubmit 1 pilot(s)[39m[0m
+        pilot.0000   rutgers.amarel           16 cores       0 gpus[39m[0m[92m           ok
+[39m[0m[92mAll components created
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.temperature.fair.temperature state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.temperature.fair.temperature.preprocess state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.temperature.fair.temperature.preprocess.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.temperature.fair.temperature.preprocess.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.temperature.fair.temperature.preprocess state: SCHEDULED
+[39m[0m****** STEP: climate_step ******
+[94mcreate task manager[39m[0m/scratch/pk695/FACTS/002_fork/ve3T/lib/python3.9/site-packages/pymongo/topology.py:175: UserWarning: MongoClient opened before fork. Create MongoClient only after forking. See PyMongo's documentation for details: https://pymongo.readthedocs.io/en/stable/faq.html#is-pymongo-fork-safe
+  warnings.warn(
+[92m                                                           ok
+[39m[0msubmit: [39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.temperature.fair.temperature.preprocess.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.temperature.fair.temperature.preprocess.task1 state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.temperature.fair.temperature.preprocess state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.temperature.fair.temperature.fit state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.temperature.fair.temperature.fit.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.temperature.fair.temperature.fit.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.temperature.fair.temperature.fit state: SCHEDULED
+[39m[0msubmit: [39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.temperature.fair.temperature.fit.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.temperature.fair.temperature.fit.task1 state: EXECUTED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.temperature.fair.temperature.fit.task1 state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.temperature.fair.temperature.fit state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.temperature.fair.temperature.project state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.temperature.fair.temperature.project.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.temperature.fair.temperature.project.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.temperature.fair.temperature.project state: SCHEDULED
+[39m[0msubmit: [39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.temperature.fair.temperature.project.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.temperature.fair.temperature.project.task1 state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.temperature.fair.temperature.project state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.temperature.fair.temperature.postprocess state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.temperature.fair.temperature.postprocess.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.temperature.fair.temperature.postprocess.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.temperature.fair.temperature.postprocess state: SCHEDULED
+[39m[0msubmit: [39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.temperature.fair.temperature.postprocess.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.temperature.fair.temperature.postprocess.task1 state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.temperature.fair.temperature.postprocess state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.temperature.fair.temperature state: DONE
+[39m[0m[94mSetting up ZMQ queues[39m[0m[92m                                                        n/a
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.GrIS1f.FittedISMIP.GrIS state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.GrIS1f.FittedISMIP.GrIS.preprocess state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.GrIS1f.FittedISMIP.GrIS.preprocess.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.deconto21.deconto21.AIS state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.deconto21.deconto21.AIS.preprocess state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.deconto21.deconto21.AIS.preprocess.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.bamber19.bamber19.icesheets state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.bamber19.bamber19.icesheets.preprocess state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.bamber19.bamber19.icesheets.preprocess.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.emuAIS.emulandice.AIS state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.emuAIS.emulandice.AIS.preprocess state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.emuAIS.emulandice.AIS.preprocess.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.emuGrIS.emulandice.GrIS state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.emuGrIS.emulandice.GrIS.preprocess state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.emuGrIS.emulandice.GrIS.preprocess.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.emuglaciers.emulandice.glaciers state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.emuglaciers.emulandice.glaciers.preprocess state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.emuglaciers.emulandice.glaciers.preprocess.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.larmip.larmip.AIS state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.larmip.larmip.AIS.preprocess state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.larmip.larmip.AIS.preprocess.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.ar5glaciers.ipccar5.glaciers state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.ar5glaciers.ipccar5.glaciers.preprocess state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.ar5glaciers.ipccar5.glaciers.preprocess.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.ar5AIS.ipccar5.icesheets state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.ar5AIS.ipccar5.icesheets.preprocess state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.ar5AIS.ipccar5.icesheets.preprocess.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.ocean.tlm.sterodynamics state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.ocean.tlm.sterodynamics.preprocess state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.ocean.tlm.sterodynamics.preprocess.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.NZInsarGPS.NZInsarGPS.verticallandmotion state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.NZInsarGPS.NZInsarGPS.verticallandmotion.preprocess state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.NZInsarGPS.NZInsarGPS.verticallandmotion.preprocess.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.lws.ssp.landwaterstorage state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.lws.ssp.landwaterstorage.preprocess state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.lws.ssp.landwaterstorage.preprocess.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.GrIS1f.FittedISMIP.GrIS.preprocess.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.deconto21.deconto21.AIS.preprocess.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.bamber19.bamber19.icesheets.preprocess.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.emuAIS.emulandice.AIS.preprocess.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.emuGrIS.emulandice.GrIS.preprocess.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.emuglaciers.emulandice.glaciers.preprocess.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.larmip.larmip.AIS.preprocess.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.ar5glaciers.ipccar5.glaciers.preprocess.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.ar5AIS.ipccar5.icesheets.preprocess.task1 state: SCHEDULED
+[39m[0msubmit: [39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.ocean.tlm.sterodynamics.preprocess.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.NZInsarGPS.NZInsarGPS.verticallandmotion.preprocess.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.lws.ssp.landwaterstorage.preprocess.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.GrIS1f.FittedISMIP.GrIS.preprocess state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.deconto21.deconto21.AIS.preprocess state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.bamber19.bamber19.icesheets.preprocess state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.emuAIS.emulandice.AIS.preprocess state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.emuGrIS.emulandice.GrIS.preprocess state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.emuglaciers.emulandice.glaciers.preprocess state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.larmip.larmip.AIS.preprocess state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.ar5glaciers.ipccar5.glaciers.preprocess state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.ar5AIS.ipccar5.icesheets.preprocess state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.ocean.tlm.sterodynamics.preprocess state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.NZInsarGPS.NZInsarGPS.verticallandmotion.preprocess state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.lws.ssp.landwaterstorage.preprocess state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.GrIS1f.FittedISMIP.GrIS.preprocess.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.deconto21.deconto21.AIS.preprocess.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.bamber19.bamber19.icesheets.preprocess.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.emuAIS.emulandice.AIS.preprocess.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.emuGrIS.emulandice.GrIS.preprocess.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.emuglaciers.emulandice.glaciers.preprocess.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.larmip.larmip.AIS.preprocess.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.ar5glaciers.ipccar5.glaciers.preprocess.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.ar5AIS.ipccar5.icesheets.preprocess.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.ocean.tlm.sterodynamics.preprocess.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.NZInsarGPS.NZInsarGPS.verticallandmotion.preprocess.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.lws.ssp.landwaterstorage.preprocess.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.deconto21.deconto21.AIS.preprocess.task1 state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.deconto21.deconto21.AIS.preprocess state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.deconto21.deconto21.AIS.fit state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.deconto21.deconto21.AIS.fit.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.deconto21.deconto21.AIS.fit.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.deconto21.deconto21.AIS.fit state: SCHEDULED
+[39m[0msubmit: [39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.deconto21.deconto21.AIS.fit.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.emuAIS.emulandice.AIS.preprocess.task1 state: EXECUTED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.emuAIS.emulandice.AIS.preprocess.task1 state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.emuAIS.emulandice.AIS.preprocess state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.emuAIS.emulandice.AIS.fit state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.emuAIS.emulandice.AIS.fit.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.emuAIS.emulandice.AIS.fit.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.emuAIS.emulandice.AIS.fit state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.emuGrIS.emulandice.GrIS.preprocess.task1 state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.emuGrIS.emulandice.GrIS.preprocess state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.emuGrIS.emulandice.GrIS.fit state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.emuGrIS.emulandice.GrIS.fit.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.emuGrIS.emulandice.GrIS.fit.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.emuGrIS.emulandice.GrIS.fit state: SCHEDULED
+[39m[0msubmit: [39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.emuAIS.emulandice.AIS.fit.task1 state: SUBMITTING
+[39m[0msubmit: [39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.emuGrIS.emulandice.GrIS.fit.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.GrIS1f.FittedISMIP.GrIS.preprocess.task1 state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.GrIS1f.FittedISMIP.GrIS.preprocess state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.GrIS1f.FittedISMIP.GrIS.fit state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.GrIS1f.FittedISMIP.GrIS.fit.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.bamber19.bamber19.icesheets.preprocess.task1 state: DONE
+[39m[0m[92mUpdate: [39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.GrIS1f.FittedISMIP.GrIS.fit.task1 state: SCHEDULED
+[39m[0m[94mnzOG.ssp126.bamber19.bamber19.icesheets.preprocess state: DONE
+[39m[0msubmit: [39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.GrIS1f.FittedISMIP.GrIS.fit state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.bamber19.bamber19.icesheets.fit state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.bamber19.bamber19.icesheets.fit.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.bamber19.bamber19.icesheets.fit.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.bamber19.bamber19.icesheets.fit state: SCHEDULED
+[94mnzOG.ssp126.emuglaciers.emulandice.glaciers.preprocess.task1 state: DONE
+[39m[0m[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.emuglaciers.emulandice.glaciers.preprocess state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.emuglaciers.emulandice.glaciers.fit state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.emuglaciers.emulandice.glaciers.fit.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.emuglaciers.emulandice.glaciers.fit.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.emuglaciers.emulandice.glaciers.fit state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.GrIS1f.FittedISMIP.GrIS.fit.task1 state: SUBMITTING
+[39m[0msubmit: [39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.bamber19.bamber19.icesheets.fit.task1 state: SUBMITTING
+[39m[0msubmit: [39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.emuglaciers.emulandice.glaciers.fit.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.larmip.larmip.AIS.preprocess.task1 state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.larmip.larmip.AIS.preprocess state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.larmip.larmip.AIS.fit state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.larmip.larmip.AIS.fit.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.larmip.larmip.AIS.fit.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.larmip.larmip.AIS.fit state: SCHEDULED
+[39m[0msubmit: [39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.larmip.larmip.AIS.fit.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.ar5glaciers.ipccar5.glaciers.preprocess.task1 state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.ar5glaciers.ipccar5.glaciers.preprocess state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.ar5glaciers.ipccar5.glaciers.fit state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.ar5glaciers.ipccar5.glaciers.fit.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.ar5glaciers.ipccar5.glaciers.fit.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.ar5glaciers.ipccar5.glaciers.fit state: SCHEDULED
+[39m[0msubmit: [39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.ar5glaciers.ipccar5.glaciers.fit.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.ar5AIS.ipccar5.icesheets.preprocess.task1 state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.ar5AIS.ipccar5.icesheets.preprocess state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.ar5AIS.ipccar5.icesheets.fit state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.ar5AIS.ipccar5.icesheets.fit.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.ar5AIS.ipccar5.icesheets.fit.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.ar5AIS.ipccar5.icesheets.fit state: SCHEDULED
+[39m[0msubmit: [39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.ar5AIS.ipccar5.icesheets.fit.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.NZInsarGPS.NZInsarGPS.verticallandmotion.preprocess.task1 state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.NZInsarGPS.NZInsarGPS.verticallandmotion.preprocess state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.NZInsarGPS.NZInsarGPS.verticallandmotion.fit state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.NZInsarGPS.NZInsarGPS.verticallandmotion.fit.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.NZInsarGPS.NZInsarGPS.verticallandmotion.fit.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.NZInsarGPS.NZInsarGPS.verticallandmotion.fit state: SCHEDULED
+[39m[0msubmit: [39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.NZInsarGPS.NZInsarGPS.verticallandmotion.fit.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.deconto21.deconto21.AIS.fit.task1 state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.deconto21.deconto21.AIS.fit state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.deconto21.deconto21.AIS.project state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.deconto21.deconto21.AIS.project.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.deconto21.deconto21.AIS.project.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.deconto21.deconto21.AIS.project state: SCHEDULED
+[39m[0m[94mnzOG.ssp126.emuAIS.emulandice.AIS.fit.task1 state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.emuAIS.emulandice.AIS.fit state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.emuAIS.emulandice.AIS.project state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.emuAIS.emulandice.AIS.project.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.emuAIS.emulandice.AIS.project.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.emuAIS.emulandice.AIS.project state: SCHEDULED
+[39m[0msubmit: [39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.emuGrIS.emulandice.GrIS.fit.task1 state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.emuGrIS.emulandice.GrIS.fit state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.emuGrIS.emulandice.GrIS.project state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.emuGrIS.emulandice.GrIS.project.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.emuGrIS.emulandice.GrIS.project.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.emuGrIS.emulandice.GrIS.project state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.deconto21.deconto21.AIS.project.task1 state: SUBMITTING
+[39m[0msubmit: [39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.emuAIS.emulandice.AIS.project.task1 state: SUBMITTING
+[39m[0msubmit: [39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.emuGrIS.emulandice.GrIS.project.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.lws.ssp.landwaterstorage.preprocess.task1 state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.lws.ssp.landwaterstorage.preprocess state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.lws.ssp.landwaterstorage.fit state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.lws.ssp.landwaterstorage.fit.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.GrIS1f.FittedISMIP.GrIS.fit.task1 state: DONE
+[39m[0m[94mnzOG.ssp126.lws.ssp.landwaterstorage.fit.task1 state: SCHEDULED
+[92mUpdate: [39m[0m[39m[0m[94mnzOG.ssp126.GrIS1f.FittedISMIP.GrIS.fit state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.lws.ssp.landwaterstorage.fit state: SCHEDULED
+submit: [39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m
+[39m[0m[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.GrIS1f.FittedISMIP.GrIS.project state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.GrIS1f.FittedISMIP.GrIS.project.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.GrIS1f.FittedISMIP.GrIS.project.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.GrIS1f.FittedISMIP.GrIS.project state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.bamber19.bamber19.icesheets.fit.task1 state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.bamber19.bamber19.icesheets.fit state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.bamber19.bamber19.icesheets.project state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.bamber19.bamber19.icesheets.project.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.bamber19.bamber19.icesheets.project.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.bamber19.bamber19.icesheets.project state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.lws.ssp.landwaterstorage.fit.task1 state: SUBMITTING
+[39m[0msubmit: [39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m[92mUpdate: [39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m[94mnzOG.ssp126.emuglaciers.emulandice.glaciers.fit.task1 state: DONE
+#[39m[0m[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m[92mUpdate: [39m[0m#[39m[0m#[39m[0m#[39m[0m[94mnzOG.ssp126.emuglaciers.emulandice.glaciers.fit state: DONE
+[39m[0m#[39m[0m#[39m[0m#[39m[0m
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.emuglaciers.emulandice.glaciers.project state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.emuglaciers.emulandice.glaciers.project.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.emuglaciers.emulandice.glaciers.project.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.emuglaciers.emulandice.glaciers.project state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.GrIS1f.FittedISMIP.GrIS.project.task1 state: SUBMITTING
+[39m[0msubmit: [39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m[92mUpdate: [39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m[94mnzOG.ssp126.bamber19.bamber19.icesheets.project.task1 state: SUBMITTING
+#[39m[0m[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m
+[39m[0msubmit: [39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.emuglaciers.emulandice.glaciers.project.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.larmip.larmip.AIS.fit.task1 state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.larmip.larmip.AIS.fit state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.larmip.larmip.AIS.project state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.larmip.larmip.AIS.project.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.larmip.larmip.AIS.project.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.larmip.larmip.AIS.project state: SCHEDULED
+[39m[0msubmit: [39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.ar5glaciers.ipccar5.glaciers.fit.task1 state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.ar5glaciers.ipccar5.glaciers.fit state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.ar5glaciers.ipccar5.glaciers.project state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.ar5glaciers.ipccar5.glaciers.project.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.ar5glaciers.ipccar5.glaciers.project.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.ar5glaciers.ipccar5.glaciers.project state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.larmip.larmip.AIS.project.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.ar5AIS.ipccar5.icesheets.fit.task1 state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.ar5AIS.ipccar5.icesheets.fit state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.ar5AIS.ipccar5.icesheets.project state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.ar5AIS.ipccar5.icesheets.project.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.ar5AIS.ipccar5.icesheets.project.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.ar5AIS.ipccar5.icesheets.project state: SCHEDULED
+[39m[0msubmit: [39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.ar5glaciers.ipccar5.glaciers.project.task1 state: SUBMITTING
+[39m[0msubmit: [39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m[92mUpdate: [39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m[94mnzOG.ssp126.ar5AIS.ipccar5.icesheets.project.task1 state: SUBMITTING
+[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.NZInsarGPS.NZInsarGPS.verticallandmotion.fit.task1 state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.NZInsarGPS.NZInsarGPS.verticallandmotion.fit state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.NZInsarGPS.NZInsarGPS.verticallandmotion.project state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.NZInsarGPS.NZInsarGPS.verticallandmotion.project.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.NZInsarGPS.NZInsarGPS.verticallandmotion.project.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.NZInsarGPS.NZInsarGPS.verticallandmotion.project state: SCHEDULED
+[39m[0msubmit: [39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.NZInsarGPS.NZInsarGPS.verticallandmotion.project.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.deconto21.deconto21.AIS.project.task1 state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.deconto21.deconto21.AIS.project state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.deconto21.deconto21.AIS.postprocess state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.deconto21.deconto21.AIS.postprocess.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.deconto21.deconto21.AIS.postprocess.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.deconto21.deconto21.AIS.postprocess state: SCHEDULED
+[39m[0msubmit: [39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.deconto21.deconto21.AIS.postprocess.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.bamber19.bamber19.icesheets.project.task1 state: EXECUTED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.bamber19.bamber19.icesheets.project.task1 state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.bamber19.bamber19.icesheets.project state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.bamber19.bamber19.icesheets.postprocess state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.bamber19.bamber19.icesheets.postprocess.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.bamber19.bamber19.icesheets.postprocess.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.bamber19.bamber19.icesheets.postprocess state: SCHEDULED
+[39m[0msubmit: [39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m[92mUpdate: [39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m
+[39m[0m[94mnzOG.ssp126.lws.ssp.landwaterstorage.fit.task1 state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.lws.ssp.landwaterstorage.fit state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.lws.ssp.landwaterstorage.project state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.lws.ssp.landwaterstorage.project.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.lws.ssp.landwaterstorage.project.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.lws.ssp.landwaterstorage.project state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.bamber19.bamber19.icesheets.postprocess.task1 state: SUBMITTING
+[39m[0msubmit: [39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.lws.ssp.landwaterstorage.project.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.GrIS1f.FittedISMIP.GrIS.project.task1 state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.GrIS1f.FittedISMIP.GrIS.project state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.GrIS1f.FittedISMIP.GrIS.postprocess state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.GrIS1f.FittedISMIP.GrIS.postprocess.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.GrIS1f.FittedISMIP.GrIS.postprocess.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.GrIS1f.FittedISMIP.GrIS.postprocess state: SCHEDULED
+[39m[0msubmit: [39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.GrIS1f.FittedISMIP.GrIS.postprocess.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.ar5glaciers.ipccar5.glaciers.project.task1 state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.ar5glaciers.ipccar5.glaciers.project state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.ar5glaciers.ipccar5.glaciers.postprocess state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.ar5glaciers.ipccar5.glaciers.postprocess.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.ar5glaciers.ipccar5.glaciers.postprocess.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.ar5glaciers.ipccar5.glaciers.postprocess state: SCHEDULED
+[39m[0msubmit: [39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.ar5glaciers.ipccar5.glaciers.postprocess.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.ar5AIS.ipccar5.icesheets.project.task1 state: EXECUTED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.ar5AIS.ipccar5.icesheets.project.task1 state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.ar5AIS.ipccar5.icesheets.project state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.ar5AIS.ipccar5.icesheets.postprocess state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.ar5AIS.ipccar5.icesheets.postprocess.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.ar5AIS.ipccar5.icesheets.postprocess.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.ar5AIS.ipccar5.icesheets.postprocess state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.NZInsarGPS.NZInsarGPS.verticallandmotion.project.task1 state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.NZInsarGPS.NZInsarGPS.verticallandmotion.project state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.NZInsarGPS.NZInsarGPS.verticallandmotion.postprocess state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.NZInsarGPS.NZInsarGPS.verticallandmotion.postprocess.task1 state: SCHEDULING
+[39m[0msubmit: [39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.NZInsarGPS.NZInsarGPS.verticallandmotion.postprocess.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.NZInsarGPS.NZInsarGPS.verticallandmotion.postprocess state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.ar5AIS.ipccar5.icesheets.postprocess.task1 state: SUBMITTING
+[39m[0msubmit: [39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.NZInsarGPS.NZInsarGPS.verticallandmotion.postprocess.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.deconto21.deconto21.AIS.postprocess.task1 state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.deconto21.deconto21.AIS.postprocess state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.deconto21.deconto21.AIS state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.bamber19.bamber19.icesheets.postprocess.task1 state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.bamber19.bamber19.icesheets.postprocess state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.bamber19.bamber19.icesheets state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.lws.ssp.landwaterstorage.project.task1 state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.lws.ssp.landwaterstorage.project state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.lws.ssp.landwaterstorage.postprocess state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.lws.ssp.landwaterstorage.postprocess.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.lws.ssp.landwaterstorage.postprocess.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.lws.ssp.landwaterstorage.postprocess state: SCHEDULED
+[39m[0msubmit: [39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.lws.ssp.landwaterstorage.postprocess.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.GrIS1f.FittedISMIP.GrIS.postprocess.task1 state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.GrIS1f.FittedISMIP.GrIS.postprocess state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.GrIS1f.FittedISMIP.GrIS state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.ar5glaciers.ipccar5.glaciers.postprocess.task1 state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.ar5glaciers.ipccar5.glaciers.postprocess state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.ar5glaciers.ipccar5.glaciers state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.ar5AIS.ipccar5.icesheets.postprocess.task1 state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.ar5AIS.ipccar5.icesheets.postprocess state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.ar5AIS.ipccar5.icesheets state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.NZInsarGPS.NZInsarGPS.verticallandmotion.postprocess.task1 state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.NZInsarGPS.NZInsarGPS.verticallandmotion.postprocess state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.NZInsarGPS.NZInsarGPS.verticallandmotion state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.lws.ssp.landwaterstorage.postprocess.task1 state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.lws.ssp.landwaterstorage.postprocess state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.lws.ssp.landwaterstorage state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.larmip.larmip.AIS.project.task1 state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.larmip.larmip.AIS.project state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.larmip.larmip.AIS.postprocess state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.larmip.larmip.AIS.postprocess.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.larmip.larmip.AIS.postprocess.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.larmip.larmip.AIS.postprocess state: SCHEDULED
+[39m[0msubmit: [39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.larmip.larmip.AIS.postprocess.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.larmip.larmip.AIS.postprocess.task1 state: EXECUTED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.larmip.larmip.AIS.postprocess.task1 state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.larmip.larmip.AIS.postprocess state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp126.larmip.larmip.AIS state: DONE
+[39m[0m
