@@ -2,9 +2,10 @@
 # 
 startOG=$(date +%s)
 # ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-FULL_LOCATION_LOOP=0     #[1-yes, 0-do it in increments; values need to be set in the 2 lines below]
-total_lines=8179  #location.lst length
-lines_per_iteration=500  #location chunk size
+FULL_LOCATION_LOOP=0          #[1-yes, 0-do it in increments; values need to be set in the 2 lines below]
+total_lines=8179              #location.lst length
+lines_per_iteration=500       #location chunk size
+start_from=7500               #default=0  || this is line number
 # .....................................................................................................................
 venv="ve3T"
 source ../$venv/bin/activate   # Activate the vene
@@ -36,9 +37,9 @@ for exp in "${EXP[@]}"; do
   # For large location.list, split it and run in increments.  
   if [[ "$FULL_LOCATION_LOOP" -eq 0 ]]; then
     # Counter for the number of lines copied so far
-    lines_copied=0
+    lines_copied=start_from
     # Loop until all lines are copied
-    for ((i=0; i<total_lines; i+=lines_per_iteration)); do
+    for ((i=lines_copied; i<total_lines; i+=lines_per_iteration)); do
       # Calculate the number of lines to copy this iteration
       lines_to_copy=$((lines_per_iteration<total_lines-i?lines_per_iteration:total_lines-i))
       # Copy the lines
