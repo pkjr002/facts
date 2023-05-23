@@ -14,6 +14,8 @@ from Smooth import Smooth
 
 from Import2lmData import *
 
+import time
+
 ''' tlm_preprocess_oceandynamics.py
 
 This runs the preprocessing stage for the ocean dynamics component of the IPCC AR6
@@ -214,7 +216,7 @@ def tlm_preprocess_oceandynamics(scenario, modeldir, driftcorr, no_correlation, 
 	# Write the configuration to a file
 	outdir = os.path.dirname(__file__)
 	outfile = open(os.path.join(outdir, "{}_config.pkl".format(pipeline_id)), 'wb')
-	pickle.dump(output, outfile)
+	pickle.dump(output, outfile,protocol=4)
 	outfile.close()
 
 	# Store the ZOSTOGA variables in a pickle
@@ -223,7 +225,7 @@ def tlm_preprocess_oceandynamics(scenario, modeldir, driftcorr, no_correlation, 
 
 	# Write the ZOSTOGA variables to a file
 	outfile = open(os.path.join(outdir, "{}_ZOSTOGA.pkl".format(pipeline_id)), 'wb')
-	pickle.dump(output, outfile)
+	pickle.dump(output, outfile,protocol=4)
 	outfile.close()
 
 
@@ -283,7 +285,7 @@ def tlm_preprocess_oceandynamics(scenario, modeldir, driftcorr, no_correlation, 
 
 	# Write the ZOS variables to a file
 	outfile = open(os.path.join(outdir, "{}_ZOS.pkl".format(pipeline_id)), 'wb')
-	pickle.dump(output, outfile)
+	pickle.dump(output, outfile, protocol=4)
 	outfile.close()
 
 
@@ -320,7 +322,7 @@ def tlm_preprocess_thermalexpansion(scenario, pipeline_id, fname):
 	# Write the configuration to a file
 	outdir = os.path.dirname(__file__)
 	outfile = open(os.path.join(outdir, "{}_tlmdata.pkl".format(pipeline_id)), 'wb')
-	pickle.dump(output, outfile)
+	pickle.dump(output, outfile, protocol=4)
 	outfile.close()
 
 	return(None)
@@ -328,6 +330,8 @@ def tlm_preprocess_thermalexpansion(scenario, pipeline_id, fname):
 
 
 if __name__ == '__main__':
+
+	t_start = time.time()
 
 	# Initialize the command-line argument parser
 	parser = argparse.ArgumentParser(description="Run the pre-processing stage for the TLM ocean dynamics workflow",\
@@ -375,6 +379,19 @@ if __name__ == '__main__':
 		print("{} found, skipping TE preprocessing".format(tlmfile))
 	else:
 		tlm_preprocess_thermalexpansion(args.scenario, args.pipeline_id, args.climate_data_file)
+
+	# THIS BLOCK IS USED TO GET THE RSS OF THIS TASK AS WELL AS CALCULATE THE
+	# TIME TO EXECUTION. THESE ARE WRITTEN TO A TXT FILE IN THE TASK.XXXX File
+	tte = time.time() - t_start
+	import psutil as ps
+	peak_mem = ps.Process().memory_info().rss * 1e-9
+	module_set = 'tlm'
+	mod_name = 'sterodynamics'
+	task_name = ['preprocess','fit','project','postprocess']
+	f = open(f'{module_set}_{mod_name}_{task_name[0]}_memory_diagnostic.txt','w')
+	f.write(f'This Task Used: {peak_mem} GB\n'
+	 f'Time to Execution for this Task Was: {tte} seconds')
+	f.close()
 
 	# Done
 	sys.exit()
