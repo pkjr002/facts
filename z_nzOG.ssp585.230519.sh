@@ -6,8 +6,10 @@ FULL_LOCATION_LOOP=1     #[1-yes, 0-do it in increments; values need to be set i
 total_lines=7435  #location.lst length
 lines_per_iteration=500  #location chunk size
 # .....................................................................................................................
-venv="ve3T"
-source ../$venv/bin/activate   # Activate the vene
+# venv="ve3T"
+venv="ve3MeM1"
+# source ../$venv/bin/activate   # Activate the vene
+source /scratch/pk695/FACTS/230525_FactsTest/$venv/bin/activate
 # .....................................................................................................................
 facts_dir=$(pwd)
 #
