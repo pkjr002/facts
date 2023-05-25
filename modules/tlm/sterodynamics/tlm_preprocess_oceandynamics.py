@@ -380,18 +380,18 @@ if __name__ == '__main__':
 	else:
 		tlm_preprocess_thermalexpansion(args.scenario, args.pipeline_id, args.climate_data_file)
 
-	# THIS BLOCK IS USED TO GET THE RSS OF THIS TASK AS WELL AS CALCULATE THE
-	# TIME TO EXECUTION. THESE ARE WRITTEN TO A TXT FILE IN THE TASK.XXXX File
-	tte = time.time() - t_start
-	import psutil as ps
-	peak_mem = ps.Process().memory_info().rss * 1e-9
-	module_set = 'tlm'
-	mod_name = 'sterodynamics'
-	task_name = ['preprocess','fit','project','postprocess']
-	f = open(f'{module_set}_{mod_name}_{task_name[0]}_memory_diagnostic.txt','w')
-	f.write(f'This Task Used: {peak_mem} GB\n'
-	 f'Time to Execution for this Task Was: {tte} seconds')
-	f.close()
+	# # THIS BLOCK IS USED TO GET THE RSS OF THIS TASK AS WELL AS CALCULATE THE
+	# # TIME TO EXECUTION. THESE ARE WRITTEN TO A TXT FILE IN THE TASK.XXXX File
+	# tte = time.time() - t_start
+	# import psutil as ps
+	# peak_mem = ps.Process().memory_info().rss * 1e-9
+	# module_set = 'tlm'
+	# mod_name = 'sterodynamics'
+	# task_name = ['preprocess','fit','project','postprocess']
+	# f = open(f'{module_set}_{mod_name}_{task_name[0]}_memory_diagnostic.txt','w')
+	# f.write(f'This Task Used: {peak_mem} GB\n'
+	#  f'Time to Execution for this Task Was: {tte} seconds')
+	# f.close()
 
 	# Done
 	sys.exit()
