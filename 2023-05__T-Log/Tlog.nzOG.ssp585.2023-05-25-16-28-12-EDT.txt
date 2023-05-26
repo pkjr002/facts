@@ -558,4 +558,300 @@ FileNotFoundError: [Errno 2] No such file or directory: '/scratch/pk695/radical.
 
 [39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.larmip.larmip.AIS.postprocess state: DONE
 [39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.larmip.larmip.AIS state: DONE
-[39m[0m
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.ocean.tlm.sterodynamics.preprocess.task1 state: FAILED
+[39m[0m[91mtask task.0040 failed: RuntimeError("task failed")
+exit code: 1
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.ocean.tlm.sterodynamics.preprocess state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.ocean.tlm.sterodynamics.fit state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.ocean.tlm.sterodynamics.fit.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.ocean.tlm.sterodynamics.fit.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.ocean.tlm.sterodynamics.fit state: SCHEDULED
+[39m[0msubmit: [39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m[92mUpdate: [39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m[94mnzOG.ssp585.ocean.tlm.sterodynamics.fit.task1 state: SUBMITTING
+#[39m[0m[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.ocean.tlm.sterodynamics.fit.task1 state: FAILED
+[39m[0m[91mtask task.0041 failed: FileNotFoundError(2, 'No such file or directory')
+Traceback (most recent call last):
+  File "/scratch/pk695/radical.pilot.sandbox/re.session.hal0261.amarel.rutgers.edu.pk695.019502.0016/pilot.0001/rp_install/lib/python3.9/site-packages/radical/pilot/utils/component.py", line 1128, in work_cb
+    self._workers[state](things)
+  File "/scratch/pk695/radical.pilot.sandbox/re.session.hal0261.amarel.rutgers.edu.pk695.019502.0016/pilot.0001/rp_install/lib/python3.9/site-packages/radical/pilot/agent/staging_input/base.py", line 77, in work
+    self._work(tasks)
+  File "/scratch/pk695/radical.pilot.sandbox/re.session.hal0261.amarel.rutgers.edu.pk695.019502.0016/pilot.0001/rp_install/lib/python3.9/site-packages/radical/pilot/agent/staging_input/default.py", line 83, in _work
+    self._handle_task(task, actionables)
+  File "/scratch/pk695/radical.pilot.sandbox/re.session.hal0261.amarel.rutgers.edu.pk695.019502.0016/pilot.0001/rp_install/lib/python3.9/site-packages/radical/pilot/agent/staging_input/default.py", line 195, in _handle_task
+    shutil.copytree(src.path, tgt.path)
+  File "/projects/community/python/3.9.6/gc563/lib/python3.9/shutil.py", line 555, in copytree
+    with os.scandir(src) as itr:
+FileNotFoundError: [Errno 2] No such file or directory: '/scratch/pk695/radical.pilot.sandbox/re.session.hal0261.amarel.rutgers.edu.pk695.019502.0016/pilot.0001/task.0040.0000/nzOG.ssp585.ocean.tlm.sterodynamics_tlmdata.pkl'
+
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.ocean.tlm.sterodynamics.fit state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.ocean.tlm.sterodynamics.project state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.ocean.tlm.sterodynamics.project.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.ocean.tlm.sterodynamics.project.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.ocean.tlm.sterodynamics.project state: SCHEDULED
+[39m[0msubmit: [39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.ocean.tlm.sterodynamics.project.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.ocean.tlm.sterodynamics.project.task1 state: FAILED
+[39m[0m[91mtask task.0042 failed: FileNotFoundError(2, 'No such file or directory')
+Traceback (most recent call last):
+  File "/scratch/pk695/radical.pilot.sandbox/re.session.hal0261.amarel.rutgers.edu.pk695.019502.0016/pilot.0001/rp_install/lib/python3.9/site-packages/radical/pilot/utils/component.py", line 1128, in work_cb
+    self._workers[state](things)
+  File "/scratch/pk695/radical.pilot.sandbox/re.session.hal0261.amarel.rutgers.edu.pk695.019502.0016/pilot.0001/rp_install/lib/python3.9/site-packages/radical/pilot/agent/staging_input/base.py", line 77, in work
+    self._work(tasks)
+  File "/scratch/pk695/radical.pilot.sandbox/re.session.hal0261.amarel.rutgers.edu.pk695.019502.0016/pilot.0001/rp_install/lib/python3.9/site-packages/radical/pilot/agent/staging_input/default.py", line 83, in _work
+    self._handle_task(task, actionables)
+  File "/scratch/pk695/radical.pilot.sandbox/re.session.hal0261.amarel.rutgers.edu.pk695.019502.0016/pilot.0001/rp_install/lib/python3.9/site-packages/radical/pilot/agent/staging_input/default.py", line 195, in _handle_task
+    shutil.copytree(src.path, tgt.path)
+  File "/projects/community/python/3.9.6/gc563/lib/python3.9/shutil.py", line 555, in copytree
+    with os.scandir(src) as itr:
+FileNotFoundError: [Errno 2] No such file or directory: '/scratch/pk695/radical.pilot.sandbox/re.session.hal0261.amarel.rutgers.edu.pk695.019502.0016/pilot.0001/task.0040.0000/nzOG.ssp585.ocean.tlm.sterodynamics_tlmdata.pkl'
+
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.ocean.tlm.sterodynamics.project state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.ocean.tlm.sterodynamics.postprocess state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.ocean.tlm.sterodynamics.postprocess.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.ocean.tlm.sterodynamics.postprocess.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.ocean.tlm.sterodynamics.postprocess state: SCHEDULED
+[39m[0msubmit: [39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.ocean.tlm.sterodynamics.postprocess.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.ocean.tlm.sterodynamics.postprocess.task1 state: FAILED
+[39m[0m[91mtask task.0043 failed: FileNotFoundError(2, 'No such file or directory')
+Traceback (most recent call last):
+  File "/scratch/pk695/radical.pilot.sandbox/re.session.hal0261.amarel.rutgers.edu.pk695.019502.0016/pilot.0001/rp_install/lib/python3.9/site-packages/radical/pilot/utils/component.py", line 1128, in work_cb
+    self._workers[state](things)
+  File "/scratch/pk695/radical.pilot.sandbox/re.session.hal0261.amarel.rutgers.edu.pk695.019502.0016/pilot.0001/rp_install/lib/python3.9/site-packages/radical/pilot/agent/staging_input/base.py", line 77, in work
+    self._work(tasks)
+  File "/scratch/pk695/radical.pilot.sandbox/re.session.hal0261.amarel.rutgers.edu.pk695.019502.0016/pilot.0001/rp_install/lib/python3.9/site-packages/radical/pilot/agent/staging_input/default.py", line 83, in _work
+    self._handle_task(task, actionables)
+  File "/scratch/pk695/radical.pilot.sandbox/re.session.hal0261.amarel.rutgers.edu.pk695.019502.0016/pilot.0001/rp_install/lib/python3.9/site-packages/radical/pilot/agent/staging_input/default.py", line 195, in _handle_task
+    shutil.copytree(src.path, tgt.path)
+  File "/projects/community/python/3.9.6/gc563/lib/python3.9/shutil.py", line 555, in copytree
+    with os.scandir(src) as itr:
+FileNotFoundError: [Errno 2] No such file or directory: '/scratch/pk695/radical.pilot.sandbox/re.session.hal0261.amarel.rutgers.edu.pk695.019502.0016/pilot.0001/task.0041/nzOG.ssp585.ocean.tlm.sterodynamics_oceandynamics_fit.pkl'
+
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.ocean.tlm.sterodynamics.postprocess state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.ocean.tlm.sterodynamics state: DONE
+[39m[0m[94mnew session: [39m[0m[re.session.hal0261.amarel.rutgers.edu.pk695.019502.0016][39m[0m[94m         \
+database   : [39m[0m[mongodb://facts:****@95.217.193.116:27017/facts][39m[0m[92m                ok
+[39m[0m[94mcreate pilot manager[39m[0m[92m                                                          ok
+[39m[0m[94msubmit 1 pilot(s)[39m[0m
+        pilot.0002   rutgers.amarel           16 cores       0 gpus[39m[0m[92m           ok
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.deconto21.deconto21.AIS.postprocess.task1 state: DESCRIBED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.deconto21.deconto21.AIS.postprocess state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.bamber19.bamber19.icesheets.postprocess.task1 state: DESCRIBED
+[92mUpdate: [39m[0m[39m[0m[94mnzOG.ssp585.deconto21.deconto21.AIS.postprocess.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.bamber19.bamber19.icesheets.postprocess state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.ar5AIS.ipccar5.icesheets.postprocess.task1 state: DESCRIBED
+[39m[0m[94mnzOG.ssp585.bamber19.bamber19.icesheets.postprocess.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.ar5AIS.ipccar5.icesheets.postprocess state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.NZInsarGPS.NZInsarGPS.verticallandmotion.postprocess.task1 state: DESCRIBED
+[39m[0m[94mnzOG.ssp585.ar5AIS.ipccar5.icesheets.postprocess.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.NZInsarGPS.NZInsarGPS.verticallandmotion.postprocess state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.NZInsarGPS.NZInsarGPS.verticallandmotion.postprocess.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.deconto21.deconto21.AIS.postprocess.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.bamber19.bamber19.icesheets.postprocess.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.ar5AIS.ipccar5.icesheets.postprocess.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.NZInsarGPS.NZInsarGPS.verticallandmotion.postprocess.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.deconto21.deconto21.AIS.postprocess state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.bamber19.bamber19.icesheets.postprocess state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.ar5AIS.ipccar5.icesheets.postprocess state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.NZInsarGPS.NZInsarGPS.verticallandmotion.postprocess state: SCHEDULED
+[39m[0msubmit: [39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.deconto21.deconto21.AIS.postprocess.task1 state: SUBMITTING
+[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.bamber19.bamber19.icesheets.postprocess.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.ar5AIS.ipccar5.icesheets.postprocess.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.NZInsarGPS.NZInsarGPS.verticallandmotion.postprocess.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.NZInsarGPS.NZInsarGPS.verticallandmotion.postprocess.task1 state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.NZInsarGPS.NZInsarGPS.verticallandmotion.postprocess state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.NZInsarGPS.NZInsarGPS.verticallandmotion state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.deconto21.deconto21.AIS.postprocess.task1 state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.deconto21.deconto21.AIS.postprocess state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.deconto21.deconto21.AIS state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.ar5AIS.ipccar5.icesheets.postprocess.task1 state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.ar5AIS.ipccar5.icesheets.postprocess state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.ar5AIS.ipccar5.icesheets state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.bamber19.bamber19.icesheets.postprocess.task1 state: EXECUTED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.bamber19.bamber19.icesheets.postprocess.task1 state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.bamber19.bamber19.icesheets.postprocess state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.bamber19.bamber19.icesheets state: DONE
+[39m[0m[94mSetting up ZMQ queues[39m[0m[92m                                                        n/a
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf1f.global state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf1f.global.workflow state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf1f.global.workflow.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf1f.local state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf1f.local.workflow state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf1f.local.workflow.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf2f.global state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf2f.global.workflow state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf2f.global.workflow.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf2f.local state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf2f.local.workflow state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf2f.local.workflow.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf3f.global state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf3f.global.workflow state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf3f.global.workflow.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf3f.local state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf3f.local.workflow state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf3f.local.workflow.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf3e.global state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf3e.global.workflow state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf3e.global.workflow.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf3e.local state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf3e.local.workflow state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf3e.local.workflow.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf4.global state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf4.global.workflow state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf4.global.workflow.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf4.local state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf4.local.workflow state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf4.local.workflow.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf1e.global state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf1e.global.workflow state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf1e.global.workflow.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf1e.local state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf1e.local.workflow state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf1e.local.workflow.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf2e.global state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf2e.global.workflow state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf2e.global.workflow.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf2e.local state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf2e.local.workflow state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf2e.local.workflow.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf1f.global.workflow.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf1f.local.workflow.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf2f.global.workflow.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf2f.local.workflow.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf3f.global.workflow.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf3f.local.workflow.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf3e.global.workflow.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf3e.local.workflow.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf4.global.workflow.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf4.local.workflow.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf1e.global.workflow.task1 state: SCHEDULED
+submit: [39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf1e.local.workflow.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf2e.global.workflow.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf1f.global.workflow.task1 state: SUBMITTING
+[39m[0m[94mnzOG.ssp585.total.facts.total.wf2e.local.workflow.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf1f.global.workflow state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf1f.local.workflow state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf2f.global.workflow state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf2f.local.workflow state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf3f.global.workflow state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf3f.local.workflow state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf3e.global.workflow state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf3e.local.workflow state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf4.global.workflow state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf4.local.workflow state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf1e.global.workflow state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf1e.local.workflow state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf2e.global.workflow state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf1f.local.workflow.task1 state: SUBMITTING
+[39m[0m[94mnzOG.ssp585.total.facts.total.wf2e.local.workflow state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf2f.global.workflow.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf2f.local.workflow.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf3f.global.workflow.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf3f.local.workflow.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf3e.global.workflow.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf3e.local.workflow.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf4.global.workflow.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf4.local.workflow.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf1e.global.workflow.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf1e.local.workflow.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf2e.global.workflow.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf2e.local.workflow.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf1f.global.workflow.task1 state: FAILED
+[39m[0m[91mtask task.0052 failed: RuntimeError("task failed")
+exit code: 1
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf1f.global.workflow state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf1f.global state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf1f.local.workflow.task1 state: FAILED
+[39m[0m[91mtask task.0053 failed: RuntimeError("task failed")
+exit code: 1
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf1f.local.workflow state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf1f.local state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf2f.global.workflow.task1 state: FAILED
+[39m[0m[91mtask task.0054 failed: RuntimeError("task failed")
+exit code: 1
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf2f.global.workflow state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf2f.global state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf2f.local.workflow.task1 state: FAILED
+[39m[0m[91mtask task.0055 failed: RuntimeError("task failed")
+exit code: 1
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf2f.local.workflow state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf2f.local state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf3f.global.workflow.task1 state: FAILED
+[39m[0m[91mtask task.0056 failed: RuntimeError("task failed")
+exit code: 1
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf3f.global.workflow state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf3f.global state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf3f.local.workflow.task1 state: FAILED
+[39m[0m[91mtask task.0057 failed: RuntimeError("task failed")
+exit code: 1
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf3f.local.workflow state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf3f.local state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf3e.global.workflow.task1 state: FAILED
+[39m[0m[91mtask task.0058 failed: RuntimeError("task failed")
+exit code: 1
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf3e.global.workflow state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf3e.global state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf3e.local.workflow.task1 state: FAILED
+[39m[0m[91mtask task.0059 failed: RuntimeError("task failed")
+exit code: 1
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf3e.local.workflow state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf3e.local state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf4.global.workflow.task1 state: FAILED
+[39m[0m[91mtask task.0060 failed: RuntimeError("task failed")
+exit code: 1
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf4.global.workflow state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf4.global state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf4.local.workflow.task1 state: FAILED
+[39m[0m[91mtask task.0061 failed: RuntimeError("task failed")
+exit code: 1
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf4.local.workflow state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf4.local state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf1e.global.workflow.task1 state: FAILED
+[39m[0m[91mtask task.0062 failed: RuntimeError("task failed")
+exit code: 1
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf1e.global.workflow state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf1e.global state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf1e.local.workflow.task1 state: FAILED
+[39m[0m[91mtask task.0063 failed: RuntimeError("task failed")
+exit code: 1
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf1e.local.workflow state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf1e.local state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf2e.global.workflow.task1 state: FAILED
+[39m[0m[91mtask task.0064 failed: RuntimeError("task failed")
+exit code: 1
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf2e.global.workflow state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf2e.global state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf2e.local.workflow.task1 state: FAILED
+[39m[0m[91mtask task.0065 failed: RuntimeError("task failed")
+exit code: 1
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf2e.local.workflow state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mnzOG.ssp585.total.facts.total.wf2e.local state: DONE
+[39m[0m[94mclose task manager[39m[0m[92m                                                            ok
+[39m[0m[94mclosing session re.session.hal0261.amarel.rutgers.edu.pk695.019502.0016[39m[0m[94m        \
+close pilot manager[39m[0m[94m                                                            \
+wait for 1 pilot(s)
+        [39m[0mO[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m|[39m[0m/[39m[0m-[39m[0m\[39m[0m      0[39m[0m[92m                                                               ok
+[39m[0m[92m                                                                              ok
+[39m[0m[94msession lifetime: 6189.3s[39m[0m[92m                                                     ok
+[39m[0m[94mAll components terminated
+[39m[0m****** STEP: sealevel_step ******
+****** STEP: totaling_step ******
+
+ Ended at:: Thu May 25 18:11:34 EDT 2023
+
+ ==> end 
+
+
+ :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+!!! End of Program !!!
+
+EXPERIMENT FOLDER:: experimentsNZ.230519
+EXPERIMENT subFOLDER:: nzOG.ssp585
+EXPERIMENT:: nzOG.ssp585
+venv --> ve3MeM1
+ ............... 
+Started at:: Thu May 25 16:28:12 EDT 2023
+Ended at:: Thu May 25 18:11:34 EDT 2023
+Duration:: 103 minutes
