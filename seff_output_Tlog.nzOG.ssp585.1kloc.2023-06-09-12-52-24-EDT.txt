@@ -1,0 +1,32 @@
+Current time: Fri Jun  9 15:23:56 EDT 2023
+Job ID: 29034748
+------------------------
+--------xxx-------------
+
+Current time: Fri Jun  9 15:29:50 EDT 2023
+Job ID: 29034748
+------------------------
+Job ID: 29034748
+Cluster: amarel
+User/Group: pk695/pk695
+State: RUNNING
+Nodes: 2
+Cores per node: 12
+CPU Utilized: 04:21:02
+CPU Efficiency: 6.93% of 2-14:48:00 core-walltime
+Job Wall-clock time: 02:37:00
+Memory Utilized: 3.06 GB
+Memory Efficiency: 2.45% of 125.00 GB
+WARNING: Efficiency statistics may be misleading for RUNNING jobs.
+--------xxx-------------
+
+Current time: Fri Jun  9 16:23:56 EDT 2023
+Job ID: 29034748
+------------------------
+--------xxx-------------
+
+Current time: Fri Jun  9 17:23:56 EDT 2023
+Job ID: 29034748
+------------------------
+--------xxx-------------
+
