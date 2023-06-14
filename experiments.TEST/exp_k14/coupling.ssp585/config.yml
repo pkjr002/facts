@@ -52,7 +52,7 @@ sealevel_step:
         options:
             scenario: "rcp85"     
     
-    k14vlm:
+    k14ice:
         module_set: "kopp14"
         module: "icesheets"
         options:
