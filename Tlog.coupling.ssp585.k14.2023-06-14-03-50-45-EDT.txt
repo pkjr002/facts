@@ -1,0 +1,50 @@
+!!! Start of Program !!! Wed Jun 14 03:50:45 EDT 2023
+venv --> ve3MeM1
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: 
+
+ ___________________________________________________________________________________________ 
+==> begin (single loop) ... 
+Started at:: Wed Jun 14 03:50:45 EDT 2023
+exp NAME:: coupling.ssp585.k14  |:|  exp sub-FOLDER:: exp_k14 |:|  exp FOLDER:: experiments.TEST
+ ___________________________________________________________________________________________ 
+
+[94mEnTK session: re.session.hal0158.amarel.rutgers.edu.pk695.019522.0001
+[39m[0m[94mCreating AppManager
+[39m[0m[94mSetting up ZMQ queues[39m[0m[92m                                                         ok
+[39m[0m[94mAppManager initialized[39m[0m[92m                                                        ok
+[39m[0m[94mValidating and assigning resource manager[39m[0m[92m                                     ok
+[39m[0m[94mSetting up ZMQ queues[39m[0m[92m                                                        n/a
+[39m[0m[94mnew session: [39m[0m[re.session.hal0158.amarel.rutgers.edu.pk695.019522.0001][39m[0m[94m         \
+database   : [39m[0m[mongodb://facts:****@95.217.193.116:27017/facts][39m[0m[92m                ok
+[39m[0m[94mcreate pilot manager[39m[0m[92m                                                          ok
+[39m[0m[94msubmit 1 pilot(s)[39m[0m
+        pilot.0000   rutgers.amarel           16 cores       0 gpus[39m[0m[92m           ok
+[39m[0m[92mAll components created
+[39m[0m[92mUpdate: [39m[0m[94mcoupling.ssp585.k14.temperature.fair.temperature state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mcoupling.ssp585.k14.temperature.fair.temperature.preprocess state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mcoupling.ssp585.k14.temperature.fair.temperature.preprocess.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mcoupling.ssp585.k14.temperature.fair.temperature.preprocess.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mcoupling.ssp585.k14.temperature.fair.temperature.preprocess state: SCHEDULED
+[39m[0m****** STEP: climate_step ******
+[94mcreate task manager[39m[0m/scratch/pk695/FACTS/230525_FactsTest/ve3MeM1/lib/python3.9/site-packages/pymongo/topology.py:175: UserWarning: MongoClient opened before fork. Create MongoClient only after forking. See PyMongo's documentation for details: https://pymongo.readthedocs.io/en/stable/faq.html#is-pymongo-fork-safe
+  warnings.warn(
+[92m                                                           ok
+[39m[0msubmit: [39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m
+[39m[0m[92mUpdate: [39m[0m[94mcoupling.ssp585.k14.temperature.fair.temperature.preprocess.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mcoupling.ssp585.k14.temperature.fair.temperature.preprocess.task1 state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mcoupling.ssp585.k14.temperature.fair.temperature.preprocess state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mcoupling.ssp585.k14.temperature.fair.temperature.fit state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mcoupling.ssp585.k14.temperature.fair.temperature.fit.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mcoupling.ssp585.k14.temperature.fair.temperature.fit.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mcoupling.ssp585.k14.temperature.fair.temperature.fit state: SCHEDULED
+[39m[0msubmit: [39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m
+[39m[0m[92mUpdate: [39m[0m[94mcoupling.ssp585.k14.temperature.fair.temperature.fit.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mcoupling.ssp585.k14.temperature.fair.temperature.fit.task1 state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mcoupling.ssp585.k14.temperature.fair.temperature.fit state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mcoupling.ssp585.k14.temperature.fair.temperature.project state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mcoupling.ssp585.k14.temperature.fair.temperature.project.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mcoupling.ssp585.k14.temperature.fair.temperature.project.task1 state: SCHEDULED
+submit: [39m[0m[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m#[39m[0m
+[39m[0m[92mUpdate: [39m[0m[94mcoupling.ssp585.k14.temperature.fair.temperature.project state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mcoupling.ssp585.k14.temperature.fair.temperature.project.task1 state: SUBMITTING
+[39m[0m
