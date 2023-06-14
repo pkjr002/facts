@@ -13,7 +13,7 @@ source /scratch/pk695/FACTS/230525_FactsTest/$venv/bin/activate
 # .....................................................................................................................
 facts_dir=$(pwd)
 #
-EXP_FOLDER="experiments.TEST";       EXP_MAIN="exp_k14";        EXP=("coupling.ssp585.k14")
+EXP_FOLDER="experiments.TEST";       EXP_MAIN="exp_k14";        EXP=("coupling.ssp585.20k")
 echo "EXP_FOLDER=$EXP_FOLDER      EXP_MAIN=$EXP_MAIN      EXP=$EXP"
 #
 experiment_dir="$facts_dir/$EXP_FOLDER/$EXP_MAIN/$EXP"
