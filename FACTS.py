@@ -104,6 +104,7 @@ def GenerateTask(tcfg, ecfg, pipe_name, stage_name, task_name, workflow_name="",
     copy_list = []
 
     t.pre_exec = []     # Pre exec let you load modules, set environment before executing the workload
+    # t.pre_exec.append("pip install psutil memory_profiler") #THIS PRE INSTALLS PSUTILS AND THE MEMORY PROFILER
 
     if not "upload_input_data" in tcfg.keys():
         tcfg['upload_input_data'] = []
@@ -187,7 +188,8 @@ def GenerateTask(tcfg, ecfg, pipe_name, stage_name, task_name, workflow_name="",
             t.pre_exec.append(tcfg['pre_exec'])
 
     # Executable to use for the task
-    t.executable = tcfg['executable']
+    t.executable = tcfg['executable'] #UNCOMMENT AND USE THIS THE RUN REGULAR PYTHON3
+    # t.executable = 'mprof run --include-children ' #USE THIS TO RUN WITH MEMORY PROFILER
 
     # List of arguments for the executable
     t.arguments = tcfg.get('script',tcfg.get('script_noupload',''))
