@@ -1,5 +1,5 @@
 global-options:
-    nsamps: 200
+    nsamps: 20000
     scenario: ssp585
     pyear_start: 2020
     pyear_end: 2150
@@ -154,11 +154,11 @@ totaling_step:
         stages:
             - workflow
 
-esl_step:
-    extremesealevel:
-        loop_over_workflows: true
-        module_set: "extremesealevel"
-        module: "pointsoverthreshold"
-        options:
-            target_years: 2050,2100
-            total_localsl_file: "$SHARED/totaled/%EXPERIMENT_NAME%.total.workflow.%WORKFLOW_NAME%.local.nc" 
+# esl_step:
+#     extremesealevel:
+#         loop_over_workflows: true
+#         module_set: "extremesealevel"
+#         module: "pointsoverthreshold"
+#         options:
+#             target_years: 2050,2100
+#             total_localsl_file: "$SHARED/totaled/%EXPERIMENT_NAME%.total.workflow.%WORKFLOW_NAME%.local.nc" 
