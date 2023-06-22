@@ -6,18 +6,20 @@ FULL_LOCATION_LOOP=1     #[1-yes, 0-do it in increments; values need to be set i
 total_lines=7435  #location.lst length
 lines_per_iteration=500  #location chunk size
 # .....................................................................................................................
+# venv="ve3T"
 venv="ve3MeM1"
 # source ../$venv/bin/activate   # Activate the vene
 source /scratch/pk695/FACTS/230525_FactsTest/$venv/bin/activate
 # .....................................................................................................................
 facts_dir=$(pwd)
 #
-EXP_FOLDER="experimentsNZ";       EXP_MAIN="nzOG.2306";        EXP=("nzOG.ssp585")
+EXP_FOLDER="experimentsNZ";       EXP_MAIN="nzOG.2306";        EXP=("ssp585")
 echo "EXP_FOLDER=$EXP_FOLDER      EXP_MAIN=$EXP_MAIN      EXP=$EXP"
 #
 experiment_dir="$facts_dir/$EXP_FOLDER/$EXP_MAIN/$EXP"
 # .....................................................................................................................
-fileOUT="Tlog.$EXP.txt"      #"target_$((i/lines_per_iteration)).txt"
+#fileOUT="Tlog.$EXP.txt"      #"target_$((i/lines_per_iteration)).txt"
+fileOUT="Tlog.$EXP_MAIN.$EXP.$(date --date=@$startOG +"%Y.%m.%d__%H.%M.%S.%Z").txt"
 #
 source_file="latlon_basedON_2kmNZInsar_IPdata_.txt"
 #

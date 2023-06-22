@@ -72,10 +72,7 @@ for exp in "${EXP[@]}"; do
       output_set="output_set_$((i/lines_per_iteration))"
       mv output/ "$output_set"
       rm -rf output/  
-    done
-  #
-  #
-  #  
+    done 
   else # Only use If you have <500 locations.
     echo -e " ___________________________________________________________________________________________ " 2>&1 | tee -a "$facts_dir/$fileOUT"
     echo -e "==> begin (single loop) ... " 2>&1 | tee -a "$facts_dir/$fileOUT"
@@ -93,8 +90,6 @@ for exp in "${EXP[@]}"; do
     echo -e "\n ==> end \n" 2>&1 | tee -a "$facts_dir/$fileOUT"
   fi
 done
-#
-#
 cd "$facts_dir"
 #
 # Write the footer.
