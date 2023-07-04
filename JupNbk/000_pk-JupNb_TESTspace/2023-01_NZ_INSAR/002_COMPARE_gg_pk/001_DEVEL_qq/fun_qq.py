@@ -16,15 +16,15 @@ from matplotlib.colors import ListedColormap, BoundaryNorm
 
 
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-def plot(search_terms,path20k,path2k):
+def plot(search_terms1,path20k,search_terms2,path2k):
 
     # 1k location and 20k samples.
     # path20k = '/scratch/pk695/FACTS/002_fork/facts/experimentsNZ.230608/nzOG/nzOG.ssp585.1kloc/output/'
-    data20k = fileNAME(path20k, search_terms)
+    data20k = fileNAME(path20k, search_terms1)
 
     # OG 7k-loop location and 2k samples
     # path2k = '/scratch/pk695/FACTS/002_fork/facts/experimentsNZ/nzOG/nzOG.ssp585/output_local_ssp585/'
-    data2k = fileNAME(path2k, search_terms)
+    data2k = fileNAME(path2k, search_terms2)
 
     # Extract SL variables for specific time
     d20k = xtract_data_4m_nc((path20k + data20k), 'sea_level_change', 0, 2020, 2100)
@@ -37,9 +37,6 @@ def plot(search_terms,path20k,path2k):
 
     # Plot the QQ Plot
     plot_qqplot(time20k, slc20k, slc2k, data20k, data2k)
-
-
-
 
 
 
@@ -97,33 +94,24 @@ def plot_qqplot(time20k, slc20k, slc2k, data20k, data2k):
 
 
 
-# # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# # search filename in Folder, multiple search terms
-# def fileNAME(folder_path, search_terms):
-#     # _________________________________________________________
-#     #use::  search_terms = ["term1", "term2", "term3",.....] 
-#     #       file = fileNAME(folder_path, search_terms)
-#     #_________________________________________________________
-#     matching_files = []
-#     for file_path in glob.glob(f"{folder_path}/*"):
-#         file_name = os.path.basename(file_path)
-#         if all(term in file_name for term in search_terms):
-#             matching_files.append(file_path)
-#     if len(matching_files) > 1:
-#        raise ValueError("There are 2 or more files with the same keyword")
-#     fnme = os.path.basename(matching_files[0])
-#     return fnme
-
-def fileNAME111(folder_path, search_terms):
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# search filename in Folder, multiple search terms    (need o update to match multiple)
+def fileNAME(folder_path, search_terms):
+    # _________________________________________________________
+    #use::  search_terms = ["term1", "term2", "term3",.....] 
+    #       file = fileNAME(folder_path, search_terms)
+    #_________________________________________________________
     matching_files = []
     for file_path in glob.glob(f"{folder_path}/*"):
         file_name = os.path.basename(file_path)
         if all(term in file_name for term in search_terms):
-            matching_files.append(file_name)
-    if len(matching_files) == 0:
-        raise ValueError("No files found with the given search terms")
-    return matching_files
-
+            matching_files.append(file_path)
+    if len(matching_files) > 1:
+        raise ValueError("There are 2 or more files with the same keyword")
+    elif len(matching_files) == 0:
+        raise ValueError("No files found with the specified search terms")
+    fnme = os.path.basename(matching_files[0])
+    return fnme
 
 # # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -146,18 +134,4 @@ def xtract_data_4m_nc(dataNC,var,loc,yrST,yrEN):
         'lat': lat, 'lon': lon
     }
     return output
-# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-
-# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-def fileNAME(patH,name):
-    import glob
-    folder_path = patH
-    search_term = name   # "glaciers"  # replace with the word you want to search for
-    file_pattern = f"{folder_path}/*{search_term}*"  # create a pattern to match files containing the search term
-    matching_files = glob.glob(file_pattern)
-    if len(matching_files)>1: 
-        raise ValueError("There are 2 files with same keyword")
-    fnme = os.path.basename(matching_files[0])
-    return fnme
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
