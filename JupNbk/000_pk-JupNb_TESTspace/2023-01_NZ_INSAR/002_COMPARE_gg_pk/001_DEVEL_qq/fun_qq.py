@@ -10,13 +10,16 @@ import glob
 import os
 import shutil
 import re
+import random
+import matplotlib as mpl
 import matplotlib.pyplot as plt
+from mpl_toolkits.basemap import Basemap
 import statsmodels.api as sm
 from matplotlib.colors import ListedColormap, BoundaryNorm
 
 
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-def plot(search_terms1,path20k,search_terms2,path2k):
+def plot(search_terms1,path20k,search_terms2,path2k,loc=0,worldmap=0):
 
     # 1k location and 20k samples.
     # path20k = '/scratch/pk695/FACTS/002_fork/facts/experimentsNZ.230608/nzOG/nzOG.ssp585.1kloc/output/'
@@ -27,16 +30,47 @@ def plot(search_terms1,path20k,search_terms2,path2k):
     data2k = fileNAME(path2k, search_terms2)
 
     # Extract SL variables for specific time
-    d20k = xtract_data_4m_nc((path20k + data20k), 'sea_level_change', 0, 2020, 2100)
+    d20k = xtract_data_4m_nc((path20k + data20k), 'sea_level_change', loc, 2020, 2100)
     slc20k = d20k['slc']
     time20k = d20k['time']
+    lat_lon20k = [item.item() for item in [d20k['lat'], d20k['lon']]]
 
-    d2k = xtract_data_4m_nc((path2k + data2k), 'sea_level_change', 0, 2020, 2100)
+    d2k = xtract_data_4m_nc((path2k + data2k), 'sea_level_change', loc, 2020, 2100)
     slc2k = d2k['slc']
     time2k = d2k['time']
+    lat_lon2k = [item.item() for item in [d2k['lat'], d2k['lon']]]
 
-    # Plot the QQ Plot
-    plot_qqplot(time20k, slc20k, slc2k, data20k, data2k)
+
+    # PLOT
+    if worldmap==1:
+        plot_wm(lat_lon20k[0],lat_lon20k[1])
+    else:
+        # Plot the QQ Plot
+        plot_qqplot(time20k, slc20k, slc2k, data20k, data2k,lat_lon20k,lat_lon2k)
+
+
+
+
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+def plot_wm(lat,lon):
+    #
+    m = Basemap(projection='merc', llcrnrlat=-50, urcrnrlat=-30, llcrnrlon=160, urcrnrlon=180, resolution='l')
+    m.drawcoastlines(linewidth=0.5)
+    m.drawcountries(linewidth=0.5)
+    x, y = m(lon, lat)
+    m.plot(x, y, 'ro', markersize=4)
+    parallels = np.arange(-90, 90, 5) 
+    meridians = np.arange(-180, 180, 5) 
+    m.drawparallels(parallels, labels=[False, True, False, False], linewidth=1, color='black', fontsize=6)
+    m.drawmeridians(meridians, labels=[False, False, False, True], linewidth=1, color='black', fontsize=6)
+    #
+    plt.xlabel('Longitude')
+    plt.ylabel('Latitude')
+    #
+    plt.show()
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
 
 
 
@@ -52,10 +86,10 @@ def mark_quantiles(ax, data, label):
 
 
 # ........................................................................................................
-def plot_qqplot(time20k, slc20k, slc2k, data20k, data2k):
+def plot_qqplot(time20k, slc20k, slc2k, data20k, data2k,lat_lon20k,lat_lon2k):
     num_cols = 2
     num_rows = 1
-    fig, axes = plt.subplots(num_rows, num_cols, figsize=(15, 3))
+    fig, axes = plt.subplots(num_rows, num_cols, figsize=(11.25, 2.25))
     fig.subplots_adjust(hspace=0.5, wspace=0.3)
     axno = 0
     
@@ -65,24 +99,33 @@ def plot_qqplot(time20k, slc20k, slc2k, data20k, data2k):
         if yr1 == 2020 or yr1 == 2100:
             xx20k = slc20k[:, yr0]
             xx2k = slc2k[:, yr0]
-            
+            #            
             ax = axes[axno]
             sm.qqplot_2samples(xx20k, xx2k, line='45', ax=ax)
-            ax.set_xlabel('20k-samples (mm)')
-            ax.set_ylabel('2k-samples (mm)')
-            ax.set_title(f'Year {yr1}')
-            
+            ax.lines[0].set(marker='o', markersize=4, markerfacecolor='black', markeredgecolor='blue', markeredgewidth=0.25)
+            #
+            ax.set_xlabel('20k-samples (mm)', fontsize=8)
+            ax.set_ylabel('2k-samples (mm)', fontsize=8)
+            ax.set_title(f'Year {yr1}', fontsize=8)
+            ax.tick_params(axis='both', labelsize=7)
+            ax.grid(True)
+            #
             # mark_quantiles(ax, xx20k, '20k')
             # mark_quantiles(ax, xx2k, '2k')
+            #
+            location = [
+                f"lat/lon20k = {str(lat_lon20k)}",
+                f"lat/lon2k = {str(lat_lon2k)}"
+            ]
+            text = "\n".join(location)
+            ax.text(0.65, 0.2, text, fontsize=5.5, fontweight='normal', ha='left', va='center', transform=ax.transAxes)
             
             axno += 1
     
-    # Plot Title
-    # fig.text(0.5, 1.05, 'QQ-Plot', fontsize=14, fontweight='bold', ha='center', va='center')
     
     # Data
     data = 'Data:: ' + data20k.split('/')[-1] + '\n' + data2k.split('/')[-1]
-    fig.text(0.5, 1.05, data, fontsize=12, ha='center', va='center', color='white',
+    fig.text(0.5, 1.05, data, fontsize=8, ha='center', va='center', color='white',
              bbox={'facecolor': 'green', 'edgecolor': 'white', 'pad': 10})
     
     # plt.tight_layout()
@@ -126,8 +169,8 @@ def xtract_data_4m_nc(dataNC,var,loc,yrST,yrEN):
     time=time_data[idx_year]
     #
     slc = data[var][:,idx_year,loc].values
-    lat=data['lat'][loc].values
-    lon=data['lon'][loc].values
+    lat = np.around(data['lat'][loc].values, decimals=2)
+    lon = np.around(data['lon'][loc].values, decimals=2)
     
     output = {
         'slc': slc, 'time': time,
