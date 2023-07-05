@@ -22,11 +22,9 @@ from matplotlib.colors import ListedColormap, BoundaryNorm
 def plot(search_terms1,path20k,search_terms2,path2k,loc=0,worldmap=0):
 
     # 1k location and 20k samples.
-    # path20k = '/scratch/pk695/FACTS/002_fork/facts/experimentsNZ.230608/nzOG/nzOG.ssp585.1kloc/output/'
     data20k = fileNAME(path20k, search_terms1)
 
     # OG 7k-loop location and 2k samples
-    # path2k = '/scratch/pk695/FACTS/002_fork/facts/experimentsNZ/nzOG/nzOG.ssp585/output_local_ssp585/'
     data2k = fileNAME(path2k, search_terms2)
 
     # Extract SL variables for specific time
@@ -39,9 +37,9 @@ def plot(search_terms1,path20k,search_terms2,path2k,loc=0,worldmap=0):
     slc2k = d2k['slc']
     time2k = d2k['time']
     lat_lon2k = [item.item() for item in [d2k['lat'], d2k['lon']]]
-
-
+    # .................................................................................
     # PLOT
+    # ....
     if worldmap==1:
         plot_wm(lat_lon20k[0],lat_lon20k[1])
     else:
