@@ -19,7 +19,7 @@ from matplotlib.colors import ListedColormap, BoundaryNorm
 
 
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-def plot(search_terms1,path20k,search_terms2,path2k,yrST, yrEN=None,loc=0,worldmap=0):
+def plot(search_terms1,path20k,search_terms2,path2k,loc,yrST, yrEN=None,worldmap=0):
     #
     # 1k location and 20k samples.
     data20k = fileNAME(path20k, search_terms1)
