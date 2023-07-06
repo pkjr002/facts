@@ -20,55 +20,40 @@ from matplotlib.colors import ListedColormap, BoundaryNorm
 
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 def plot(search_terms1,path20k,search_terms2,path2k,yrST, yrEN=None,loc=0,worldmap=0):
-
+    #
     # 1k location and 20k samples.
     data20k = fileNAME(path20k, search_terms1)
-
     # OG 7k-loop location and 2k samples
     data2k = fileNAME(path2k, search_terms2)
-
+    #
     # Extract SL variables for specific time
     d20k = xtract_data_4m_nc((path20k + data20k), 'sea_level_change', loc, yrST,yrEN)
-    slc20k = d20k['slc']
-    time20k = d20k['time']
-    lat_lon20k = [item.item() for item in [d20k['lat'], d20k['lon']]]
-
+    slc20k, time20k, lat_lon20k = d20k['slc'], d20k['time'], [item.item() for item in [d20k['lat'], d20k['lon']]]
+    #
     d2k = xtract_data_4m_nc((path2k + data2k), 'sea_level_change', loc, yrST,yrEN)
-    slc2k = d2k['slc']
-    time2k = d2k['time']
-    lat_lon2k = [item.item() for item in [d2k['lat'], d2k['lon']]]
-
+    slc2k, time2k, lat_lon2k = d2k['slc'], d2k['time'], [item.item() for item in [d2k['lat'], d2k['lon']]]
     # .................................................................................
-    # PLOT
-    # ....
+    # PLOT ...
     if worldmap==1:
         plot_wm(lat_lon20k[0],lat_lon20k[1])
     else:
-        # Plot the QQ Plot
         plot_qqplot(time20k,slc20k, data20k, lat_lon20k, time2k, slc2k, data2k, lat_lon2k, yrST, yrEN)
-
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 def plot_wm(lat,lon):
-    #
     m = Basemap(projection='merc', llcrnrlat=-50, urcrnrlat=-30, llcrnrlon=160, urcrnrlon=180, resolution='l')
     m.drawcoastlines(linewidth=0.5)
     m.drawcountries(linewidth=0.5)
     x, y = m(lon, lat)
     m.plot(x, y, 'ro', markersize=4)
-    parallels = np.arange(-90, 90, 5) 
-    meridians = np.arange(-180, 180, 5) 
-    m.drawparallels(parallels, labels=[False, True, False, False], linewidth=1, color='black', fontsize=6)
-    m.drawmeridians(meridians, labels=[False, False, False, True], linewidth=1, color='black', fontsize=6)
-    #
+    m.drawparallels(np.arange(-90, 90, 5), labels=[False, True, False, False], linewidth=1, color='black', fontsize=6)
+    m.drawmeridians(np.arange(-180, 180, 5), labels=[False, False, False, True], linewidth=1, color='black', fontsize=6)
     plt.xlabel('Longitude')
     plt.ylabel('Latitude')
-    #
     plt.show()
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-
 
 
 
@@ -81,77 +66,42 @@ def mark_quantiles(ax, data, label):
     for i, quantile in enumerate(quantiles):
         ax.axhline(quantile, color=colors[i], linestyle=linestyles[i], label=f'{int(quantile)}th Quantile ({label})')
         ax.axvline(quantile, color=colors[i], linestyle=linestyles[i])
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
-# ........................................................................................................
-def plot_qqplot(time20k,slc20k, data20k, lat_lon20k, time2k, slc2k, data2k, lat_lon2k, yrST, yrEN):
-    #=============================
-    if yrEN is None:
-        num_cols = 1 ; num_rows = 1;
-        fig, axes = plt.subplots(num_rows, num_cols, figsize=(5, 2.25))
-        fig.subplots_adjust(hspace=0.5, wspace=0.3)
-        ax = axes
-        xx20k = slc20k[:, np.where(time20k==yrST)[0][0]]
-        xx2k = slc2k[:, np.where(time2k==yrST)[0][0]]
-        yy1=yrST
-        #=============================
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+def plot_qqplot(time20k, slc20k, data20k, lat_lon20k, time2k, slc2k, data2k, lat_lon2k, yrST, yrEN):
+    fig, axes = plt.subplots(1, 2 if yrEN is not None else 1, figsize=(11.25, 2.25) if yrEN is not None else (5, 2.25))
+    fig.subplots_adjust(hspace=0.5, wspace=0.3)
+    axno = 0
+    #
+    for yy1 in [yrST, yrEN] if yrEN is not None else [yrST]:
+        ax = axes[axno] if yrEN is not None else axes
+        xx20k = slc20k[:, np.where(time20k == yy1)[0][0]]
+        xx2k = slc2k[:, np.where(time2k == yy1)[0][0]]
+        #
         sm.qqplot_2samples(xx20k, xx2k, line='45', ax=ax)
         ax.lines[0].set(marker='o', markersize=4, markerfacecolor='black', markeredgecolor='blue', markeredgewidth=0.25)
-
+        #
         ax.set_xlabel('20k-samples (mm)', fontsize=8)
         ax.set_ylabel('2k-samples (mm)', fontsize=8)
         ax.set_title(f'Year {yy1}', fontsize=8)
         ax.tick_params(axis='both', labelsize=7)
         ax.grid(True)
-
+        #
         location = [
             f"lat/lon20k = {str(lat_lon20k)}",
             f"lat/lon2k = {str(lat_lon2k)}"
-            ]
+        ]
         text = "\n".join(location)
         ax.text(0.65, 0.2, text, fontsize=5.5, fontweight='normal', ha='left', va='center', transform=ax.transAxes)
-        #=============================
-
-    elif yrEN is not None:
-        num_cols = 2 ; num_rows = 1;
-        fig, axes = plt.subplots(num_rows, num_cols, figsize=(11.25, 2.25))
-        fig.subplots_adjust(hspace=0.5, wspace=0.3)
-        axno = 0
-
-        for yy0,yy1 in enumerate([yrST,yrEN]):
-            xx20k = slc20k[:, np.where(time20k==yy1)[0][0]]
-            xx2k = slc2k[:, np.where(time2k==yy1)[0][0]]
-            ax = axes[axno]
-
-            #=============================
-            sm.qqplot_2samples(xx20k, xx2k, line='45', ax=ax)
-            ax.lines[0].set(marker='o', markersize=4, markerfacecolor='black', markeredgecolor='blue', markeredgewidth=0.25)
-
-            ax.set_xlabel('20k-samples (mm)', fontsize=8)
-            ax.set_ylabel('2k-samples (mm)', fontsize=8)
-            ax.set_title(f'Year {yy1}', fontsize=8)
-            ax.tick_params(axis='both', labelsize=7)
-            ax.grid(True)
-
-            location = [
-                f"lat/lon20k = {str(lat_lon20k)}",
-                f"lat/lon2k = {str(lat_lon2k)}"
-             ]
-            text = "\n".join(location)
-            ax.text(0.65, 0.2, text, fontsize=5.5, fontweight='normal', ha='left', va='center', transform=ax.transAxes)
-
-            axno += 1
-            #=============================
-
-    # Data
+        axno += 1
+        #
     data = 'Data:: ' + data20k.split('/')[-1] + '\n' + data2k.split('/')[-1]
     fig.text(0.5, 1.15, data, fontsize=6, ha='center', va='center', color='white',
              bbox={'facecolor': 'green', 'edgecolor': 'white', 'pad': 10})
-
+    #
     plt.show()
-
-
-
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
@@ -176,8 +126,7 @@ def fileNAME(folder_path, search_terms):
         raise ValueError("No files found with the specified search terms")
     fnme = os.path.basename(matching_files[0])
     return fnme
-
-# # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
