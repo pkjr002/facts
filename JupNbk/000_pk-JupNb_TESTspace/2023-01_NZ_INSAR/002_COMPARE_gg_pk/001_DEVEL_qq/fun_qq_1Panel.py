@@ -83,8 +83,11 @@ def plot_qqplot(time20k, slc20k, data20k, lat_lon20k, time2k, slc2k, data2k, lat
         sm.qqplot_2samples(xx20k, xx2k, line='45', ax=ax)
         ax.lines[0].set(marker='o', markersize=4, markerfacecolor='black', markeredgecolor='blue', markeredgewidth=0.25)
         #
-        ax.set_xlabel('20k-samples (mm)', fontsize=8)
-        ax.set_ylabel('2k-samples (mm)', fontsize=8)
+        ax.set_xlabel('PK (mm)', fontsize=8)
+        ax.set_ylabel('GGG (mm)', fontsize=8)
+        # ax.set_xlabel('20k-samples (mm)', fontsize=8)
+        # ax.set_ylabel('2k-samples (mm)', fontsize=8)
+
         ax.set_title(f'Year {yy1}', fontsize=8)
         ax.tick_params(axis='both', labelsize=7)
         ax.grid(True)
