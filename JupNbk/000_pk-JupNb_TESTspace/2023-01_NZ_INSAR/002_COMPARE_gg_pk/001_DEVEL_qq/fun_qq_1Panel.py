@@ -58,18 +58,6 @@ def plot_wm(lat,lon):
 
 
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-def mark_quantiles(ax, data, label):
-    quantiles = np.percentile(data, [17, 50, 83])
-    colors = ['red', 'blue', 'green']
-    linestyles = ['dashed', 'solid', 'dotted']
-    
-    for i, quantile in enumerate(quantiles):
-        ax.axhline(quantile, color=colors[i], linestyle=linestyles[i], label=f'{int(quantile)}th Quantile ({label})')
-        ax.axvline(quantile, color=colors[i], linestyle=linestyles[i])
-# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-
-# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 def plot_qqplot(time20k, slc20k, data20k, lat_lon20k, time2k, slc2k, data2k, lat_lon2k, yrST, yrEN):
     fig, axes = plt.subplots(1, 2 if yrEN is not None else 1, figsize=(11.25, 2.25) if yrEN is not None else (5, 2.25))
     fig.subplots_adjust(hspace=0.5, wspace=0.3)
@@ -82,6 +70,17 @@ def plot_qqplot(time20k, slc20k, data20k, lat_lon20k, time2k, slc2k, data2k, lat
         #
         sm.qqplot_2samples(xx20k, xx2k, line='45', ax=ax)
         ax.lines[0].set(marker='o', markersize=4, markerfacecolor='black', markeredgecolor='blue', markeredgewidth=0.25)
+        #
+        # Get the quantiles.
+        ptile=[5, 50, 95]
+        quantiles1 = np.percentile(xx20k,ptile);    quantiles2 = np.percentile(xx2k, ptile)
+        line_colors = [(1.0, 0.6, 0.2), (0.6, 0.2, 1.0), (0.2, 1.0, 0.2)]; # line_colors = ['red', 'blue', 'green']
+        #
+        # Mark percentiles.
+        for i, (q1, q2) in enumerate(zip(quantiles1, quantiles2)):
+            color = line_colors[i]
+            ax.axvline(q2, color=color, linestyle='dashed')
+            ax.axhline(q1, color=color, linestyle='dashed')
         #
         ax.set_xlabel('PK (mm)', fontsize=8)
         ax.set_ylabel('GGG (mm)', fontsize=8)
@@ -100,10 +99,21 @@ def plot_qqplot(time20k, slc20k, data20k, lat_lon20k, time2k, slc2k, data2k, lat
         ax.text(0.65, 0.2, text, fontsize=5.5, fontweight='normal', ha='left', va='center', transform=ax.transAxes)
         axno += 1
         #
+        # add quant details.
+        q1_round = [round(q, 2) for q in quantiles1]; q2_round = [round(q, 2) for q in quantiles2]
+        table_text = f'Quantiles:{ptile}\nX: {q2_round}\nY: {q1_round}'
+        ax.text(0.05, 0.95, table_text, transform=ax.transAxes, verticalalignment='top', fontsize='5', bbox=dict(boxstyle='round', facecolor='white', alpha=0.8))
+        #
+    # TITLE Data
     data = 'Data:: ' + data20k.split('/')[-1] + '\n' + data2k.split('/')[-1]
-    fig.text(0.5, 1.15, data, fontsize=6, ha='center', va='center', color='white',
-             bbox={'facecolor': 'green', 'edgecolor': 'white', 'pad': 10})
+    fig.text(0.5, 1.1, data, fontsize=6, ha='center', va='center', color='white', bbox={'facecolor': 'green', 'edgecolor': 'white', 'pad': 10})
     #
+    # Create legend
+    legend_labels = [f'{pt} Percentile' for pt in ptile]
+    legend_lines = [plt.Line2D([0], [0], color=color, linestyle='dashed') for color in line_colors]
+    fig.legend(legend_lines, legend_labels, loc='upper left', bbox_to_anchor=(-0.1, 1.15),fontsize='xx-small')
+    #
+    # plt.tight_layout() #plt.legend()
     plt.show()
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
