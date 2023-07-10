@@ -100,8 +100,11 @@ def plot_qqplot(time20k, slc20k, slc2k, data20k, data2k,lat_lon20k,lat_lon2k):
                 ax.axvline(q2, color=color, linestyle='dashed')
                 ax.axhline(q1, color=color, linestyle='dashed')
             #
-            ax.set_xlabel('20k-samples (mm)', fontsize=8)
-            ax.set_ylabel('2k-samples (mm)', fontsize=8)
+            ax.set_xlabel('PK (mm)', fontsize=8)
+            ax.set_ylabel('GGG (mm)', fontsize=8)
+            # ax.set_xlabel('20k-samples (mm)', fontsize=8)
+            # ax.set_ylabel('2k-samples (mm)', fontsize=8)
+            #
             ax.set_title(f'Year {yr1}', fontsize=8)
             ax.tick_params(axis='both', labelsize=7)
             ax.grid(True)
