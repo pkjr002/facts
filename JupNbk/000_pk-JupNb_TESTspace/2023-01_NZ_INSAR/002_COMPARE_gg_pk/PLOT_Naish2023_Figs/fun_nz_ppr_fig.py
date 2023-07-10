@@ -15,8 +15,8 @@ def project_SL(station,name,ssp,options):
     pk = [f'/projects/kopp/pk695/NZ_ReRun/FACTS_1.0_NZ_pk/medium_confidence/{ssp_value}/total_{ssp_value}_medium_confidence_values.nc' for ssp_value in ssp]
     pk_update = [f'/projects/kopp/pk695/NZ_ReRun/FACTS_1.0_NZ_pk_updatedVLM/medium_confidence/{ssp_value}/total_{ssp_value}_medium_confidence_values.nc' for ssp_value in ssp]
     #
-    # fig, axes = plt.subplots(1, 3, figsize=(20, 3)); plt.subplots_adjust(wspace=0.5, hspace=0.2)
-    fig, axes = plt.subplots(1, 3, figsize=(25, 6), constrained_layout=True)
+    fig, axes = plt.subplots(1, 3, figsize=(40, 10)); plt.subplots_adjust(wspace=0.4, hspace=0.2)
+    # fig, axes = plt.subplots(1, 3, figsize=(20, 6), constrained_layout=True)
     #
     plot_subplot(axes[0],ggg,station,name,ssp,ylab,x_min, x_max, y_min, y_max, x_ticks, y_ticks)
     plot_subplot(axes[1],pk,station,name,ssp,ylab,x_min, x_max, y_min, y_max, x_ticks, y_ticks)
@@ -53,34 +53,33 @@ def plot_subplot(ax,file_paths,station,name,ssp,ylab,x_min, x_max, y_min, y_max,
                          color=colors[ssp_value], alpha=0.2)
         if ssp_value == 'ssp585':
             ax.text(1.01, slc[idx2, -1, station][0] + 0.03, f'{slc[idx2, -1, station][0]:.2f} m',
-                    transform=ax.get_yaxis_transform(), ha='left', va='center', color=colors[ssp[-1]])
+                    transform=ax.get_yaxis_transform(), fontweight='bold', fontsize=23, ha='left', va='center', color=colors[ssp[-1]])
         if ssp_value == 'ssp126':
             ax.text(1.01, slc[idx1, -1, station][0] - 0.03, f'{slc[idx1, -1, station][0]:.2f} m',
-                    transform=ax.get_yaxis_transform(), ha='left', va='center', color=colors[ssp[0]])
+                    transform=ax.get_yaxis_transform(), fontweight='bold', fontsize=23, ha='left', va='center', color=colors[ssp[0]])
         #
         # Set x-axis label and limits
-        ax.set_xlabel('Year')
-        ax.set_ylabel(ylab)
+        ax.set_xlabel('Year', fontsize=25)
+        ax.set_ylabel(ylab, fontsize=25)
         ax.set_xlim(x_min, x_max)
         ax.set_ylim(y_min, y_max)
-        ax.set_xticks(x_ticks)
-        ax.set_xticklabels(x_ticks, fontsize=8, rotation=45)
-        ax.set_yticks(y_ticks)
-        ax.grid(True)
+        ax.set_xticks(x_ticks);  ax.set_xticklabels(x_ticks,fontsize=20, rotation=45)
+        ax.set_yticks(y_ticks);  ax.set_yticklabels(y_ticks,fontsize=20) 
+        #ax.grid(True)
         ax.legend(lines + [ax.fill_between([], [], [], color='gray', alpha=0.2)],
-                      labels + ['Shading is 17-83 percentile'], loc='upper left', fontsize=7)
+                      labels + ['Shading is 17-83 percentile'], loc='upper left', fontsize=20)
         # if np.all(ax == ax[0].values):
         #     ax.legend(lines + [ax.fill_between([], [], [], color='gray', alpha=0.2)],
         #               labels + ['Shading is 17-83 percentile'], loc='upper left', fontsize=7)
         txt = f'{name}\n(Site {station})'
-        ax.text(0.015, 0.57, txt,color='blue',transform=ax.transAxes, verticalalignment='top', fontsize='9', bbox=dict(boxstyle='round', facecolor='white', alpha=0.8))
+        ax.text(0.03, 0.62, txt,color='blue',transform=ax.transAxes, verticalalignment='top', fontsize='20', bbox=dict(boxstyle='round', facecolor='white', alpha=0.8))
         #
         location = [
             f"lat = {str(lat)}",
             f"lon = {str(lon)}"
         ]
         text = "\n".join(location)
-        ax.text(0.015, 0.32, text, fontsize=9, fontweight='normal', ha='left', va='center', transform=ax.transAxes)
+        ax.text(0.015, 0.4, text, fontsize=20, fontweight='normal', ha='left', va='center', transform=ax.transAxes)
         #
     #
     set_subplot_titles(ax, file_paths)
@@ -93,4 +92,4 @@ def set_subplot_titles(ax, file_paths):
     labels = path.split('/')
     facts_label = next((label for label in labels if 'FACTS' in label), None)
     if facts_label is not None:
-        ax.set_title(facts_label)
+        ax.set_title(facts_label,fontsize=25)
