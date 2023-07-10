@@ -82,10 +82,10 @@ def plot_qqplot(time20k, slc20k, data20k, lat_lon20k, time2k, slc2k, data2k, lat
             ax.axvline(q2, color=color, linestyle='dashed')
             ax.axhline(q1, color=color, linestyle='dashed')
         #
-        ax.set_xlabel('PK (mm)', fontsize=8)
-        ax.set_ylabel('GGG (mm)', fontsize=8)
-        # ax.set_xlabel('20k-samples (mm)', fontsize=8)
-        # ax.set_ylabel('2k-samples (mm)', fontsize=8)
+        # ax.set_xlabel('PK (mm)', fontsize=8)
+        # ax.set_ylabel('GGG (mm)', fontsize=8)
+        ax.set_xlabel('20k-samples (mm)', fontsize=8)
+        ax.set_ylabel('2k-samples (mm)', fontsize=8)
 
         ax.set_title(f'Year {yy1}', fontsize=8)
         ax.tick_params(axis='both', labelsize=7)
