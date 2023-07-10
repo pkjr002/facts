@@ -124,8 +124,8 @@ def plot_qqplot(time20k, slc20k, slc2k, data20k, data2k,lat_lon20k,lat_lon2k):
             axno += 1   
             #
     # TITLE Data
-    data = 'Data:: ' + data20k.split('/')[-1] + '\n' + data2k.split('/')[-1]
-    fig.text(0.5, 1.05, data, fontsize=8, ha='center', va='center', color='white', bbox={'facecolor': 'green', 'edgecolor': 'white', 'pad': 10})
+    data = 'Data pk::' + data20k.split('/')[-1] + ' || Data ggg:: ' + data2k.split('/')[-1]
+    fig.text(0.15, 1.1, data, fontsize=8, ha='left', va='center', color='red', bbox={'facecolor': 'yellow', 'edgecolor': 'white', 'pad': 10})
     #
     # Create legend
     legend_labels = [f'{pt} Percentile' for pt in ptile]
