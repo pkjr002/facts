@@ -15,7 +15,8 @@ def project_SL(station,name,ssp,options):
     pk = [f'/projects/kopp/pk695/NZ_ReRun/FACTS_1.0_NZ_pk/medium_confidence/{ssp_value}/total_{ssp_value}_medium_confidence_values.nc' for ssp_value in ssp]
     pk_update = [f'/projects/kopp/pk695/NZ_ReRun/FACTS_1.0_NZ_pk_updatedVLM/medium_confidence/{ssp_value}/total_{ssp_value}_medium_confidence_values.nc' for ssp_value in ssp]
     #
-    fig, axes = plt.subplots(1, 3, figsize=(20, 3)); plt.subplots_adjust(wspace=0.5, hspace=0.2)
+    # fig, axes = plt.subplots(1, 3, figsize=(20, 3)); plt.subplots_adjust(wspace=0.5, hspace=0.2)
+    fig, axes = plt.subplots(1, 3, figsize=(25, 6), constrained_layout=True)
     #
     plot_subplot(axes[0],ggg,station,name,ssp,ylab,x_min, x_max, y_min, y_max, x_ticks, y_ticks)
     plot_subplot(axes[1],pk,station,name,ssp,ylab,x_min, x_max, y_min, y_max, x_ticks, y_ticks)
