@@ -11,6 +11,8 @@ def project_SL(station,name,ssp,options):
     y_max = options['y_max']
     x_ticks = options['x_ticks']
     y_ticks = options['y_ticks']
+    yrST = options.get('yrST', None)
+    yrEN = options.get('yrEN', None)
     ggg = [f'/projects/kopp/pk695/NZ_ReRun/FACTS_NZ_ggg/medium_confidence/{ssp_value}/total_{ssp_value}_medium_confidence_values.nc' for ssp_value in ssp]
     pk = [f'/projects/kopp/pk695/NZ_ReRun/FACTS_1.0_NZ_pk/medium_confidence/{ssp_value}/total_{ssp_value}_medium_confidence_values.nc' for ssp_value in ssp]
     pk_update = [f'/projects/kopp/pk695/NZ_ReRun/FACTS_1.0_NZ_pk_updatedVLM/medium_confidence/{ssp_value}/total_{ssp_value}_medium_confidence_values.nc' for ssp_value in ssp]
@@ -18,9 +20,9 @@ def project_SL(station,name,ssp,options):
     fig, axes = plt.subplots(1, 3, figsize=(40, 10)); plt.subplots_adjust(wspace=0.4, hspace=0.2)
     # fig, axes = plt.subplots(1, 3, figsize=(20, 6), constrained_layout=True)
     #
-    plot_subplot(axes[0],ggg,station,name,ssp,ylab,x_min, x_max, y_min, y_max, x_ticks, y_ticks)
-    plot_subplot(axes[1],pk,station,name,ssp,ylab,x_min, x_max, y_min, y_max, x_ticks, y_ticks)
-    plot_subplot(axes[2],pk_update,station,name,ssp,ylab,x_min, x_max, y_min, y_max, x_ticks, y_ticks)
+    plot_subplot(axes[0],ggg,station,name,ssp,ylab,x_min, x_max, y_min, y_max, x_ticks, y_ticks,yrST,yrEN)
+    plot_subplot(axes[1],pk,station,name,ssp,ylab,x_min, x_max, y_min, y_max, x_ticks, y_ticks,yrST,yrEN)
+    plot_subplot(axes[2],pk_update,station,name,ssp,ylab,x_min, x_max, y_min, y_max, x_ticks, y_ticks,yrST,yrEN)
 
 
 # ...........................................................................................................
@@ -33,7 +35,7 @@ colors = {
 }
 #
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-def plot_subplot(ax,file_paths,station,name,ssp,ylab,x_min, x_max, y_min, y_max, x_ticks, y_ticks):
+def plot_subplot(ax,file_paths,station,name,ssp,ylab,x_min, x_max, y_min, y_max, x_ticks, y_ticks,yrST,yrEN):
     lines = []
     labels = []
     for i, (f_p, ssp_value) in enumerate(zip(file_paths, ssp)):
@@ -43,21 +45,32 @@ def plot_subplot(ax,file_paths,station,name,ssp,ylab,x_min, x_max, y_min, y_max,
         idx1        = np.where(percentile == 17)[0]
         idx2        = np.where(percentile == 83)[0] 
         slc         = d0['sea_level_change'].values / 1000
+        # ........................................................
+        # Index time.
         time        = d0['years'].values
+        # if ('yrST' in locals() or 'yrST' in globals()) and ('yrEN' in locals() or 'yrEN' in globals()):
+        if (yrST is not None) and (yrEN is not None):
+            idx_yr=np.where((time >= yrST) & (time <= yrEN))[0]
+        else: idx_yr=np.where((time >= 2020) & (time <= 2150))[0]
+        # ........................................................
         lat = np.around(d0['lat'][station].values, decimals=2)
         lon = np.around(d0['lon'][station].values, decimals=2)
         #
-        line,       = ax.plot(time, slc[idx, :, station].reshape(-1), color=colors[ssp_value])
+        line,       = ax.plot(time[idx_yr], slc[idx, idx_yr, station].reshape(-1), color=colors[ssp_value])
         lines.append(line); labels.append(f'{ssp_value} M')
-        ax.fill_between(time, slc[idx1, :, station].reshape(-1), slc[idx2, :, station].reshape(-1),
+        ax.fill_between(time[idx_yr], slc[idx1, idx_yr, station].reshape(-1), slc[idx2, idx_yr, station].reshape(-1),
                          color=colors[ssp_value], alpha=0.2)
+        # ........................................................................................................................................................................
+        # Mark the Right values.
         if ssp_value == 'ssp585':
-            ax.text(1.01, slc[idx2, -1, station][0] + 0.03, f'{slc[idx2, -1, station][0]:.2f} m',
-                    transform=ax.get_yaxis_transform(), fontweight='bold', fontsize=23, ha='left', va='center', color=colors[ssp[-1]])
+            if (yrST is not None) and (yrEN is not None):
+                ax.text(1.01, slc[idx2, np.where(time == yrEN)[0], station][0] + 0.03, f'{slc[idx2, np.where(time == yrEN)[0], station][0]:.2f} m',transform=ax.get_yaxis_transform(), fontweight='bold', fontsize=23, ha='left', va='center', color=colors[ssp[-1]])
+            else: ax.text(1.01, slc[idx2, -1, station][0] + 0.03, f'{slc[idx2, -1, station][0]:.2f} m',transform=ax.get_yaxis_transform(), fontweight='bold', fontsize=23, ha='left', va='center', color=colors[ssp[-1]])
         if ssp_value == 'ssp126':
-            ax.text(1.01, slc[idx1, -1, station][0] - 0.03, f'{slc[idx1, -1, station][0]:.2f} m',
-                    transform=ax.get_yaxis_transform(), fontweight='bold', fontsize=23, ha='left', va='center', color=colors[ssp[0]])
-        #
+            if (yrST is not None) and (yrEN is not None):
+                ax.text(1.01, slc[idx1, np.where(time == yrEN)[0], station][0] - 0.03, f'{slc[idx1, np.where(time == yrEN)[0], station][0]:.2f} m',transform=ax.get_yaxis_transform(), fontweight='bold', fontsize=23, ha='left', va='center', color=colors[ssp[0]])
+            else: ax.text(1.01, slc[idx1, -1, station][0] - 0.03, f'{slc[idx1, -1, station][0]:.2f} m',transform=ax.get_yaxis_transform(), fontweight='bold', fontsize=23, ha='left', va='center', color=colors[ssp[0]])
+        # ........................................................................................................................................................................
         # Set x-axis label and limits
         ax.set_xlabel('Year', fontsize=25)
         ax.set_ylabel(ylab, fontsize=25)
