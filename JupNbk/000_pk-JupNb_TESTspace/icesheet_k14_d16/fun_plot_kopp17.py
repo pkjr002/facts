@@ -40,7 +40,7 @@ def idx_yr(yrST=None, yrEN=None, Darray=None):
 
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 def nc_Xtrct(nc_path,stn,unit,yrST=None, yrEN=None):
-    nc_nme = nc_path.split("/")[10].split("coupling")[1]
+    nc_nme = str(nc_path).split("/")[10].split("coupling")[1]
     nc_dat = xr.open_dataset(nc_path)
     # ..........................................
     time = nc_dat['years'].values
@@ -86,8 +86,13 @@ def sub_plot(ax, x1, x2, y1, y2, plot_info):
     ax.set_xlim(plot_info['x_lim'])
     ax.set_ylim(plot_info['y_lim'])
     #
+    ax.set_xticks(plot_info['x_ticks']);  ax.set_xticklabels(plot_info['x_ticks'],fontsize=20, rotation=45)
+    ax.set_yticks(plot_info['y_ticks']);  ax.set_yticklabels(plot_info['y_ticks'],fontsize=20) 
+    #
     ax.tick_params(axis='x', labelsize=8)
     ax.tick_params(axis='y', labelsize=8)
+    ax.tick_params(axis='both', direction='in', right=True, top=True)
+
 
 
 
