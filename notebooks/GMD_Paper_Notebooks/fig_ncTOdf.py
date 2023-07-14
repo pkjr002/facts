@@ -21,8 +21,15 @@ def module_Fig_nc(df,SCENARIO,EXPDATE,yrBREAK):
             if df.at[val, 'DataFile'] in 'XXX':
                 continue  
             # Open the .nc data file. 
-            dataFOLDER  = '/projects/kopp/facts-experiments/{arg2}/coupling.{arg1}/output/'.format(arg1=scenario,arg2=EXPDATE)
-            dataFILE    = 'coupling.{arg1}.'.format(arg1=scenario) + df["DataFile"][val]
+            # ............................................................................................................
+            # AlexData
+            dataFOLDER  = 'scratch/ar2208/branches/TotalingFix/facts/experiments/coupling.{arg1}/output'.format(arg1=scenario,arg2=EXPDATE)
+            dataFILE    = '{arg1}.'.format(arg1=scenario) + df["DataFile"][val]
+            # Bob Data
+            #dataFOLDER  = '/projects/kopp/facts-experiments/{arg2}/coupling.{arg1}/output/'.format(arg1=scenario,arg2=EXPDATE)
+            #dataFILE    = 'coupling.{arg1}.'.format(arg1=scenario) + df["DataFile"][val]
+            # Automate for user (fuure)
+            # ............................................................................................................
             d_nc        = xr.open_dataset(dataFOLDER + dataFILE)
             #
             # Percentile calculation.
