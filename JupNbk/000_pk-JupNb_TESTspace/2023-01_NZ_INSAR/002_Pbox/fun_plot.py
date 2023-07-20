@@ -148,8 +148,8 @@ def nc2var(files,loc):
     #
     for fi0,fi1 in enumerate(files):
         #
-        # lab=fi1.split('/')[-1].split('_')[0]
-        lab=fi1.split('/')[-1].split('.')[2]
+        lab=fi1.split('/')[-1].split('.')[4]
+        # lab=fi1.split('/')[-1].split('.')[2]
         # ................................................................
         # Exract Data.
         dataset = xr.open_dataset(fi1)
@@ -182,9 +182,14 @@ def filePATH(ssp): # Creates a list of file paths.
     # files = glob.glob(path + '/*.nc')
     #
     path='/scratch/pk695/FACTS/002_fork/facts/JupNbk/000_pk-JupNb_TESTspace/2023-01_NZ_INSAR/002_Pbox/2_workflow_quantiles/'
-    files=[path+f'wf_1e/{ssp}/coupling.{ssp}.emuAIS.emulandice.AIS_globalsl.nc',
-           path+f'wf_2e/{ssp}/coupling.{ssp}.larmip.larmip.AIS_globalsl.nc',
-           path+f'wf_3e/{ssp}/coupling.{ssp}.deconto21.deconto21.AIS_AIS_globalsl.nc',
-           path+f'wf_4/{ssp}/coupling.{ssp}.bamber19.bamber19.icesheets_AIS_globalsl.nc']
+    # files=[path+f'wf_1e/{ssp}/coupling.{ssp}.emuAIS.emulandice.AIS_globalsl.nc',
+    #        path+f'wf_2e/{ssp}/coupling.{ssp}.larmip.larmip.AIS_globalsl.nc',
+    #        path+f'wf_3e/{ssp}/coupling.{ssp}.deconto21.deconto21.AIS_AIS_globalsl.nc',
+    #        path+f'wf_4/{ssp}/coupling.{ssp}.bamber19.bamber19.icesheets_AIS_globalsl.nc']
+
+    files=[path+f'wf_1e/{ssp}/coupling.{ssp}.total.workflow.wf1e.global.nc',
+           path+f'wf_2e/{ssp}/coupling.{ssp}.total.workflow.wf2e.global.nc',
+           path+f'wf_3e/{ssp}/coupling.{ssp}.total.workflow.wf3e.global.nc',
+           path+f'wf_4/{ssp}/coupling.{ssp}.total.workflow.wf4.global.nc']
 
     return files
