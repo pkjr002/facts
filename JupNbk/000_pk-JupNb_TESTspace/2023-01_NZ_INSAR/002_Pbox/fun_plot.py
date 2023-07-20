@@ -28,8 +28,9 @@ colors = {
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 def plot(loc,ssp):
     #
-    fig, axes = plt.subplots(3, 2, figsize=(10*2, 3*3)); 
-    plt.subplots_adjust(wspace=0.2, hspace=0.4)
+    # fig, axes = plt.subplots(3, 2, figsize=(10*2, 3*3)); 
+    fig, axes = plt.subplots(3, 2, figsize=(12, 8))
+    plt.subplots_adjust(wspace=0.4, hspace=0.5)
     #
     for ss0,ss1 in enumerate(ssp):
         #
@@ -67,7 +68,7 @@ def plot(loc,ssp):
             # """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
             #
             ax.set_xlabel('GMSL rise in 2100 (m)', fontsize=fnt+2)
-            ax.set_ylabel('Normalized frequency', fontsize=fnt+2)
+            ax.set_ylabel('Probability density', fontsize=fnt+2)
             ax.set_xlim(0, 3.5)
             # ax.set_ylim(-0.25, 1.025)
             ax.set_xticks(ax.get_xticks())
@@ -76,9 +77,9 @@ def plot(loc,ssp):
             # ax.set_yticklabels(ax.get_yticks(), fontsize=fnt, rotation=0) 
             ax.tick_params(direction='in', length=7, width=2.5, axis='both')
             title=ss1[:4]+'-'+ss1[4]+'.'+ss1[5];  ax.set_title(title,fontsize=fnt+10)
-            if ax==axes[0,0]: ax.legend(fontsize=fnt+2.5) 
+            if ax==axes[0,0]: ax.legend(fontsize=fnt+1) 
             for axis in ['top', 'bottom', 'left', 'right']:
-                ax.spines[axis].set_linewidth(2.5)
+                ax.spines[axis].set_linewidth(1)
             # ====================================================================================================================================
             # ====================================================================================================================================
             # PLOT  Pnl 2
@@ -102,9 +103,9 @@ def plot(loc,ssp):
             x_ticks= np.around(np.arange(-0.5, 3.6, .5), decimals=1); ax.set_xticks(x_ticks);  ax.set_xticklabels(x_ticks,fontsize=fnt, rotation=0)
             y_ticks= np.around(np.arange(0,1.1,0.2), decimals=1) ; ax.set_yticks(y_ticks);  ax.set_yticklabels(y_ticks,fontsize=fnt) 
             ax.tick_params(direction='in', length=7, width=2.5, axis='both')
-            ax.axhline(0, color='black', linestyle='-', linewidth=1.5)
+            ax.axhline(0, color='black', linestyle='-', linewidth=1)
             for axis in ['top', 'bottom', 'left', 'right']:
-                ax.spines[axis].set_linewidth(2.5)
+                ax.spines[axis].set_linewidth(1)
             # ====================================================================================================================================
             # ====================================================================================================================================
             # PLOT  Pnl 3
@@ -135,7 +136,7 @@ def plot(loc,ssp):
             y_ticks= np.around(np.arange(0,1.1,0.2), decimals=1) ; ax.set_yticks(y_ticks);  ax.set_yticklabels(y_ticks,fontsize=fnt) 
             ax.tick_params(direction='in', length=7, width=2.5, axis='both')
             for axis in ['top', 'bottom', 'left', 'right']:
-                ax.spines[axis].set_linewidth(2.5)
+                ax.spines[axis].set_linewidth(1)
     #
     plt.show()
 
