@@ -28,7 +28,7 @@ colors = {
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 def plot(loc,ssp):
     #
-    fig, axes = plt.subplots(3, 2, figsize=(12*3, 3*10)); 
+    fig, axes = plt.subplots(3, 2, figsize=(10*2, 3*3)); 
     plt.subplots_adjust(wspace=0.2, hspace=0.4)
     #
     for ss0,ss1 in enumerate(ssp):
@@ -36,7 +36,7 @@ def plot(loc,ssp):
         files=filePATH(ss1)   
         sls, Qvals, label, quant, qlevs, subq = nc2var(files,loc)
         #
-        fnt=25
+        fnt=8
         lws = [2, 2, 1, 1] * 2
         color_list = list(colors.values())[:5]; 
         hp = []  
@@ -53,10 +53,17 @@ def plot(loc,ssp):
             ax= axes[0,ss0]
             #
             # """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-            n, edges = np.histogram(sls[sss, :], np.arange(0, 4001, binwidth), density=True)
-            n = n / sum(n) / (binwidth / 1000)
+            # n, edges = np.histogram(sls[sss, :], np.arange(0, 4001, binwidth), density=True)
+            bin_edges = np.arange(0, 4000 + binwidth, binwidth)
+            n, edges = np.histogram(sls[sss, :], bins=bin_edges)
+            #
+            hist_sum = np.sum(n)
+            scaling_factor = binwidth/1000
+            n = n / hist_sum / scaling_factor
+            #
             xx=.5*(edges[1:]+edges[:-1])/1000
             ax.plot(xx, n, color=current_color,label=label[sss, 0])
+
             # """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
             #
             ax.set_xlabel('GMSL rise in 2100 (m)', fontsize=fnt+2)
@@ -65,12 +72,13 @@ def plot(loc,ssp):
             # ax.set_ylim(-0.25, 1.025)
             ax.set_xticks(ax.get_xticks())
             x_ticks= np.around(np.arange(-0.5, 3.6, .5), decimals=1); ax.set_xticks(x_ticks);  ax.set_xticklabels(x_ticks,fontsize=fnt, rotation=0)
-            ax.set_yticks(ax.get_yticks())
-            ax.set_yticklabels(ax.get_yticks(), fontsize=fnt, rotation=0) 
-            title=ss1[:4]+'-'+ss1[4]+'.'+ss1[5];  ax.set_title(title,fontsize=fnt+40)
-            if ax==axes[0,0]: ax.legend(fontsize=fnt+5) 
+            # ax.set_yticks(ax.get_yticks())
+            # ax.set_yticklabels(ax.get_yticks(), fontsize=fnt, rotation=0) 
+            ax.tick_params(direction='in', length=7, width=2.5, axis='both')
+            title=ss1[:4]+'-'+ss1[4]+'.'+ss1[5];  ax.set_title(title,fontsize=fnt+10)
+            if ax==axes[0,0]: ax.legend(fontsize=fnt+2.5) 
             for axis in ['top', 'bottom', 'left', 'right']:
-                ax.spines[axis].set_linewidth(5)
+                ax.spines[axis].set_linewidth(2.5)
             # ====================================================================================================================================
             # ====================================================================================================================================
             # PLOT  Pnl 2
@@ -93,9 +101,10 @@ def plot(loc,ssp):
             ax.set_xticks(ax.get_xticks())
             x_ticks= np.around(np.arange(-0.5, 3.6, .5), decimals=1); ax.set_xticks(x_ticks);  ax.set_xticklabels(x_ticks,fontsize=fnt, rotation=0)
             y_ticks= np.around(np.arange(0,1.1,0.2), decimals=1) ; ax.set_yticks(y_ticks);  ax.set_yticklabels(y_ticks,fontsize=fnt) 
-            ax.axhline(0, color='black', linestyle='-', linewidth=2.5)
+            ax.tick_params(direction='in', length=7, width=2.5, axis='both')
+            ax.axhline(0, color='black', linestyle='-', linewidth=1.5)
             for axis in ['top', 'bottom', 'left', 'right']:
-                ax.spines[axis].set_linewidth(5)
+                ax.spines[axis].set_linewidth(2.5)
             # ====================================================================================================================================
             # ====================================================================================================================================
             # PLOT  Pnl 3
@@ -124,9 +133,9 @@ def plot(loc,ssp):
             ax.set_xticks(ax.get_xticks())
             x_ticks= np.around(np.arange(-0.5, 3.6, .5), decimals=1); ax.set_xticks(x_ticks);  ax.set_xticklabels(x_ticks,fontsize=fnt, rotation=0)
             y_ticks= np.around(np.arange(0,1.1,0.2), decimals=1) ; ax.set_yticks(y_ticks);  ax.set_yticklabels(y_ticks,fontsize=fnt) 
-            ax.tick_params(direction='in', length=15, width=5, axis='both')
+            ax.tick_params(direction='in', length=7, width=2.5, axis='both')
             for axis in ['top', 'bottom', 'left', 'right']:
-                ax.spines[axis].set_linewidth(5)
+                ax.spines[axis].set_linewidth(2.5)
     #
     plt.show()
 
@@ -139,6 +148,7 @@ def nc2var(files,loc):
     #
     for fi0,fi1 in enumerate(files):
         #
+        # lab=fi1.split('/')[-1].split('_')[0]
         lab=fi1.split('/')[-1].split('.')[2]
         # ................................................................
         # Exract Data.
@@ -168,19 +178,13 @@ def filePATH(ssp): # Creates a list of file paths.
     """"""""""""""""""
     # Make sure to have all the files in a single ssp folder
     """"""""""""""""""
-    # files = glob.glob(sspDIR[0] + '/*.nc')
+    # path=f'/scratch/pk695/FACTS/002_fork/facts/JupNbk/000_pk-JupNb_TESTspace/2023-01_NZ_INSAR/002_Pbox/4_confidence_level_files/medium_confidence/{ssp}'
+    # files = glob.glob(path + '/*.nc')
     #
-    path='/scratch/pk695/FACTS/002_fork/facts/JupNbk/000_pk-JupNb_TESTspace/2023-01_NZ_INSAR/002_Pbox/002_quant_workflows/'
+    path='/scratch/pk695/FACTS/002_fork/facts/JupNbk/000_pk-JupNb_TESTspace/2023-01_NZ_INSAR/002_Pbox/2_workflow_quantiles/'
     files=[path+f'wf_1e/{ssp}/coupling.{ssp}.emuAIS.emulandice.AIS_globalsl.nc',
            path+f'wf_2e/{ssp}/coupling.{ssp}.larmip.larmip.AIS_globalsl.nc',
            path+f'wf_3e/{ssp}/coupling.{ssp}.deconto21.deconto21.AIS_AIS_globalsl.nc',
            path+f'wf_4/{ssp}/coupling.{ssp}.bamber19.bamber19.icesheets_AIS_globalsl.nc']
-    # ....................................................................
-    # Bobs facts Run.
-    # path=f'/projects/kopp/facts-experiments/221217/coupling.{ssp}/output/'
-    # files=[path+f'coupling.{ssp}.emuAIS.emulandice.AIS_globalsl.nc',
-    #        path+f'coupling.{ssp}.larmip.larmip.AIS_globalsl.nc',
-    #        path+f'coupling.{ssp}.deconto21.deconto21.AIS_AIS_globalsl.nc',
-    #        path+f'coupling.{ssp}.bamber19.bamber19.icesheets_AIS_globalsl.nc']
 
     return files
