@@ -77,9 +77,9 @@ sealevel_step:
         module_set: "larmip"
         module: "AIS"
         options_allowoverwrite:
-           climate_data_file: "%CLIMATE_DATA_FILE%"
-          cyear_start: 2080
-          year_end: 2100
+            climate_data_file: "%CLIMATE_DATA_FILE%"
+            cyear_start: 2080
+            year_end: 2100
         include_in_workflow:
             - "wf2e"
             - "wf2f"
@@ -155,13 +155,3 @@ totaling_step:
         loop_over_scales: true
         stages:
             - workflow
-
-
-# esl_step:
-#     extremesealevel:
-#         loop_over_workflows: true
-#         module_set: "extremesealevel"
-#         module: "pointsoverthreshold"
-#         options:
-#             target_years: 2050,2100
-#             total_localsl_file: "$SHARED/totaled/%EXPERIMENT_NAME%.total.workflow.%WORKFLOW_NAME%.local.nc" 

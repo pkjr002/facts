@@ -119,10 +119,6 @@ sealevel_step:
             - "wf1e"
             - "wf2e"
             - "wf2f"
-            - "wf1fNOVLM"
-            - "wf1eNOVLM"
-            - "wf2eNOVLM"
-            - "wf2fNOVLM"
 
     lws:
         module_set: "ssp"
