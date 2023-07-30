@@ -1,6 +1,6 @@
 global-options:
     nsamps: 2000
-    scenario: ssp585
+    scenario: ssp119
     pyear_start: 2020
     pyear_end: 2300
     pyear_step: 10
@@ -12,10 +12,10 @@ climate_step:
         module_set: "fair"
         module: "temperature"
         generates_climate_output: true
-    #    input_data_file:
-            #  - "emissions.csv"
-    #    options:
-            #  rcmip_file: emissions.csv
+#       input_data_file:
+#             - "emissions.csv"
+#       options:
+#             rcmip_file: emissions.csv
 
 sealevel_step:
     GrIS1f:
@@ -26,30 +26,15 @@ sealevel_step:
         include_in_workflow:
             - "wf1f"
             - "wf2f"
-            - "wf3f"
-
-    deconto21:
-        module_set: "deconto21"
-        module: "AIS"
-        include_in_workflow:
-            - "wf3e"   
-            - "wf3f"
-        options:
-            scenario: "rcp85"
-
-    bamber19:
-        module_set: "bamber19"
-        module: "icesheets"
-        include_in_workflow:
-            - "wf4"
-        options:
-            scenario: "rcp85"
+            - "wf1fNOVLM"
+            - "wf2fNOVLM"
 
     emuAIS:
         module_set: "emulandice"
         module: "AIS"
         include_in_workflow:
-            - "wf1e"      
+            - "wf1e" 
+            - "wf1eNOVLM"      
         options:
             pyear_end: 2100
 
@@ -58,8 +43,9 @@ sealevel_step:
         module: "GrIS"
         include_in_workflow:
             - "wf1e"  
-            - "wf2e"  
-            - "wf3e"  
+            - "wf2e" 
+            - "wf1eNOVLM"  
+            - "wf2eNOVLM"    
         options:
             pyear_end: 2100
 
@@ -68,30 +54,24 @@ sealevel_step:
         module: "glaciers"
         include_in_workflow:
             - "wf1e"   
-            - "wf2e"   
-            - "wf3e"
+            - "wf2e" 
+            - "wf1eNOVLM"   
+            - "wf2eNOVLM"   
         options:
             pyear_end: 2100
 
-    # larmip:
-    #     module_set: "larmip"
-    #     module: "AIS"
-    #     options_allowoverwrite:
-    #        climate_data_file: "%CLIMATE_DATA_FILE%"
-    #     include_in_workflow:
-    #         - "wf2e"
-    #         - "wf2f"
-    
-    ar6larmip:
-    module_set: "ipccar6"
-    module: "larmipAIS"
-    options_allowoverwrite:
-        tlm_data: 0
-        cyear_start: 2080
-        cyear_end: 2100
-    include_in_workflow:
-        - "wf2e"
-        - "wf2f"
+    larmip:
+        module_set: "larmip"
+        module: "AIS"
+        options_allowoverwrite:
+            cyear_start: 2080
+            cyear_end: 2100
+            climate_data_file: "%CLIMATE_DATA_FILE%"
+        include_in_workflow:
+            - "wf2e"
+            - "wf2f"
+            - "wf2eNOVLM"
+            - "wf2fNOVLM"
 
     ar5glaciers:
         module_set: "ipccar5"
@@ -103,9 +83,9 @@ sealevel_step:
         include_in_workflow:
             - "wf1f"
             - "wf2f"
-            - "wf3f"
-            - "wf4"
-            
+            - "wf1fNOVLM"
+            - "wf2fNOVLM"
+
     ar5AIS:
         module_set: "ipccar5"
         module: "icesheets"
@@ -114,6 +94,7 @@ sealevel_step:
             climate_data_file: "%CLIMATE_DATA_FILE%"
         include_in_workflow:
             - "wf1f"
+            - "wf1fNOVLM"
 
     ocean:
         module_set: "tlm"
@@ -125,9 +106,10 @@ sealevel_step:
             - "wf1e"
             - "wf2e"
             - "wf2f"
-            - "wf3e"
-            - "wf3f"
-            - "wf4"
+            - "wf1fNOVLM"
+            - "wf1eNOVLM"
+            - "wf2eNOVLM"
+            - "wf2fNOVLM"
 
     NZInsarGPS:
         module_set: "NZInsarGPS"
@@ -137,24 +119,26 @@ sealevel_step:
             - "wf1e"
             - "wf2e"
             - "wf2f"
-            - "wf3e"
-            - "wf3f"
-            - "wf4"
+            - "wf1fNOVLM"
+            - "wf1eNOVLM"
+            - "wf2eNOVLM"
+            - "wf2fNOVLM"
 
     lws:
         module_set: "ssp"
         module: "landwaterstorage"
         options:
-            scenario: "ssp5"
+            scenario: "ssp1"
             dcrate_lo: -0.4
         include_in_workflow:
             - "wf1f"
             - "wf1e"
             - "wf2e"
             - "wf2f"
-            - "wf3e"
-            - "wf3f"
-            - "wf4"
+            - "wf1fNOVLM"
+            - "wf1eNOVLM"
+            - "wf2eNOVLM"
+            - "wf2fNOVLM"
 
 totaling_step:
     total:
@@ -164,13 +148,3 @@ totaling_step:
         loop_over_scales: true
         stages:
             - workflow
-
-
-# esl_step:
-#     extremesealevel:
-#         loop_over_workflows: true
-#         module_set: "extremesealevel"
-#         module: "pointsoverthreshold"
-#         options:
-#             target_years: 2050,2100
-#             total_localsl_file: "$SHARED/totaled/%EXPERIMENT_NAME%.total.workflow.%WORKFLOW_NAME%.local.nc" 
