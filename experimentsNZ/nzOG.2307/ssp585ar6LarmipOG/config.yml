@@ -72,18 +72,14 @@ sealevel_step:
             - "wf3e"
         options:
             pyear_end: 2100
-
-    larmip:
-        module_set: "larmip"
-        module: "AIS"
-        options_allowoverwrite:
-            climate_data_file: "%CLIMATE_DATA_FILE%"
-            cyear_start: 2080
-            cyear_end: 2100
+    
+    ar6larmip:
+        module_set: "ipccar6"
+        module: "larmipAIS"
         include_in_workflow:
             - "wf2e"
             - "wf2f"
-    
+
     ar5glaciers:
         module_set: "ipccar5"
         module: "glaciers"
