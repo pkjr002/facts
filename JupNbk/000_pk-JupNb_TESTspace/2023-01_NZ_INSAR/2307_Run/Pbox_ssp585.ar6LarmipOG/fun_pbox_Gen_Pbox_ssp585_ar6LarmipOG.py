@@ -158,7 +158,7 @@ def ConvertSamplesToDist(infile, outfile):
 	nc_missing_value = np.iinfo(np.int16).min
 
 	# Open the file
-	with xr.open_dataset(infile) as nc:
+	with xr.open_dataset(infile, engine='netcdf4') as nc:
 
 		# Check which variable we're dealing with
 		for this_varname in valid_varnames:
