@@ -281,15 +281,6 @@ def larmip_project_icesheet(pipeline_id, nsamps, targyears, baseyear, seed, mode
 	ref_vals = sl_smb[:,baseyear_idx]
 	sl_smb = sl_smb - ref_vals
 
-	if cyear_start or cyear_end:
-			for i in np.arange(nsamps):
-				sl_r1[i,:] = ExtrapolateRate(sl_r1[i,:], targyears, cyear_start, cyear_end)
-				sl_r2[i,:] = ExtrapolateRate(sl_r1[i,:], targyears, cyear_start, cyear_end)
-				sl_r3[i,:] = ExtrapolateRate(sl_r1[i,:], targyears, cyear_start, cyear_end)
-				sl_r4[i,:] = ExtrapolateRate(sl_r1[i,:], targyears, cyear_start, cyear_end)
-				sl_r5[i,:] = ExtrapolateRate(sl_r1[i,:], targyears, cyear_start, cyear_end)
-				sl_smb[i,:] = ExtrapolateRate(sl_r1[i,:], targyears, cyear_start, cyear_end)
-
 	# Subset the projections for particular target years
 	targyear_idx = np.array([x for x in np.arange(len(Time)) if Time[x] in targyears])
 	sl_r1 = sl_r1[:,targyear_idx]
@@ -298,6 +289,15 @@ def larmip_project_icesheet(pipeline_id, nsamps, targyears, baseyear, seed, mode
 	sl_r4 = sl_r4[:,targyear_idx]
 	sl_r5 = sl_r5[:,targyear_idx]
 	sl_smb = sl_smb[:,targyear_idx]
+
+	if cyear_start or cyear_end:
+			for i in np.arange(nsamps):
+				sl_r1[i,:] = ExtrapolateRate(sl_r1[i,:], targyears, cyear_start, cyear_end)
+				sl_r2[i,:] = ExtrapolateRate(sl_r1[i,:], targyears, cyear_start, cyear_end)
+				sl_r3[i,:] = ExtrapolateRate(sl_r1[i,:], targyears, cyear_start, cyear_end)
+				sl_r4[i,:] = ExtrapolateRate(sl_r1[i,:], targyears, cyear_start, cyear_end)
+				sl_r5[i,:] = ExtrapolateRate(sl_r1[i,:], targyears, cyear_start, cyear_end)
+				sl_smb[i,:] = ExtrapolateRate(sl_r1[i,:], targyears, cyear_start, cyear_end)
 
 	# Combine all Antarctic regions into Antarctica projection
 	sl_su = sl_r1 + sl_r2 + sl_r3 + sl_r4 + sl_r5
