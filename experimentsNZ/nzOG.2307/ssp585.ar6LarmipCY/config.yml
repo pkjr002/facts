@@ -76,12 +76,12 @@ sealevel_step:
     ar6larmip:
         module_set: "ipccar6"
         module: "larmipAIS"
-        options_allowoverwrite:
-            cyear_start: 2080
-            cyear_end: 2100
         include_in_workflow:
             - "wf2e"
             - "wf2f"
+        options: 
+            cyear_start: 2080
+            cyear_end: 2100
 
     ar5glaciers:
         module_set: "ipccar5"

@@ -78,8 +78,6 @@ sealevel_step:
         module: "AIS"
         options_allowoverwrite:
             climate_data_file: "%CLIMATE_DATA_FILE%"
-            cyear_start: 2080
-            cyear_end: 2100
         include_in_workflow:
             - "wf2e"
             - "wf2f"
