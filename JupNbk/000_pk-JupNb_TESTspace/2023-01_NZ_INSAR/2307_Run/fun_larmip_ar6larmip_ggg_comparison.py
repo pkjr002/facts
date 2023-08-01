@@ -3,7 +3,7 @@ import xarray as xr
 import matplotlib.pyplot as plt
 #
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-def project_SL(station,name,ssp,options):
+def project_SL(station,name,ssp,path,options):
     ylab        = options['ylab']
     x_min       = options['x_min']
     x_max       = options['x_max']
@@ -15,10 +15,12 @@ def project_SL(station,name,ssp,options):
     yrEN        = options.get('yrEN', None)
     latIN       = options.get('latIN',None)
     lonIN       = options.get('lonIN',None)
+    #    
+    # ggg         = [f'{path[0]}/medium_confidence/{ssp_value}/total_{ssp_value}_medium_confidence_values.nc' for ssp_value in ssp]
+    ggg         = [f'{path[0]}/4_confidence_level_files/medium_confidence/{ssp_value}/total_{ssp_value}_medium_confidence_values.nc' for ssp_value in ssp]
     #
-    ggg         = [f'/projects/kopp/pk695/NZ_ReRun/FACTS_NZ_ggg/medium_confidence/{ssp_value}/total_{ssp_value}_medium_confidence_values.nc' for ssp_value in ssp]
-    pk          = [f'/scratch/pk695/FACTS/002_fork/facts/JupNbk/000_pk-JupNb_TESTspace/2023-01_NZ_INSAR/2307_Run/Pbox_{ssp_value}ar6Larmip/4_confidence_level_files/medium_confidence/{ssp_value}/total_{ssp_value}_medium_confidence_values.nc' for ssp_value in ssp]
-    pk_update   = [f'/scratch/pk695/FACTS/002_fork/facts/JupNbk/000_pk-JupNb_TESTspace/2023-01_NZ_INSAR/2307_Run/Pbox_{ssp_value}.OGlarmip/4_confidence_level_files/medium_confidence/{ssp_value}/total_{ssp_value}_medium_confidence_values.nc' for ssp_value in ssp]
+    pk          = [f'{path[1]}/4_confidence_level_files/medium_confidence/{ssp_value}/total_{ssp_value}_medium_confidence_values.nc' for ssp_value in ssp]
+    pk_update   = [f'{path[2]}/4_confidence_level_files/medium_confidence/{ssp_value}/total_{ssp_value}_medium_confidence_values.nc'for ssp_value in ssp]
 
     #
     fig, axes = plt.subplots(1, 3, figsize=(40, 10)); plt.subplots_adjust(wspace=0.4, hspace=0.2)
