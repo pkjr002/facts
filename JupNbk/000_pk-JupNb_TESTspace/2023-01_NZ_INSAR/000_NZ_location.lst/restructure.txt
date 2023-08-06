@@ -1,8 +1,0 @@
-This folder is a mess. Ids nee to appear in facts final procuct. 
-
-- Cleanup
-- remove all .sh dependencies
-- add id's
-- duble check location.lst 
-
-Compress all to a py/JnB and delete others
