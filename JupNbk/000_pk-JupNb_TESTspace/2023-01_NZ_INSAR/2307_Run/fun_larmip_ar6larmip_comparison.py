@@ -114,7 +114,9 @@ def plot_subplot(ax,file_paths,station,name,ssp,ylab,x_min, x_max, y_min, y_max,
         ax.text(0.015, 0.4, text, fontsize=20, fontweight='normal', ha='left', va='center', transform=ax.transAxes)
         #
     #
-    set_subplot_titles(ax, file_paths)
+    # set_subplot_titles(ax, file_paths)
+    file_paths0=f_p.split('/')[10]
+    ax.set_title(file_paths0,fontsize=25)
     # plt.show()
 
 
