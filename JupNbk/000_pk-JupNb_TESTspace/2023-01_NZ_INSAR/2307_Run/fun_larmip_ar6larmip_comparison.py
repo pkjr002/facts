@@ -28,7 +28,8 @@ def project_SL(station,name,ssp,path,options):
     #
     plot_subplot(axes[0],ggg,station,name,ssp,ylab,x_min, x_max, y_min, y_max, x_ticks, y_ticks,yrST,yrEN,latIN,lonIN)
     plot_subplot(axes[1],pk,station,name,ssp,ylab,x_min, x_max, y_min, y_max, x_ticks, y_ticks,yrST,yrEN,latIN,lonIN)
-    plot_subplot(axes[2],pk_update,station,name,ssp,ylab,x_min, x_max, y_min, y_max, x_ticks, y_ticks,yrST,yrEN,latIN,lonIN)
+    axes[2].axis('off')
+    # plot_subplot(axes[2],pk_update,station,name,ssp,ylab,x_min, x_max, y_min, y_max, x_ticks, y_ticks,yrST,yrEN,latIN,lonIN)
 
 
 # ...........................................................................................................
