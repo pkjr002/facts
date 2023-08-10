@@ -20,7 +20,7 @@ def project_SL(station,name,ssp,path,options):
     ggg         = [f'{path[0]}/4_confidence_level_files/medium_confidence/{ssp_value}/total_{ssp_value}_medium_confidence_values.nc' for ssp_value in ssp]
     #
     pk          = [f'{path[1]}/4_confidence_level_files/medium_confidence/{ssp_value}/total_{ssp_value}_medium_confidence_values.nc' for ssp_value in ssp]
-    pk_update   = [f'{path[2]}/4_confidence_level_files/medium_confidence/{ssp_value}/total_{ssp_value}_medium_confidence_values.nc'for ssp_value in ssp]
+    # pk_update   = [f'{path[2]}/4_confidence_level_files/medium_confidence/{ssp_value}/total_{ssp_value}_medium_confidence_values.nc'for ssp_value in ssp]
 
     #
     fig, axes = plt.subplots(1, 3, figsize=(40, 10)); plt.subplots_adjust(wspace=0.4, hspace=0.2)
@@ -90,6 +90,12 @@ def plot_subplot(ax,file_paths,station,name,ssp,ylab,x_min, x_max, y_min, y_max,
             if (yrST is not None) and (yrEN is not None):
                 ax.text(1.01, slc[idx1, np.where(time == yrEN)[0], station][0] - 0.03, f'{slc[idx1, np.where(time == yrEN)[0], station][0]:.2f} m',transform=ax.get_yaxis_transform(), fontweight='bold', fontsize=23, ha='left', va='center', color=colors[ssp[0]])
             else: ax.text(1.01, slc[idx1, -1, station][0] - 0.03, f'{slc[idx1, -1, station][0]:.2f} m',transform=ax.get_yaxis_transform(), fontweight='bold', fontsize=23, ha='left', va='center', color=colors[ssp[0]])
+        #
+        # Mark all at end points
+        # print(slc[idx, -1, station][0])
+        if (yrST is not None) and (yrEN is not None):
+            ax.text(1.01, slc[idx, np.where(time == yrEN)[0], station][0] + 0.03, f'{slc[idx, np.where(time == yrEN)[0], station][0]:.2f} m',transform=ax.get_yaxis_transform(), fontweight='bold', fontsize=23, ha='left', va='center', color=colors[ssp_value])
+        else: ax.text(1.01, slc[idx, -1, station][0] + 0.03, f'{slc[idx, -1, station][0]:.2f} m',transform=ax.get_yaxis_transform(), fontweight='bold', fontsize=23, ha='left', va='center', color=colors[ssp_value])
         # ........................................................................................................................................................................
         # Set x-axis label and limits
         ax.set_xlabel('Year', fontsize=25)
