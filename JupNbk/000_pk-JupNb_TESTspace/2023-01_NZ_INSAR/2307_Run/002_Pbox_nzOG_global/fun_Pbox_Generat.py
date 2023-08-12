@@ -558,6 +558,7 @@ def GenerateConfidenceFiles(pboxdir, outdir):
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # region="local"
 region="global"
+
 #
 total = {
     "wf_1e": [f'total.workflow.wf1e.{region}.nc'],
