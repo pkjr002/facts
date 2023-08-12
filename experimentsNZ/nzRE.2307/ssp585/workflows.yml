@@ -12,7 +12,7 @@ wf1e:
   - local/ssp585.emuGrIS.emulandice.GrIS_localsl.nc
   - local/ssp585.emuglaciers.emulandice.glaciers_localsl.nc
   - local/ssp585.ocean.tlm.sterodynamics_localsl.nc
-  - local/ssp585.NZInsarGPS.NZInsarGPS.verticallandmotion_localsl.nc
+  - local/ssp585.NZInsarGPS1.NZInsarGPS1.verticallandmotion_localsl.nc
   - local/ssp585.lws.ssp.landwaterstorage_localsl.nc
   options:
     pyear_end: 2100
@@ -44,7 +44,7 @@ wf1f:
   - local/ssp585.ar5AIS.ipccar5.icesheets_WAIS_localsl.nc
   - local/ssp585.ar5AIS.ipccar5.icesheets_EAIS_localsl.nc
   - local/ssp585.ocean.tlm.sterodynamics_localsl.nc
-  - local/ssp585.NZInsarGPS.NZInsarGPS.verticallandmotion_localsl.nc
+  - local/ssp585.NZInsarGPS1.NZInsarGPS1.verticallandmotion_localsl.nc
   - local/ssp585.lws.ssp.landwaterstorage_localsl.nc
   options:
     pyear_end: 2300
@@ -76,7 +76,7 @@ wf2e:
   - local/ssp585.emuglaciers.emulandice.glaciers_localsl.nc
   - local/ssp585.larmip.larmip.AIS_localsl.nc
   - local/ssp585.ocean.tlm.sterodynamics_localsl.nc
-  - local/ssp585.NZInsarGPS.NZInsarGPS.verticallandmotion_localsl.nc
+  - local/ssp585.NZInsarGPS1.NZInsarGPS1.verticallandmotion_localsl.nc
   - local/ssp585.lws.ssp.landwaterstorage_localsl.nc
   options:
     pyear_end: 2100
@@ -107,7 +107,7 @@ wf2f:
   - local/ssp585.larmip.larmip.AIS_localsl.nc
   - local/ssp585.ar5glaciers.ipccar5.glaciers_localsl.nc
   - local/ssp585.ocean.tlm.sterodynamics_localsl.nc
-  - local/ssp585.NZInsarGPS.NZInsarGPS.verticallandmotion_localsl.nc
+  - local/ssp585.NZInsarGPS1.NZInsarGPS1.verticallandmotion_localsl.nc
   - local/ssp585.lws.ssp.landwaterstorage_localsl.nc
   options:
     pyear_end: 2300
@@ -138,7 +138,7 @@ wf3e:
   - local/ssp585.emuGrIS.emulandice.GrIS_localsl.nc
   - local/ssp585.emuglaciers.emulandice.glaciers_localsl.nc
   - local/ssp585.ocean.tlm.sterodynamics_localsl.nc
-  - local/ssp585.NZInsarGPS.NZInsarGPS.verticallandmotion_localsl.nc
+  - local/ssp585.NZInsarGPS1.NZInsarGPS1.verticallandmotion_localsl.nc
   - local/ssp585.lws.ssp.landwaterstorage_localsl.nc
   options:
     pyear_end: 2100
@@ -169,7 +169,7 @@ wf3f:
   - local/ssp585.deconto21.deconto21.AIS_AIS_localsl.nc
   - local/ssp585.ar5glaciers.ipccar5.glaciers_localsl.nc
   - local/ssp585.ocean.tlm.sterodynamics_localsl.nc
-  - local/ssp585.NZInsarGPS.NZInsarGPS.verticallandmotion_localsl.nc
+  - local/ssp585.NZInsarGPS1.NZInsarGPS1.verticallandmotion_localsl.nc
   - local/ssp585.lws.ssp.landwaterstorage_localsl.nc
   options:
     pyear_end: 2300
@@ -200,7 +200,7 @@ wf4:
   - local/ssp585.bamber19.bamber19.icesheets_AIS_localsl.nc
   - local/ssp585.ar5glaciers.ipccar5.glaciers_localsl.nc
   - local/ssp585.ocean.tlm.sterodynamics_localsl.nc
-  - local/ssp585.NZInsarGPS.NZInsarGPS.verticallandmotion_localsl.nc
+  - local/ssp585.NZInsarGPS1.NZInsarGPS1.verticallandmotion_localsl.nc
   - local/ssp585.lws.ssp.landwaterstorage_localsl.nc
   options:
     pyear_end: 2300

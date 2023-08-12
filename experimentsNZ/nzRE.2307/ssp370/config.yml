@@ -63,9 +63,10 @@ sealevel_step:
     larmip:
         module_set: "larmip"
         module: "AIS"
-        options_allowoverwrite:
+        options: 
             cyear_start: 2080
             cyear_end: 2100
+        options_allowoverwrite:
             climate_data_file: "%CLIMATE_DATA_FILE%"
         include_in_workflow:
             - "wf2e"
