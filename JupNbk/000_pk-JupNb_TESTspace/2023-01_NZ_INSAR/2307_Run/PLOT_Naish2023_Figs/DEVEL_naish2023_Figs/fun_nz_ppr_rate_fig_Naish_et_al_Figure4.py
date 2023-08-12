@@ -19,7 +19,9 @@ def project_SL(folder,station,name,ssp,options):
         folder=folder[0]
         fig, axes = plt.subplots(1, 1, figsize=(10, 5)); plt.subplots_adjust(wspace=0.4, hspace=0.2)
         #
-        folderloop=[f'{folder}/{ssp_value}/total_{ssp_value}_medium_confidence_values.nc' for ssp_value in ssp]
+        # folderloop=[f'{folder}/{ssp_value}/total_{ssp_value}_medium_confidence_values.nc' for ssp_value in ssp]
+        folderloop=[f'{folder}/{ssp_value}/total_{ssp_value}_medium_confidence_rates.nc' for ssp_value in ssp]
+
         FS=10
         plot_subplot(axes,folderloop,station,name,ssp,ylab,x_min, x_max, y_min, y_max, x_ticks, y_ticks,FS,yrST,yrEN)
     else:
@@ -28,10 +30,10 @@ def project_SL(folder,station,name,ssp,options):
         #
         FS=20
         #
-        folderloop=[f'{folder[0]}/{ssp_value}/total_{ssp_value}_medium_confidence_values.nc' for ssp_value in ssp]
+        folderloop=[f'{folder[0]}/{ssp_value}/total_{ssp_value}_medium_confidence_rates.nc' for ssp_value in ssp]
         plot_subplot(axes[0],folderloop,station,name,ssp,ylab,x_min, x_max, y_min, y_max, x_ticks, y_ticks,FS,yrST,yrEN)
         #
-        folderloop=[f'{folder[1]}/{ssp_value}/total_{ssp_value}_medium_confidence_values.nc' for ssp_value in ssp]
+        folderloop=[f'{folder[1]}/{ssp_value}/total_{ssp_value}_medium_confidence_rates.nc' for ssp_value in ssp]
         plot_subplot(axes[1],folderloop,station,name,ssp,ylab,x_min, x_max, y_min, y_max, x_ticks, y_ticks,FS,yrST,yrEN)
         # plot_subplot(axes[2],pk_update,station,name,ssp,ylab,x_min, x_max, y_min, y_max, x_ticks, y_ticks,yrST,yrEN)
         #
@@ -58,7 +60,7 @@ def plot_subplot(ax,file_paths,station,name,ssp,ylab,x_min, x_max, y_min, y_max,
         idx         = np.where(percentile == 50)[0]
         idx1        = np.where(percentile == 17)[0]
         idx2        = np.where(percentile == 83)[0] 
-        slc         = d0['sea_level_change'].values / 1000
+        slc         = d0['sea_level_change_rate'].values / 1000
         # ........................................................
         # Index time.
         time        = d0['years'].values
@@ -82,18 +84,18 @@ def plot_subplot(ax,file_paths,station,name,ssp,ylab,x_min, x_max, y_min, y_max,
         ## Mark the Right values.
         if ssp_value == 'ssp585':
             if (yrST is not None) and (yrEN is not None):
-                ax.text(1.01, slc[idx2, np.where(time == yrEN)[0], station][0] + 0.03, f'{slc[idx2, np.where(time == yrEN)[0], station][0]:.2f} m',transform=ax.get_yaxis_transform(), fontweight='bold', fontsize=FS, ha='left', va='center', color=colors[ssp[-1]])
-            else: ax.text(1.01, slc[idx2, -1, station][0] + 0.03, f'{slc[idx2, -1, station][0]:.2f} m',transform=ax.get_yaxis_transform(), fontweight='bold', fontsize=FS, ha='left', va='center', color=colors[ssp[-1]])
+                ax.text(1.01, slc[idx2, np.where(time == yrEN)[0], station][0] + 0.0003, f'{slc[idx2, np.where(time == yrEN)[0], station][0]:.2f} m',transform=ax.get_yaxis_transform(), fontweight='bold', fontsize=FS, ha='left', va='center', color=colors[ssp[-1]])
+            else: ax.text(1.01, slc[idx2, -1, station][0] + 0.0003, f'{slc[idx2, -1, station][0]:.2f} m',transform=ax.get_yaxis_transform(), fontweight='bold', fontsize=FS, ha='left', va='center', color=colors[ssp[-1]])
         if ssp_value == 'ssp126':
             if (yrST is not None) and (yrEN is not None):
-                ax.text(1.01, slc[idx1, np.where(time == yrEN)[0], station][0] - 0.03, f'{slc[idx1, np.where(time == yrEN)[0], station][0]:.2f} m',transform=ax.get_yaxis_transform(), fontweight='bold', fontsize=FS, ha='left', va='center', color=colors[ssp[0]])
-            else: ax.text(1.01, slc[idx1, -1, station][0] - 0.03, f'{slc[idx1, -1, station][0]:.2f} m',transform=ax.get_yaxis_transform(), fontweight='bold', fontsize=FS, ha='left', va='center', color=colors[ssp[0]])
+                ax.text(1.01, slc[idx1, np.where(time == yrEN)[0], station][0] - 0.0003, f'{slc[idx1, np.where(time == yrEN)[0], station][0]:.2f} m',transform=ax.get_yaxis_transform(), fontweight='bold', fontsize=FS, ha='left', va='center', color=colors[ssp[0]])
+            else: ax.text(1.01, slc[idx1, -1, station][0] - 0.0003, f'{slc[idx1, -1, station][0]:.2f} m',transform=ax.get_yaxis_transform(), fontweight='bold', fontsize=FS, ha='left', va='center', color=colors[ssp[0]])
         #
         # Mark all at end points
         # print(slc[idx, -1, station][0])
         if (yrST is not None) and (yrEN is not None):
-            ax.text(1.01, slc[idx, np.where(time == yrEN)[0], station][0] + 0.03, f'{slc[idx, np.where(time == yrEN)[0], station][0]:.2f} m',transform=ax.get_yaxis_transform(), fontweight='bold', fontsize=FS, ha='left', va='center', color=colors[ssp_value])
-        else: ax.text(1.01, slc[idx, -1, station][0] + 0.03, f'{slc[idx, -1, station][0]:.2f} m',transform=ax.get_yaxis_transform(), fontweight='bold', fontsize=FS, ha='left', va='center', color=colors[ssp_value])
+            ax.text(1.01, slc[idx, np.where(time == yrEN)[0], station][0] + 0.0003, f'{slc[idx, np.where(time == yrEN)[0], station][0]:.2f} m',transform=ax.get_yaxis_transform(), fontweight='bold', fontsize=FS, ha='left', va='center', color=colors[ssp_value])
+        else: ax.text(1.01, slc[idx, -1, station][0] + 0.0003, f'{slc[idx, -1, station][0]:.2f} m',transform=ax.get_yaxis_transform(), fontweight='bold', fontsize=FS, ha='left', va='center', color=colors[ssp_value])
         # ........................................................................................................................................................................
         # Set x-axis label and limits
         ax.set_xlabel('Year', fontsize=FS+(0.25*FS))
@@ -117,5 +119,5 @@ def plot_subplot(ax,file_paths,station,name,ssp,ylab,x_min, x_max, y_min, y_max,
         ax.text(0.015, 0.4, text, fontsize=FS, fontweight='normal', ha='left', va='center', transform=ax.transAxes)
         #
     #
-    ax.set_title('GMSL projections (medium confidence)',fontsize=FS+(0.5*FS))
+    ax.set_title('RMSL projections (medium confidence)',fontsize=FS+(0.5*FS))
     # plt.show()
