@@ -37,5 +37,5 @@ html_exporter.register_preprocessor(RemoveCodeCellPreprocessor, enabled=True)
 html_body = html_body.replace('</head>', custom_css + '</head>')
 
 # Save the HTML
-with open('output.html', 'w', encoding='utf-8') as file:
+with open('NZ_IP_location.html', 'w', encoding='utf-8') as file:
     file.write(html_body)
