@@ -9,7 +9,7 @@ def readTXT_head(path,filename):
     return None
 
 # .............................
-def latlon_head(path,filename):
+def latlon_head(path,filename,lonIDX,latIDX):
     #
     import pandas as pd
     from io import StringIO
@@ -20,8 +20,8 @@ def latlon_head(path,filename):
     df      = pd.read_csv(StringIO(data), delim_whitespace=True, names=col_nme, dtype=str)
     array   = df.to_numpy()
     #
-    Lon = array[:,0].astype(float)
-    Lat = array[:,1].astype(float)
+    Lon = array[:,lonIDX].astype(float)
+    Lat = array[:,latIDX].astype(float)
     return Lon,Lat
 
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -43,32 +43,32 @@ def latlon_csv(path, filename):
     df = pd.read_csv(file_path, delim_whitespace=True, header=None, dtype=str)
     array = df.to_numpy()
     #
-    Lon = array[:, 0].astype(float)
-    Lat = array[:, 1].astype(float)
+    Lon = array[:, 1].astype(float)
+    Lat = array[:, 2].astype(float)
     return Lon, Lat
 
 
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-def plot(ax,var,axPARAM,linPARAM,label):
+def plot(ax,var,linPARAM,label):
     #   
     import matplotlib.pyplot as plt
     #
-    ylab = axPARAM['ylab',None]
-    y_min = axPARAM['y_min',None]
-    y_max = axPARAM['y_max',None]
-    y_ticks = axPARAM['y_ticks',None]
+    # ylab = axPARAM['ylab',None]
+    # y_min = axPARAM['y_min',None]
+    # y_max = axPARAM['y_max',None]
+    # y_ticks = axPARAM['y_ticks',None]
     #
-    xlab = axPARAM['xlab',None]
-    x_min = axPARAM['x_min',None]
-    x_max = axPARAM['x_max',None]
-    x_ticks = axPARAM['x_ticks',None]
+    # xlab = axPARAM['xlab',None]
+    # x_min = axPARAM['x_min',None]
+    # x_max = axPARAM['x_max',None]
+    # x_ticks = axPARAM['x_ticks',None]
     #
-    clr = linPARAM['clr',None]
-    lab = linPARAM['lab',None]
-    mrkr = linPARAM['mrkr',None]#'.'
-    mrkrsz = linPARAM['mrkrsz',None]
+    clr = linPARAM.get('clr', None)
+    lab = linPARAM.get('lab', None)
+    mrkr = linPARAM.get('mrkr', None)
+    mrkrsz = linPARAM.get('mrkrsz', None)
     #
-    title = label['title',None]
+    title = label.get('title',None)
     #
     ax.plot(var,mrkr,markersize=mrkrsz,color=clr,label=lab)
     #
