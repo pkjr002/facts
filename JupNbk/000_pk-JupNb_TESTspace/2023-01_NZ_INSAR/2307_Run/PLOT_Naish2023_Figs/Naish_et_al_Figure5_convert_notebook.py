@@ -27,7 +27,7 @@ class RemoveCodeCellPreprocessor(Preprocessor):
         return nb, resources
 
 # Load the notebook
-with open('NZ_IP_location.ipynb', 'r', encoding='utf-8') as file:
+with open('Naish_et_al_Figure5v001.ipynb', 'r', encoding='utf-8') as file:
     notebook_content = nbformat.read(file, as_version=4)
 
 # Create the custom HTML exporter
@@ -38,5 +38,5 @@ html_exporter.register_preprocessor(RemoveCodeCellPreprocessor, enabled=True)
 (html_body, _) = html_exporter.from_notebook_node(notebook_content)
 
 # Save the HTML
-with open('NZ_IP_location.html', 'w', encoding='utf-8') as file:
+with open('Naish_et_al_Figure5v001.html', 'w', encoding='utf-8') as file:
     file.write(html_body)
