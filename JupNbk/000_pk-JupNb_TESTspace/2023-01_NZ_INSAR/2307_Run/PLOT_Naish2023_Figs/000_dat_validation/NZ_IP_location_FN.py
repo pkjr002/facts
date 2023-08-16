@@ -1,12 +1,12 @@
     
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-def readTXT_head(path,filename):
-    #
+def readTXT_head(path, filename):
     with open(f'{path}/{filename}', 'r') as file:
         for i, line in enumerate(file):
-            if i < 10:
+            if i == 0 or (i >= 2500 and i <= 2509): 
                 print(line.strip())
     return None
+
 
 # .............................
 def latlon_head(path,filename,lonIDX,latIDX):
@@ -25,13 +25,12 @@ def latlon_head(path,filename,lonIDX,latIDX):
     return Lon,Lat
 
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-def readTXT_csv(path,filename):
-    #
+def readTXT_csv(path, filename):
     import csv
     with open(f'{path}/{filename}', 'r') as file:
         reader = csv.reader(file, delimiter='\t')
         for i, row in enumerate(reader):
-            if i < 10:
+            if i == 0 or (i >= 2500 and i <= 2509):  
                 print(" ".join(row))
     return None
 
@@ -53,11 +52,11 @@ def plot(ax,var,linPARAM,label):
     #   
     import matplotlib.pyplot as plt
     #
-    # ylab = axPARAM['ylab',None]
-    # y_min = axPARAM['y_min',None]
-    # y_max = axPARAM['y_max',None]
-    # y_ticks = axPARAM['y_ticks',None]
-    #
+    # ylab = axPARAM.get('ylab',None)
+    # y_min = axPARAM.get('y_min',None)
+    # y_max = axPARAM.get('y_max',None)
+    # y_ticks = axPARAM.get('y_ticks',None)
+    # 
     # xlab = axPARAM['xlab',None]
     # x_min = axPARAM['x_min',None]
     # x_max = axPARAM['x_max',None]
@@ -76,3 +75,8 @@ def plot(ax,var,linPARAM,label):
     lgd=plt.legend(loc='lower left',fontsize=18)
     for handle in lgd.legendHandles:
         handle.set_markersize(30) 
+    #
+    ax.grid(True)
+    ax.grid(color='gray', linestyle='-', linewidth=0.75,alpha=0.5)
+    #
+    ax.tick_params(axis='y', which='both', left=True, right=True)
