@@ -50,7 +50,6 @@ colors = {
 }
 #
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# Font
 def plot_subplot(ax,file_paths,station,name,ssp,ylab,x_min, x_max, y_min, y_max, x_ticks, y_ticks,FS,yrST,yrEN):
     lines = []
     labels = []
@@ -72,6 +71,13 @@ def plot_subplot(ax,file_paths,station,name,ssp,ylab,x_min, x_max, y_min, y_max,
         lat = np.around(d0['lat'][station].values, decimals=2)
         lon = np.around(d0['lon'][station].values, decimals=2)
         #
+        # -0918
+        #line,       = ax.plot(time[idx_yr], slc[idx, idx_yr, station].reshape(-1), color=colors[ssp_value])
+        #lines.append(line); labels.append(f'{ssp_value} M')
+        #ax.fill_between(time[idx_yr], slc[idx1, idx_yr, station].reshape(-1), slc[idx2, idx_yr, station].reshape(-1),
+        #                 color=colors[ssp_value], alpha=0.2)
+        
+        #
         if ssp_value == 'ssp126':
 #             line,       = ax.plot(time[idx_yr], slc[idx1, idx_yr, station].reshape(-1), color=colors[ssp_value], linestyle='--')
 #             lines.append(line); labels.append(f'{ssp_value} p17')
@@ -89,6 +95,7 @@ def plot_subplot(ax,file_paths,station,name,ssp,ylab,x_min, x_max, y_min, y_max,
 #             line,       = ax.plot(time[idx_yr], slc[idx2, idx_yr, station].reshape(-1), color=colors[ssp_value], linestyle='--')
 #             lines.append(line); labels.append(f'{ssp_value} p83')
             ax.fill_between(time[idx_yr], slc[idx1, idx_yr, station].reshape(-1), slc[idx2, idx_yr, station].reshape(-1),color=colors[ssp_value], alpha=0.2)
+        #
         # ........................................................................................................................................................................
         # Mark the Right values.
         if ssp_value == 'ssp585':
@@ -113,34 +120,44 @@ def plot_subplot(ax,file_paths,station,name,ssp,ylab,x_min, x_max, y_min, y_max,
         ax.set_ylim(y_min, y_max)
         ax.set_xticks(x_ticks);  ax.set_xticklabels(x_ticks,fontsize=FS, rotation=45)
         ax.set_yticks(y_ticks);  ax.set_yticklabels(y_ticks,fontsize=FS) 
-        ax.legend(lines,labels , loc='upper left', fontsize=FS)
+        #ax.grid(True)
         #
         tick_len=3.5;  tick_wid=1
         ax.tick_params(direction='in', length=tick_len, width=tick_wid, axis='both', top=True, right=True)
         for axis in ['top', 'bottom', 'left', 'right']:
             ax.spines[axis].set_linewidth(1)
-    #
-    # 0 Horizontal line. 
-    ax.axhline(0, color='black', linestyle='-', linewidth=1)
-#         ax.grid(True); ax.grid(color='gray', linestyle='-', linewidth=0.5,alpha=0.5)
-        #
-        #txt = f'{name}\n(Site {station})'
-        #ax.text(0.03, 0.62, txt,color='blue',transform=ax.transAxes, verticalalignment='top', fontsize=FS, bbox=dict(boxstyle='round', facecolor='white', alpha=0.8))
+        
+        txt = f'{name}\n(Site {station})'
+        ax.text(0.03, 0.58, txt,color='blue',transform=ax.transAxes, verticalalignment='top', fontsize=FS, bbox=dict(boxstyle='round', facecolor='white', alpha=0.8))
         #
         #location = [
         #    f"lat = {str(lat)}",
         #    f"lon = {str(lon)}"
         #]
         #text = "\n".join(location)
-#         ax.text(0.015, 0.4, text, fontsize=FS, fontweight='normal', ha='left', va='center', transform=ax.transAxes)
+        #ax.text(0.015, 0.4, text, fontsize=FS, fontweight='normal', ha='left', va='center', transform=ax.transAxes)
         #
+    #
+    set_subplot_titles(ax, file_paths,FS)
     #
     ax.legend(lines + [ax.fill_between([], [], [], color='gray', alpha=0.2)],
                  labels + ['Shading: 17-83 percentile'], loc='upper left', fontsize=FS+(0.25*FS))
-    ax.set_title('GMSL projections (medium confidence)',fontsize=FS+(0.5*FS))
+    ax.set_title('RMSL projections (medium confidence)',fontsize=FS+(0.5*FS))
     today = date.today().strftime('%Y-%m-%d')
     # Save Figure.
-    figureNAME = "Fig4"+today+".pdf" 
+    figureNAME = "Fig5"+today+".pdf" 
     if os.path.exists(figureNAME): os.remove(figureNAME)
     plt.savefig(figureNAME, format="pdf", bbox_inches="tight")
     # plt.show()
+
+    
+    
+    
+
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+def set_subplot_titles(ax, file_paths,FS):
+    path = file_paths[0]
+    labels = path.split('/')
+    facts_label = next((label for label in labels if 'FACTS' in label), None)
+    if facts_label is not None:
+        ax.set_title(facts_label,fontsize=FS+(0.5*FS))
