@@ -39,9 +39,7 @@ def delete_files_with_pattern(folder, pattern, exclusion_pattern):
 
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # Copy all files to the FOLDER that match a pattern
-def fn.copy_file_with_pattern(source_dir,destination_dir,pattern):
-    # source_dir = expF
-    # destination_dir = folder_path
+def copy_filename_with_pattern(source_dir,destination_dir,pattern):
     source_file_pattern = os.path.join(source_dir, pattern)
     matching_files = glob.glob(source_file_pattern)
     for file_path in matching_files:
@@ -51,7 +49,7 @@ def fn.copy_file_with_pattern(source_dir,destination_dir,pattern):
 
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # Copy all files in a folder to another folder
-def cp_dir2dir(srcDIR,dstnDIR):
+def copy_all_files_from(srcDIR,dstnDIR):
     file_list = os.listdir(srcDIR)
     for file_name in file_list:
         source_file = os.path.join(srcDIR, file_name)
