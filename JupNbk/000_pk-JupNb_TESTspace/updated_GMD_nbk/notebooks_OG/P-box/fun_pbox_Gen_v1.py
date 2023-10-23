@@ -29,20 +29,17 @@ PD = os.getcwd()
 
 
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# deletes all files in a folder that match a particular pattern, except those that contain both pattern and pattern2:
-def delete_files_with_pattern(folder, pattern, pattern2):
-    for filename in os.listdir(folder):
-        if fnmatch.fnmatch(filename, pattern):
-            if fnmatch.fnmatch(filename, pattern2):
-                continue  # Skip files matching the exclusion pattern
-            file_path = os.path.join(folder, filename)
-            os.remove(file_path)
+def delete_files_with_pattern(folder, pattern, exclusion_pattern):
+    folder_path = Path(folder)
+    for file_path in folder_path.glob(pattern):
+        if not file_path.match(exclusion_pattern):
+            file_path.unlink()
             # print(f"Deleted file: {file_path}")
 # ^^^
 
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # Copy all files to the FOLDER that match a pattern
-def cp(source_dir,destination_dir,pattern):
+def fn.copy_file_with_pattern(source_dir,destination_dir,pattern):
     # source_dir = expF
     # destination_dir = folder_path
     source_file_pattern = os.path.join(source_dir, pattern)
@@ -65,15 +62,14 @@ def cp_dir2dir(srcDIR,dstnDIR):
  
  
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-def fileNAME0(patH,name):
-    folder_path = patH
-    search_term = name   # replace with the word you want to search for
-    file_pattern = f"{folder_path}/*{search_term}*"  # create a pattern to match files containing the search term
-    matching_files = glob.glob(file_pattern)
-    if len(matching_files)>1: 
-        raise ValueError("There are 2 files with same keyword")
-    fnme = os.path.basename(matching_files[0])
-    return fnme
+def find_filename_with_pattern(path, search_term):
+    path_obj = Path(path)
+    matching_files = list(path_obj.glob(f"*{search_term}*"))
+    if len(matching_files) > 1:
+        raise ValueError("There are multiple files with the same keyword.")
+    if not matching_files:
+        raise ValueError("No file found with the given keyword.")
+    return matching_files[0].name
 # ^^^
 
 
@@ -159,143 +155,73 @@ def Samples_to_Quantiles(in_file, out_file):
 
 
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-def LoadInfiles(infiles, years):
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-	# Initialize the return variables
-	localsl_q = []
-	file_list = []
-	varname = None
-	varunit = None
-	ids = None
-	lats = None
-	lons = None
-	qvar = None
+def load_infiles(infiles, years):
+    valid_varnames = ["sea_level_change", "sea_level_change_rate"]
+    valid_varunits = {"sea_level_change": "mm", "sea_level_change_rate": "mm per year"}
+    valid_varscale = {"sea_level_change": 1.0, "sea_level_change_rate": 0.1}
+	#
+    localsl_q = []
+    ds = xr.open_dataset(infiles[0])
+	#
+    varname = next((v for v in valid_varnames if v in ds.variables), None)
+    if not varname:
+        raise ValueError(f"No valid variable name exists in {infiles[0]}")
+	#
+    varunit = valid_varunits[varname]
+    varscale = valid_varscale[varname]
+    ids = ds['locations'].values
+    lats = ds['lat'].values
+    lons = ds['lon'].values
+    qvar = np.round(ds['quantiles'].values, 3)
+	#
+    for infile in infiles:
+        with xr.open_dataset(infile) as ds:
+            localsl_q.append(ds[varname].sel(years=years).values)
+	#
+    return np.array(localsl_q), varname, varunit, varscale, ids, lats, lons, qvar
+#
+def generate_pbox(infiles, outfile, pyear_start, pyear_end, pyear_step):
+    years = np.arange(pyear_start, pyear_end+1, pyear_step)
+    component_data, varname, varunit, varscale, ids, lats, lons, qvar = load_infiles(infiles, years)
+	#
+    median_idx = np.flatnonzero(qvar == 0.5)
+    above_idx = np.arange(median_idx + 1, len(qvar))
+    below_idx = np.arange(median_idx)
+	#
+    pbox = np.full(component_data.shape[1:], np.nan)
+    pbox[median_idx,:,:] = np.mean(component_data[:,median_idx,:,:], axis=0)
+    pbox[below_idx,:,:] = np.amin(component_data[:,below_idx,:,:], axis=0)
+    pbox[above_idx,:,:] = np.amax(component_data[:,above_idx,:,:], axis=0)
+	#
+    dataset = xr.Dataset({
+        varname: (["quantiles", "years", "locations"], pbox, {
+            "units": varunit,
+            "missing_value": np.iinfo(np.int16).min,
+            "scale_factor": varscale
+        }),
+        "lat": (["locations"], lats),
+        "lon": (["locations"], lons),
+        "locations": (["locations"], ids),
+        "years": (["years"], years),
+        "quantiles": (["quantiles"], qvar)
+    }, attrs={
+        "description": "Pbox generated from a FACTS sea-level change projection workflow",
+        "history": f"Created {time.ctime(time.time())}",
+        "source": f"Generated with files: {', '.join([os.path.basename(x) for x in infiles])}"
+    })
 
-	# Valid variables over which to generate pboxes
-	valid_varnames = ["sea_level_change", "sea_level_change_rate"]
-	valid_varunits = {"sea_level_change": "mm", "sea_level_change_rate": "mm per year"}
-	valid_varscale = {"sea_level_change": 1.0, "sea_level_change_rate": 0.1}
+    dataset.to_netcdf(outfile)
 
-	# Initialize the first file flag
-	first_file = True
-
-	# Loop over the input files
-	for infile in infiles:
-
-		# Open the input file for reading
-		nc = Dataset(infile, "r")
-
-		# Find which years in the projections match the requested years
-		ncyears = nc.variables['years'][:]
-		_, _, years_idx = np.intersect1d(years, ncyears, return_indices=True)
-
-		# If this is the first file...
-		# 1) determine which variable we're dealing with
-		# 2) extract the non-pbox information that gets passed to the final pbox component file
-		if first_file:
-
-			# Test if a valid variable exists in this file. If so, set varname and
-			# varunit and break loop.
-			for this_varname in valid_varnames:
-				if this_varname in nc.variables.keys():
-					varname = this_varname
-					varunit = valid_varunits[varname]
-					varscale = valid_varscale[varname]
-					break
-
-			# If we couldn't find any valid variable name in the first file, exit with error
-			if varname is None:
-				raise Exception("No valid variable name exists in {}".format(infile))
-
-			# Variable was found. Continue by collecting the rest of the non-pbox information
-			ids = nc.variables['locations'][:]
-			lats = nc.variables['lat'][:]
-			lons = nc.variables['lon'][:]
-			qvar = nc.variables['quantiles'][:]
-
-			# Set the first file flag to false
-			first_file = False
-
-		# Extract the projection quantiles for this file
-		localsl_q.append(nc.variables[varname][:,years_idx,:])
-
-		# Close the netcdf file
-		nc.close()
-
-	# Convert everything into numpy arrays
-	localsl_q = np.array(localsl_q)
-	ids = np.array(ids)
-	lats = np.array(lats)
-	lons = np.array(lons)
-	#qvar = np.array(qvar)
-	qvar = np.round(np.array(qvar), 3)
-
-	# Return everything
-	return(localsl_q, varname, varunit, varscale, ids, lats, lons, qvar)
+# Example usage:
+# generate_pbox(list_of_input_files, "output_file.nc")
 
 
-def main(infiles, outfile, pyear_start=2020, pyear_end=2100, pyear_step=10):
-
-	# Read in all the infiles and generate a large data array
-	years = np.arange(pyear_start, pyear_end+1, pyear_step)
-	component_data, varname, varunit, varscale, ids, lats, lons, qvar = LoadInfiles(infiles, years)
-
-	# Make the infile string for the output netcdf file
-	infile_string = ", ".join([os.path.basename(x) for x in infiles])
-
-	# Which indices are the median, above the median, and below the median
-	median_idx = np.flatnonzero(qvar == 0.5)
-	above_idx = np.arange(median_idx + 1, len(qvar))
-	below_idx = np.arange(median_idx)
-
-	# Initialize the output pbox array
-	pbox = np.full(component_data.shape[1:], np.nan)
-
-	# Use the mean of the medians of the components as the median for the pbox
-	pbox[median_idx,:,:] = np.mean(component_data[:,median_idx,:,:], axis=0)
-
-	# Use the minimum for below the median and maximum for above
-	pbox[below_idx,:,:] = np.amin(component_data[:,below_idx,:,:], axis=0)
-	pbox[above_idx,:,:] = np.amax(component_data[:,above_idx,:,:], axis=0)
-
-	# Write the output netcdf file
-	rootgrp = Dataset(outfile, "w", format="NETCDF4")
-
-	# Define Dimensions
-	site_dim = rootgrp.createDimension("locations", pbox.shape[2])
-	year_dim = rootgrp.createDimension("years", pbox.shape[1])
-	q_dim = rootgrp.createDimension("quantiles", pbox.shape[0])
-
-	# Populate dimension variables
-	lat_var = rootgrp.createVariable("lat", "f4", ("locations",))
-	lon_var = rootgrp.createVariable("lon", "f4", ("locations",))
-	id_var = rootgrp.createVariable("locations", "i4", ("locations",))
-	year_var = rootgrp.createVariable("years", "i4", ("years",))
-	q_var = rootgrp.createVariable("quantiles", "f8", ("quantiles",))
-
-	# Create a data variable
-	localslq = rootgrp.createVariable(varname, "i2", ("quantiles", "years", "locations"), zlib=True, complevel=4)
-	localslq.missing_value = np.iinfo(np.int16).min
-	localslq.scale_factor = varscale
-
-	# Assign attributes
-	rootgrp.description = "Pbox generated from a FACTS sea-level change projection workflow"
-	rootgrp.history = "Created " + time.ctime(time.time())
-	rootgrp.source = "Generated with files: {}".format(infile_string)
-	lat_var.units = "Degrees North"
-	lon_var.units = "Degrees East"
-	localslq.units = varunit
-
-	# Put the data into the netcdf variables
-	lat_var[:] = lats
-	lon_var[:] = lons
-	id_var[:] = ids
-	year_var[:] = years
-	q_var[:] = qvar
-	localslq[:,:,:] = pbox
-
-	# Close the netcdf
-	rootgrp.close()
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
