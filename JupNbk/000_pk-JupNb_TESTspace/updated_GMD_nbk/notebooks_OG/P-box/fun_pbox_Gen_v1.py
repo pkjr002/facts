@@ -153,9 +153,6 @@ def Samples_to_Quantiles(in_file, out_file):
 
 
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
 def load_infiles(infiles, years):
     valid_varnames = ["sea_level_change", "sea_level_change_rate"]
     valid_varunits = {"sea_level_change": "mm", "sea_level_change_rate": "mm per year"}
@@ -181,6 +178,7 @@ def load_infiles(infiles, years):
 	#
     return np.array(localsl_q), varname, varunit, varscale, ids, lats, lons, qvar
 #
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 def generate_pbox(infiles, outfile, pyear_start, pyear_end, pyear_step):
     years = np.arange(pyear_start, pyear_end+1, pyear_step)
     component_data, varname, varunit, varscale, ids, lats, lons, qvar = load_infiles(infiles, years)
@@ -212,15 +210,7 @@ def generate_pbox(infiles, outfile, pyear_start, pyear_end, pyear_step):
     })
 
     dataset.to_netcdf(outfile)
-
-# Example usage:
-# generate_pbox(list_of_input_files, "output_file.nc")
-
-
-# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
+#^^^
 
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # CL fun
