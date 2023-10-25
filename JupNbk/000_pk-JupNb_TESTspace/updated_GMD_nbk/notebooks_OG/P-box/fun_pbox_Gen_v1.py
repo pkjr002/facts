@@ -4,6 +4,7 @@ import sys
 import time
 import glob
 import shutil
+import fnmatch
 from pathlib import Path
 #
 import numpy as np
@@ -19,8 +20,6 @@ import matplotlib.ticker as mticker
 from mpl_toolkits.basemap import Basemap
 import cartopy
 #
-# current_directory = os.getcwd()
-PD = os.getcwd()
 #
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## Function block
@@ -65,9 +64,10 @@ def find_filename_with_pattern(path, search_term):
     matching_files = list(path_obj.glob(f"*{search_term}*"))
     if len(matching_files) > 1:
         raise ValueError("There are multiple files with the same keyword.")
-    if not matching_files:
-        raise ValueError("No file found with the given keyword.")
-    return matching_files[0].name
+    elif not matching_files:
+        return None
+    else:
+        return matching_files[0].name
 # ^^^
 
 
@@ -178,7 +178,7 @@ def load_infiles(infiles, years):
 	#
     return np.array(localsl_q), varname, varunit, varscale, ids, lats, lons, qvar
 #
-# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# ...............................................................................................
 def generate_pbox(infiles, outfile, pyear_start, pyear_end, pyear_step):
     years = np.arange(pyear_start, pyear_end+1, pyear_step)
     component_data, varname, varunit, varscale, ids, lats, lons, qvar = load_infiles(infiles, years)
@@ -213,211 +213,321 @@ def generate_pbox(infiles, outfile, pyear_start, pyear_end, pyear_step):
 #^^^
 
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# CL fun
-def GetScenarios(dir):
-
-	# Get the scenario names from the available scenario directories
-	# Ignore any hidden directories (i.e. .DS_Store)
-	pb1e_scenarios = [x for x in os.listdir(os.path.join(dir, "pb_1e")) if not re.search(r"^\.", x)]
-	pb1f_scenarios = [x for x in os.listdir(os.path.join(dir, "pb_1f")) if not re.search(r"^\.", x)]
-	pb2e_scenarios = [x for x in os.listdir(os.path.join(dir, "pb_2e")) if not re.search(r"^\.", x)]
-	pb2f_scenarios = [x for x in os.listdir(os.path.join(dir, "pb_2f")) if not re.search(r"^\.", x)]
-
-	# Find the overlapping scenarios
-	med_scenarios = list(set(pb1e_scenarios) & set(pb1f_scenarios))
-	low_scenarios = list(set(pb2e_scenarios) & set(pb2f_scenarios))
-
-	# Return the overlapping scenarios
-	med_scenarios.sort()
-	low_scenarios.sort()
-	return(med_scenarios, low_scenarios)
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+def get_scenarios(directory: str) -> tuple:
+	#
+    scenario_types = ["pb_1e", "pb_1f", "pb_2e", "pb_2f"]
+    scenarios = {stype: [x for x in os.listdir(os.path.join(directory, stype)) if not x.startswith('.')] for stype in scenario_types}
+	#
+    med_scenarios = sorted(list(set(scenarios["pb_1e"]) & set(scenarios["pb_1f"])))
+    low_scenarios = sorted(list(set(scenarios["pb_2e"]) & set(scenarios["pb_2f"])))
+	#
+    return med_scenarios, low_scenarios
 
 
-
-def GetFiles(dir):
-
-	# There should be a file for glaciers, landwaterstorage, oceandynamics,
-	# AIS, GIS, and total...and for regional projections verticallandmotion.
-	file_keys = ["glaciers", "landwaterstorage", "sterodynamics", "AIS", "GIS", "total", "verticallandmotion"]
-
-	# Initialize list of matched file keys
-	match_files = {}
-
-	# Loop over the keys and find the associated files
-	for this_key in file_keys:
-
-		# Locate this file in the directory
-		pattern = "*{}*.nc".format(this_key)
-		this_file = fnmatch.filter(os.listdir(dir), pattern)
-
-		# There should be only one match
-		if len(this_file) == 1:
-
-			# Append the match
-			match_files[this_key] = os.path.join(dir, this_file[0])
-
-		elif len(this_file) > 1:
-			raise Exception("More than one file matched in {} for key {}".format(dir, this_key))
-
-		else:
-
-			match_files[this_key] = None
-
-	# Return the dictionary of files
-	return(match_files)
+# def get_files(directory: str) -> dict:
+#     #
+#     file_keys = ["glaciers", "landwaterstorage", "sterodynamics", "AIS", "GIS", "total", "verticallandmotion"]
+#     matched_files = {}
+# 	#
+#     for key in file_keys:
+#         matches = fnmatch.filter(os.listdir(directory), f"*{key}*.nc")
+#         if len(matches) == 1:
+#             matched_files[key] = os.path.join(directory, matches[0])
+#         elif len(matches) > 1:
+#             raise Exception(f"More than one file matched in {directory} for key {key}")
+#         else:
+#             matched_files[key] = None
+# 	#
+#     return matched_files
 
 
+def make_confidence_file(infile_e=None, infile_f=None, f_years=np.arange(2020, 2101, 10), outfile=None, is_rates=False):
+	#
+    if infile_f is None and infile_e is None:
+        return 1
+	#
+    varname = "sea_level_change_rate" if is_rates else "sea_level_change"
+    varscale = 0.1 if is_rates else 1.0
+	#
+    with xr.open_dataset(infile_f, engine='netcdf4') as nc_f:
+        nc_out = nc_f.sel(years=f_years)
+	#
+    source_files = [infile_f]
+    if infile_e is not None:
+        with xr.open_dataset(infile_e, engine='netcdf4') as nc_e:
+            nc_out = nc_e.combine_first(nc_f.sel(years=f_years))
+        source_files.append(infile_e)
+	#
+    nc_missing_value = np.iinfo(np.int16).min
+    nc_attrs = {
+        "description": "Combined confidence output file for AR6 sea-level change projections",
+        "history": f"Created {time.ctime(time.time())}",
+        "source": f"Files Combined: {','.join(source_files)}"
+    }
+	#
+    nc_out.attrs = nc_attrs
+    nc_out.to_netcdf(outfile, encoding={
+        varname: {
+            "scale_factor": varscale,
+            "dtype": "i2",
+            "zlib": True,
+            "complevel": 4,
+            "_FillValue": nc_missing_value
+        }
+    })
 
-# def MakeConfidenceFile(infile_e=None, infile_f=None, f_years=np.arange(2020,2301,10), outfile=None, is_rates=False):
-#-pk def MakeConfidenceFile(infile_e=None, infile_f=None, f_years=np.arange(2020,2151,10), outfile=None, is_rates=False):
-def MakeConfidenceFile(infile_e=None, infile_f=None, f_years=np.arange(2020,2101,10), outfile=None, is_rates=False):
 
-	# If both infile_e and infile_f are None, then there's no data for this component key.
-	# Return and let the code move onto the next component key
-	if infile_f is None and infile_e is None:
-		return(1)
+def generate_confidence_files(pboxdir: str, outdir: str):
+    
+    is_rates = "rates" in pboxdir
+    med_scenarios, low_scenarios = get_scenarios(pboxdir)
+	#
+    confidence_map = {
+        "medium_confidence": med_scenarios,
+        "low_confidence": low_scenarios
+    }
+	#
+	#
+	#
+    sl_files = ["glaciers", "landwaterstorage", "sterodynamics", "AIS", "GIS", "total", "verticallandmotion"]
+	#
+	#
+    for conf_level, scenarios in confidence_map.items():
+        for scenario in scenarios:
+            scenario_dir = os.path.join(pboxdir, "pb_1f" if "medium" in conf_level else "pb_2f", scenario)
+            
+            files = {sl: f'{scenario_dir}/{find_filename_with_pattern(scenario_dir, sl)}' for sl in sl_files}
+			# files = get_files(scenario_dir)
+            # print(files)
 
-	# Variable names and attributes
-	if is_rates:
-		varname = "sea_level_change_rate"
-		varscale = 0.1
-	else:
-		varname = "sea_level_change"
-		varscale = 1.0
+            for key, file_path in files.items():
+                if file_path is None or 'None' in file_path:
+                    continue  
 
-	# Open and subset the f file
-	with xr.open_dataset(infile_f) as nc_f:
-	#with xr.open_dataset(infile_f) as nc_f:
-		nc_out = nc_f.sel(years=f_years)
+                outpath = Path(outdir, conf_level, scenario)
+                outpath.mkdir(parents=True, exist_ok=True)
+                filename = f"{key}_{scenario}_{conf_level}_{'rates' if is_rates else 'values'}.nc"
+                outfile = outpath / filename
+                # print(outfile)
 
-	# Add the f file to the source list
-	source_files = [infile_f]
+                make_confidence_file(infile_f=file_path, f_years=np.arange(2020, 2101, 10), outfile=str(outfile), is_rates=is_rates)
 
-	# If there's an e file, overlap it with the f file
-	if infile_e is not None:
-		with xr.open_dataset(infile_e) as nc_e:
-		#with xr.open_dataset(infile_e) as nc_e:
-			nc_out = nc_e.combine_first(nc_f.sel(years=f_years))
 
-		# Append the e file to the source file list
-		source_files.append(infile_e)
 
-	# Define the missing value for the netCDF files
-	nc_missing_value = np.iinfo(np.int16).min
 
-	# Attributes for the output file
-	nc_attrs = {"description": "Combined confidence output file for AR6 sea-level change projections",
-			"history": "Created " + time.ctime(time.time()),
-			"source": "Files Combined: {}".format(",".join(source_files))}
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# # CL fun
+# def GetScenarios(dir):
 
-	# Put the attributes onto the output file
-	nc_out.attrs = nc_attrs
+# 	# Get the scenario names from the available scenario directories
+# 	# Ignore any hidden directories (i.e. .DS_Store)
+# 	pb1e_scenarios = [x for x in os.listdir(os.path.join(dir, "pb_1e")) if not re.search(r"^\.", x)]
+# 	pb1f_scenarios = [x for x in os.listdir(os.path.join(dir, "pb_1f")) if not re.search(r"^\.", x)]
+# 	pb2e_scenarios = [x for x in os.listdir(os.path.join(dir, "pb_2e")) if not re.search(r"^\.", x)]
+# 	pb2f_scenarios = [x for x in os.listdir(os.path.join(dir, "pb_2f")) if not re.search(r"^\.", x)]
 
-	# Write the output file
-	nc_out.to_netcdf(outfile, encoding={varname: {"scale_factor": varscale, "dtype": "i2", "zlib": True, "complevel":4, "_FillValue": nc_missing_value}})
+# 	# Find the overlapping scenarios
+# 	med_scenarios = list(set(pb1e_scenarios) & set(pb1f_scenarios))
+# 	low_scenarios = list(set(pb2e_scenarios) & set(pb2f_scenarios))
 
-	# Done
-	return(None)
+# 	# Return the overlapping scenarios
+# 	med_scenarios.sort()
+# 	low_scenarios.sort()
+# 	return(med_scenarios, low_scenarios)
 
-# ==> main loop
-def GenerateConfidenceFiles(pboxdir, outdir):
 
-	# Are we working with values or rates?
-	is_rates = True if re.search(r"rates", pboxdir) is not None else False
 
-	# Get the overlapping scenarios for each confidence level
-	med_scenarios, low_scenarios = GetScenarios(pboxdir)
+# def GetFiles(dir):
 
-	# If these are rate pboxes...
-	if is_rates:
+# 	# There should be a file for glaciers, landwaterstorage, oceandynamics,
+# 	# AIS, GIS, and total...and for regional projections verticallandmotion.
+# 	file_keys = ["glaciers", "landwaterstorage", "sterodynamics", "AIS", "GIS", "total", "verticallandmotion"]
 
-		# Medium-confidence: pb_1f through 2150
-		# Low-confidence: pb_2f through 2300
+# 	# Initialize list of matched file keys
+# 	match_files = {}
 
-		# Loop over the medium scenarios
-		for this_scenario in med_scenarios:
+# 	# Loop over the keys and find the associated files
+# 	for this_key in file_keys:
 
-			# Get the list of files for this scenario
-			pb1f_infiles = GetFiles(os.path.join(pboxdir, "pb_1f", this_scenario))
+# 		# Locate this file in the directory
+# 		pattern = "*{}*.nc".format(this_key)
+# 		this_file = fnmatch.filter(os.listdir(dir), pattern)
 
-			# Loop over the available components
-			for this_key in pb1f_infiles.keys():
+# 		# There should be only one match
+# 		if len(this_file) == 1:
 
-				# Define the output file name
-				outpath = Path(os.path.join(outdir, "medium_confidence", this_scenario))
-				Path.mkdir(outpath, parents=True, exist_ok=True)
-				outfile = os.path.join(outpath, "{}_{}_medium_confidence_rates.nc".format(this_key, this_scenario))
+# 			# Append the match
+# 			match_files[this_key] = os.path.join(dir, this_file[0])
 
-				# Make the output file
-				#-pk  MakeConfidenceFile(infile_f=pb1f_infiles[this_key], f_years=np.arange(2020,2151,10), outfile=outfile, is_rates=is_rates)
-				MakeConfidenceFile(infile_f=pb1f_infiles[this_key], f_years=np.arange(2020,2101,10), outfile=outfile, is_rates=is_rates)
+# 		elif len(this_file) > 1:
+# 			raise Exception("More than one file matched in {} for key {}".format(dir, this_key))
 
-		# Loop over the low scenarios
-		for this_scenario in low_scenarios:
+# 		else:
 
-			# Get the list of files for this scenario
-			pb1f_infiles = GetFiles(os.path.join(pboxdir, "pb_2f", this_scenario))
+# 			match_files[this_key] = None
 
-			# Loop over the available components
-			for this_key in pb1f_infiles.keys():
+# 	# Return the dictionary of files
+# 	return(match_files)
 
-				# Define the output file name
-				outpath = Path(os.path.join(outdir, "low_confidence", this_scenario))
-				Path.mkdir(outpath, parents=True, exist_ok=True)
-				outfile = os.path.join(outpath, "{}_{}_low_confidence_rates.nc".format(this_key, this_scenario))
 
-				# Make the output file
-				# MakeConfidenceFile(infile_f=pb1f_infiles[this_key], f_years=np.arange(2020,2301,10), outfile=outfile, is_rates=is_rates, chunksize=chunksize)
-				#-pk MakeConfidenceFile(infile_f=pb1f_infiles[this_key], f_years=np.arange(2020,2151,10), outfile=outfile, is_rates=is_rates)
-				MakeConfidenceFile(infile_f=pb1f_infiles[this_key], f_years=np.arange(2020,2101,10), outfile=outfile, is_rates=is_rates)
 
-	# These are value files...
-	else:
+# # def MakeConfidenceFile(infile_e=None, infile_f=None, f_years=np.arange(2020,2301,10), outfile=None, is_rates=False):
+# #-pk def MakeConfidenceFile(infile_e=None, infile_f=None, f_years=np.arange(2020,2151,10), outfile=None, is_rates=False):
+# def MakeConfidenceFile(infile_e=None, infile_f=None, f_years=np.arange(2020,2101,10), outfile=None, is_rates=False):
 
-		# Medium-confidence: pb_1e through 2100, pb_1f through 2150
-		# Low-confidence: pb_2e through 2100, pb_2f through 2300
+# 	# If both infile_e and infile_f are None, then there's no data for this component key.
+# 	# Return and let the code move onto the next component key
+# 	if infile_f is None and infile_e is None:
+# 		return(1)
 
-		# Loop over the medium scenarios
-		for this_scenario in med_scenarios:
+# 	# Variable names and attributes
+# 	if is_rates:
+# 		varname = "sea_level_change_rate"
+# 		varscale = 0.1
+# 	else:
+# 		varname = "sea_level_change"
+# 		varscale = 1.0
 
-			# Get the list of files for this scenario
-			pb1e_infiles = GetFiles(os.path.join(pboxdir, "pb_1e", this_scenario))
-			pb1f_infiles = GetFiles(os.path.join(pboxdir, "pb_1f", this_scenario))
+# 	# Open and subset the f file
+# 	with xr.open_dataset(infile_f) as nc_f:
+# 	#with xr.open_dataset(infile_f) as nc_f:
+# 		nc_out = nc_f.sel(years=f_years)
 
-			# Loop over the available components
-			for this_key in pb1e_infiles.keys():
+# 	# Add the f file to the source list
+# 	source_files = [infile_f]
 
-				# Define the output file name
-				outpath = Path(os.path.join(outdir, "medium_confidence", this_scenario))
-				Path.mkdir(outpath, parents=True, exist_ok=True)
-				outfile = os.path.join(outpath, "{}_{}_medium_confidence_values.nc".format(this_key, this_scenario))
+# 	# If there's an e file, overlap it with the f file
+# 	if infile_e is not None:
+# 		with xr.open_dataset(infile_e) as nc_e:
+# 		#with xr.open_dataset(infile_e) as nc_e:
+# 			nc_out = nc_e.combine_first(nc_f.sel(years=f_years))
 
-				# Make the output file
-				#-pk MakeConfidenceFile(infile_e=pb1e_infiles[this_key], infile_f=pb1f_infiles[this_key], f_years=np.arange(2020,2151,10), outfile=outfile)
-				MakeConfidenceFile(infile_e=pb1e_infiles[this_key], infile_f=pb1f_infiles[this_key], f_years=np.arange(2020,2101,10), outfile=outfile)
+# 		# Append the e file to the source file list
+# 		source_files.append(infile_e)
 
-		# Loop over the low scenarios
-		for this_scenario in low_scenarios:
+# 	# Define the missing value for the netCDF files
+# 	nc_missing_value = np.iinfo(np.int16).min
 
-			# Get the list of files for this scenario
-			pb1e_infiles = GetFiles(os.path.join(pboxdir, "pb_2e", this_scenario))
-			pb1f_infiles = GetFiles(os.path.join(pboxdir, "pb_2f", this_scenario))
+# 	# Attributes for the output file
+# 	nc_attrs = {"description": "Combined confidence output file for AR6 sea-level change projections",
+# 			"history": "Created " + time.ctime(time.time()),
+# 			"source": "Files Combined: {}".format(",".join(source_files))}
 
-			# Loop over the available components
-			for this_key in pb1e_infiles.keys():
+# 	# Put the attributes onto the output file
+# 	nc_out.attrs = nc_attrs
 
-				# Define the output file name
-				outpath = Path(os.path.join(outdir, "low_confidence", this_scenario))
-				Path.mkdir(outpath, parents=True, exist_ok=True)
-				outfile = os.path.join(outpath, "{}_{}_low_confidence_values.nc".format(this_key, this_scenario))
+# 	# Write the output file
+# 	nc_out.to_netcdf(outfile, encoding={varname: {"scale_factor": varscale, "dtype": "i2", "zlib": True, "complevel":4, "_FillValue": nc_missing_value}})
 
-				# Make the output file
-				# MakeConfidenceFile(infile_e=pb1e_infiles[this_key], infile_f=pb1f_infiles[this_key], f_years=np.arange(2020,2301,10), outfile=outfile, chunksize=chunksize)
-				#-pk MakeConfidenceFile(infile_e=pb1e_infiles[this_key], infile_f=pb1f_infiles[this_key], f_years=np.arange(2020,2151,10), outfile=outfile)
-				MakeConfidenceFile(infile_e=pb1e_infiles[this_key], infile_f=pb1f_infiles[this_key], f_years=np.arange(2020,2101,10), outfile=outfile)
+# 	# Done
+# 	return(None)
 
-	# Done
-	return(None)
+# # ==> main loop
+# def GenerateConfidenceFiles(pboxdir, outdir):
+
+# 	# Are we working with values or rates?
+# 	is_rates = True if re.search(r"rates", pboxdir) is not None else False
+
+# 	# Get the overlapping scenarios for each confidence level
+# 	med_scenarios, low_scenarios = GetScenarios(pboxdir)
+
+# 	# If these are rate pboxes...
+# 	if is_rates:
+
+# 		# Medium-confidence: pb_1f through 2150
+# 		# Low-confidence: pb_2f through 2300
+
+# 		# Loop over the medium scenarios
+# 		for this_scenario in med_scenarios:
+
+# 			# Get the list of files for this scenario
+# 			pb1f_infiles = GetFiles(os.path.join(pboxdir, "pb_1f", this_scenario))
+
+# 			# Loop over the available components
+# 			for this_key in pb1f_infiles.keys():
+
+# 				# Define the output file name
+# 				outpath = Path(os.path.join(outdir, "medium_confidence", this_scenario))
+# 				Path.mkdir(outpath, parents=True, exist_ok=True)
+# 				outfile = os.path.join(outpath, "{}_{}_medium_confidence_rates.nc".format(this_key, this_scenario))
+
+# 				# Make the output file
+# 				#-pk  MakeConfidenceFile(infile_f=pb1f_infiles[this_key], f_years=np.arange(2020,2151,10), outfile=outfile, is_rates=is_rates)
+# 				MakeConfidenceFile(infile_f=pb1f_infiles[this_key], f_years=np.arange(2020,2101,10), outfile=outfile, is_rates=is_rates)
+
+# 		# Loop over the low scenarios
+# 		for this_scenario in low_scenarios:
+
+# 			# Get the list of files for this scenario
+# 			pb1f_infiles = GetFiles(os.path.join(pboxdir, "pb_2f", this_scenario))
+
+# 			# Loop over the available components
+# 			for this_key in pb1f_infiles.keys():
+
+# 				# Define the output file name
+# 				outpath = Path(os.path.join(outdir, "low_confidence", this_scenario))
+# 				Path.mkdir(outpath, parents=True, exist_ok=True)
+# 				outfile = os.path.join(outpath, "{}_{}_low_confidence_rates.nc".format(this_key, this_scenario))
+
+# 				# Make the output file
+# 				# MakeConfidenceFile(infile_f=pb1f_infiles[this_key], f_years=np.arange(2020,2301,10), outfile=outfile, is_rates=is_rates, chunksize=chunksize)
+# 				#-pk MakeConfidenceFile(infile_f=pb1f_infiles[this_key], f_years=np.arange(2020,2151,10), outfile=outfile, is_rates=is_rates)
+# 				MakeConfidenceFile(infile_f=pb1f_infiles[this_key], f_years=np.arange(2020,2101,10), outfile=outfile, is_rates=is_rates)
+
+# 	# These are value files...
+# 	else:
+
+# 		# Medium-confidence: pb_1e through 2100, pb_1f through 2150
+# 		# Low-confidence: pb_2e through 2100, pb_2f through 2300
+
+# 		# Loop over the medium scenarios
+# 		for this_scenario in med_scenarios:
+
+# 			# Get the list of files for this scenario
+# 			pb1e_infiles = GetFiles(os.path.join(pboxdir, "pb_1e", this_scenario))
+# 			pb1f_infiles = GetFiles(os.path.join(pboxdir, "pb_1f", this_scenario))
+
+# 			# Loop over the available components
+# 			for this_key in pb1e_infiles.keys():
+
+# 				# Define the output file name
+# 				outpath = Path(os.path.join(outdir, "medium_confidence", this_scenario))
+# 				Path.mkdir(outpath, parents=True, exist_ok=True)
+# 				outfile = os.path.join(outpath, "{}_{}_medium_confidence_values.nc".format(this_key, this_scenario))
+
+# 				# Make the output file
+# 				#-pk MakeConfidenceFile(infile_e=pb1e_infiles[this_key], infile_f=pb1f_infiles[this_key], f_years=np.arange(2020,2151,10), outfile=outfile)
+# 				MakeConfidenceFile(infile_e=pb1e_infiles[this_key], infile_f=pb1f_infiles[this_key], f_years=np.arange(2020,2101,10), outfile=outfile)
+
+# 		# Loop over the low scenarios
+# 		for this_scenario in low_scenarios:
+
+# 			# Get the list of files for this scenario
+# 			pb1e_infiles = GetFiles(os.path.join(pboxdir, "pb_2e", this_scenario))
+# 			pb1f_infiles = GetFiles(os.path.join(pboxdir, "pb_2f", this_scenario))
+
+# 			# Loop over the available components
+# 			for this_key in pb1e_infiles.keys():
+
+# 				# Define the output file name
+# 				outpath = Path(os.path.join(outdir, "low_confidence", this_scenario))
+# 				Path.mkdir(outpath, parents=True, exist_ok=True)
+# 				outfile = os.path.join(outpath, "{}_{}_low_confidence_values.nc".format(this_key, this_scenario))
+
+# 				# Make the output file
+# 				# MakeConfidenceFile(infile_e=pb1e_infiles[this_key], infile_f=pb1f_infiles[this_key], f_years=np.arange(2020,2301,10), outfile=outfile, chunksize=chunksize)
+# 				#-pk MakeConfidenceFile(infile_e=pb1e_infiles[this_key], infile_f=pb1f_infiles[this_key], f_years=np.arange(2020,2151,10), outfile=outfile)
+# 				MakeConfidenceFile(infile_e=pb1e_infiles[this_key], infile_f=pb1f_infiles[this_key], f_years=np.arange(2020,2101,10), outfile=outfile)
+
+# 	# Done
+# 	return(None)
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 # ^^^
 
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
