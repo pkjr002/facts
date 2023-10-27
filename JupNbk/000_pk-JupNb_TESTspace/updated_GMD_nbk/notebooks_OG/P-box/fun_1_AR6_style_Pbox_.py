@@ -370,3 +370,22 @@ def generate_confidence_files(pboxdir: str, outdir: str):
                 make_confidence_file(infile_f=file_path, f_years=np.arange(2020, 2101, 10), outfile=str(outfile), is_rates=is_rates)
 
 # ^^^
+
+
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+## Data frame for Workflows.
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+def workflow_dataframe():
+    df_reshaped = pd.DataFrame.from_dict(WF_file_patterns, orient='index').transpose().melt(var_name="Workflow", value_name="Pattern").dropna()
+
+    # Grouping by the 'Workflow' column and aggregating the patterns into separate columns
+    df_grouped = df_reshaped.groupby("Workflow")['Pattern'].apply(list).reset_index()
+    df_grouped_patterns = pd.DataFrame(df_grouped['Pattern'].to_list())
+    df_final = pd.concat([df_grouped['Workflow'], df_grouped_patterns], axis=1)
+
+    # Renaming the columns
+    unique_patterns = df_reshaped['Pattern'].unique()
+    column_labels = [pattern.split('.')[-1] for pattern in unique_patterns]
+    new_column_names = ['Workflow'] + column_labels[:df_final.shape[1]-1]
+    df_final.columns = new_column_names
+    return df_final
