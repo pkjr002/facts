@@ -56,8 +56,8 @@ def create_directory(dir_name: str, action: str = "") -> str:
     os.makedirs(full_path, exist_ok=True)
     return full_path
 #
-def delete_files_with_pattern(folder, pattern, exclusion_pattern):
-    folder_path = Path(folder)
+def delete_files_with_pattern(folder_path, pattern, exclusion_pattern):
+    folder_path = Path(folder_path) #Convert folder path string to a Path object
     for file_path in folder_path.glob(pattern):
         if not file_path.match(exclusion_pattern):
             file_path.unlink()
