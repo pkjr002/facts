@@ -17,10 +17,11 @@ from matplotlib.colors import ListedColormap, BoundaryNorm
 current_directory=os.getcwd(); current_directory
 # ==================================================================================================
 
+
+
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # FUNCTION BLOCK.
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
 #
 def list_files_with_names(path, names):    
     if not isinstance(names, list):
@@ -47,7 +48,7 @@ def idx_1yr(yr=None,Dray=None,Tray=None):
 
 
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-def idx_yr(yrST=None, yrEN=None, Darray=None):
+def index_year_range(yrST=None, yrEN=None, Darray=None):
     if yrST is not None and yrEN is not None:
         idx = np.where((Darray >= yrST) & (Darray <= yrEN))[0]
     elif yrST is not None:
@@ -61,30 +62,23 @@ def idx_yr(yrST=None, yrEN=None, Darray=None):
 
 
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-def nc_Xtrct(nc_path,stn,unit,yrST=None, yrEN=None):
-    nc_nme = str(nc_path).split("/")[10].split("coupling")[1]
-    nc_dat = xr.open_dataset(nc_path)
-    # ..........................................
-    time = nc_dat['years'].values
-    idx = idx_yr(yrST, yrEN, time)
-    def_unit = {'m': 1000, 'cm': 10, 'mm': 1}
-    # ..........................................
-    time = time[idx]
-    slc = nc_dat['sea_level_change'].values[:,idx,stn] / def_unit[unit]
-    lat = np.around(nc_dat['lat'][stn].values, decimals=2)
-    lon = np.around(nc_dat['lon'][stn].values, decimals=2)
+def extract_nc_info(nc_path, stn, unit, yrST=None, yrEN=None):
     #
-    return nc_nme,nc_dat,slc,time,lat,lon
-# ^^^
+    nc_data = xr.open_dataset(nc_path)
+    #
+    time = nc_data['years'].values
+    idx = index_year_range(yrST, yrEN, time)
+    time = time[idx]
+    #
+    UNIT_CONVERSION = {'m': 1000, 'cm': 10, 'mm': 1}
+    slc = nc_data['sea_level_change'].values[:, idx, stn] / UNIT_CONVERSION[unit]
+    #
+    lat = np.around(nc_data['lat'][stn].values, decimals=2)
+    lon = np.around(nc_data['lon'][stn].values, decimals=2)
+    #
+    return nc_data, slc, time, lat, lon
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-
-
-
-
-
-
-
-# ^^^
 
 
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -96,8 +90,8 @@ def sub_plot(ax, x1, x2, y1, y2, plot_info):
     'ssp585': np.array([149, 27, 30]) / 255
     }
     # ........................................
-    ax.scatter(x1, y1, marker='s', edgecolor=sspcolors['ssp585'], linestyle='None', s=10, facecolor='none')
-    ax.scatter(x2, y2, marker='o', edgecolor='black', linestyle='None', s=10, facecolor='black')
+    ax.scatter(x1, y1, marker='s', edgecolor=sspcolors['ssp585'], linestyle='None', s=1, facecolor='none')
+    ax.scatter(x2, y2, marker='o', edgecolor='black', linestyle='None', s=1, facecolor='black')
     #
     ax.set_xlabel(plot_info['x_label'], fontsize=6)
     ax.set_ylabel(plot_info['y_label'], fontsize=6)
