@@ -126,7 +126,7 @@ def log_plot(VAR1,VAR2,VAR_name,TVAR1,TVAR2,
              kde_min_tolerance,CMAP, cbar_num_ticks, 
             xlim_min, xlim_max_plus, xlim_max ,xlim_increment, 
             ylim_min, ylim_max_plus, ylim_max ,ylim_increment,
-             COMPONENT,ax,fig,
+             COMPONENT,ax,fig,font,
             kde_min=None,kde_max=None):
     # ........................................
     #
@@ -172,18 +172,18 @@ def log_plot(VAR1,VAR2,VAR_name,TVAR1,TVAR2,
     #
     #
     # Set titles and labels
-    ax.set_title(f"{COMPONENT} contribution to GMSL in {TVAR1} \n and that in {TVAR2}", fontsize=6)
-    ax.set_xlabel(f"{COMPONENT} contribution in {TVAR1} (cm)", fontsize=6)
-    ax.set_ylabel(f"{COMPONENT} contribution in {TVAR2} (cm)", fontsize=6)
+    ax.set_title(f"{COMPONENT} contribution to GMSL in {TVAR1} \n and that in {TVAR2}", fontsize=font)
+    ax.set_xlabel(f"{COMPONENT} contribution in {TVAR1} (cm)", fontsize=font)
+    ax.set_ylabel(f"{COMPONENT} contribution in {TVAR2} (cm)", fontsize=font)
     # Set axis limits and ticks
     ax.set_xlim(xlim_min, xlim_max)
     ax.set_ylim(ylim_min, ylim_max)
     ax.set_xticks(np.arange(xlim_min, xlim_max+xlim_max_plus, xlim_increment))
-    ax.set_xticklabels(np.arange(xlim_min, xlim_max+xlim_max_plus, xlim_increment), fontsize=6, rotation=45)
+    ax.set_xticklabels(np.arange(xlim_min, xlim_max+xlim_max_plus, xlim_increment), fontsize=font, rotation=45)
     ax.set_yticks(np.arange(ylim_min, ylim_max+ylim_max_plus, ylim_increment))
-    ax.set_yticklabels(np.arange(ylim_min, ylim_max+ylim_max_plus, ylim_increment), fontsize=6)
+    ax.set_yticklabels(np.arange(ylim_min, ylim_max+ylim_max_plus, ylim_increment), fontsize=font)
     # Add text
-    ax.text(0.95, 0.95, VAR_name, horizontalalignment='right', verticalalignment='top', transform=ax.transAxes, fontsize=10)
+    ax.text(0.95, 0.95, VAR_name, horizontalalignment='right', verticalalignment='top', transform=ax.transAxes, fontsize=font+1.5)
     #
 #     plt.show()
 
