@@ -64,7 +64,7 @@ def index_year_range(yrST=None, yrEN=None, Darray=None):
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 def extract_nc_info(nc_path, stn, unit, yrST=None, yrEN=None):
     #
-    nc_data = xr.open_dataset(nc_path)
+    nc_data = xr.open_dataset(nc_path, engine='netcdf4')
     #
     time = nc_data['years'].values
     idx = index_year_range(yrST, yrEN, time)
@@ -82,7 +82,7 @@ def extract_nc_info(nc_path, stn, unit, yrST=None, yrEN=None):
 
 
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-def sub_plot(ax, x1, x2, y1, y2, plot_info):
+def sub_plot(ax, x1, y1, x2 , y2, plot_info):
     # ........................................
     sspcolors = {
     'ssp245': np.array([247, 148, 32]) / 255,
@@ -90,12 +90,12 @@ def sub_plot(ax, x1, x2, y1, y2, plot_info):
     'ssp585': np.array([149, 27, 30]) / 255
     }
     # ........................................
-    ax.scatter(x1, y1, marker='s', edgecolor=sspcolors['ssp585'], linestyle='None', s=1, facecolor='none')
-    ax.scatter(x2, y2, marker='o', edgecolor='black', linestyle='None', s=1, facecolor='black')
+    ax.scatter(x1, y1, marker='s', edgecolor=sspcolors['ssp585'], linestyle='None', s=1, facecolor='none',label=plot_info['label1'])
+    ax.scatter(x2, y2, marker='o', edgecolor='blue', linestyle='None', s=1, facecolor='black',label=plot_info['label2'])
     #
     ax.set_xlabel(plot_info['x_label'], fontsize=6)
     ax.set_ylabel(plot_info['y_label'], fontsize=6)
-    ax.set_title(plot_info['title'])
+    ax.set_title(plot_info['title'], fontsize=6)
     #
     ax.set_xlim(plot_info['x_lim'])
     ax.set_ylim(plot_info['y_lim'])
@@ -106,6 +106,7 @@ def sub_plot(ax, x1, x2, y1, y2, plot_info):
     ax.tick_params(axis='x', labelsize=8)
     ax.tick_params(axis='y', labelsize=8)
     ax.tick_params(axis='both', direction='in', right=True, top=True)
+    ax.legend()
 
 
 
