@@ -127,7 +127,7 @@ def log_plot(VAR1,VAR2,VAR_name,TVAR1,TVAR2,
             xlim_min, xlim_max_plus, xlim_max ,xlim_increment, 
             ylim_min, ylim_max_plus, ylim_max ,ylim_increment,
              COMPONENT,ax,fig,
-            kde_min,kde_max):
+            kde_min=None,kde_max=None):
     # ........................................
     #
     # Compute the KDE
@@ -142,10 +142,15 @@ def log_plot(VAR1,VAR2,VAR_name,TVAR1,TVAR2,
     Z = kde([X.flatten(), Y.flatten()]).reshape(X.shape)
     #
     #
-#     kde_min = Z.min()
-#     kde_max = Z.max()
-#     kde_min = max(kde_min, kde_min_tolerance)
-#     kde_max = max(kde_max, kde_min * 10)
+#     if kde_min and kde_max is not None:
+#         kde_min = Z.min()
+#         kde_max = Z.max()
+#         kde_min = max(kde_min, kde_min_tolerance)
+#         kde_max = max(kde_max, kde_min * 10)
+#
+    kde_min = max(Z.min(), kde_min_tolerance) if Z.min() is not None else kde_min_tolerance
+    kde_max = max(Z.max(), kde_min * 10) if Z.max() is not None else kde_min * 10
+
     #
     # Use logarithmic norm
     norm = LogNorm(vmin=kde_min, vmax=kde_max)
