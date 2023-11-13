@@ -27,7 +27,7 @@ class RemoveCodeCellPreprocessor(Preprocessor):
         return nb, resources
 
 # Load the notebook
-with open('fig5_k17_2100vs2030_v3-print.ipynb', 'r', encoding='utf-8') as file:
+with open('CondProb_notebook_d16_K14_PRINT.ipynb', 'r', encoding='utf-8') as file:
     notebook_content = nbformat.read(file, as_version=4)
 
 # Create the custom HTML exporter
@@ -38,5 +38,5 @@ html_exporter.register_preprocessor(RemoveCodeCellPreprocessor, enabled=True)
 (html_body, _) = html_exporter.from_notebook_node(notebook_content)
 
 # Save the HTML
-with open('fig5_k17_2100vs2030_v3-print_.html', 'w', encoding='utf-8') as file:
+with open('CondProb_notebook_d16_K14_PRINT_.html', 'w', encoding='utf-8') as file:
     file.write(html_body)
