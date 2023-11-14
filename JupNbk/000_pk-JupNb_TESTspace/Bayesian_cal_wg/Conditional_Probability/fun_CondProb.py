@@ -113,10 +113,6 @@ def sub_plot(ax, x1, y1, x2 , y2, plot_info):
     ax.tick_params(axis='y', labelsize=8)
     ax.tick_params(axis='both', direction='in', right=True, top=True)
     ax.legend()
-
-
-
-
 # ^^^
 
 
@@ -127,7 +123,7 @@ def log_plot(VAR1,VAR2,VAR_name,TVAR1,TVAR2,
             xlim_min, xlim_max_plus, xlim_max ,xlim_increment, 
             ylim_min, ylim_max_plus, ylim_max ,ylim_increment,
              COMPONENT,ax,fig,font,
-            kde_min=None,kde_max=None):
+            kde_cbar_min=None,kde_cbar_max=None):
     # ........................................
     #
     # Compute the KDE
@@ -142,18 +138,18 @@ def log_plot(VAR1,VAR2,VAR_name,TVAR1,TVAR2,
     Z = kde([X.flatten(), Y.flatten()]).reshape(X.shape)
     #
     #
-#     if kde_min and kde_max is not None:
-#         kde_min = Z.min()
-#         kde_max = Z.max()
-#         kde_min = max(kde_min, kde_min_tolerance)
-#         kde_max = max(kde_max, kde_min * 10)
+#     if kde_cbar_min and kde_cbar_max is not None:
+#         kde_cbar_min = Z.min()
+#         kde_cbar_max = Z.max()
+#         kde_cbar_min = max(kde_cbar_min, kde_min_tolerance)
+#         kde_cbar_max = max(kde_cbar_max, kde_cbar_min * 10)
 #
-    kde_min = max(Z.min(), kde_min_tolerance) if Z.min() is not None else kde_min_tolerance
-    kde_max = max(Z.max(), kde_min * 10) if Z.max() is not None else kde_min * 10
+    kde_cbar_min = max(Z.min(), kde_min_tolerance) if Z.min() is not None else kde_min_tolerance
+    kde_cbar_max = max(Z.max(), kde_cbar_min * 10) if Z.max() is not None else kde_cbar_min * 10
 
     #
     # Use logarithmic norm
-    norm = LogNorm(vmin=kde_min, vmax=kde_max)
+    norm = LogNorm(vmin=kde_cbar_min, vmax=kde_cbar_max)
     #
     # Plot the KDE
     cax = ax.pcolormesh(X, Y, Z, shading='auto', norm=norm, cmap=CMAP)
@@ -162,8 +158,8 @@ def log_plot(VAR1,VAR2,VAR_name,TVAR1,TVAR2,
     # Create the color bar
     cbar = fig.colorbar(cax, ax=ax)
     cbar_num_ticks=cbar_num_ticks
-#     tick_values = np.logspace(np.log10(kde_min), np.log10(kde_max), num=cbar_num_ticks)
-    tick_values = np.logspace(np.log10(kde_min), np.log10(kde_max), num=cbar_num_ticks)
+#     tick_values = np.logspace(np.log10(kde_cbar_min), np.log10(kde_cbar_max), num=cbar_num_ticks)
+    tick_values = np.logspace(np.log10(kde_cbar_min), np.log10(kde_cbar_max), num=cbar_num_ticks)
     cbar.set_ticks(tick_values)
     #
     # Adjust label values.
@@ -186,20 +182,34 @@ def log_plot(VAR1,VAR2,VAR_name,TVAR1,TVAR2,
     ax.text(0.95, 0.95, VAR_name, horizontalalignment='right', verticalalignment='top', transform=ax.transAxes, fontsize=font+1.5)
     #
 #     plt.show()
+# ^^^
+    
+    
+      
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++    
+# PLOT :: 1 component for multiple years.
+#.............................................................
+def plot_1file(component,VAR1_T1,VAR1_T2, VAR1_T3, VAR1_T4, T1,T2,T3,T4,
+               xgrid_min, xgrid_int, xgrid_max, ygrid_min, ygrid_int, ygrid_max,
+               kde_min_tolerance,CMAP, cbar_num_ticks,
+               xlim_min, xlim_max_plus, xlim_max ,xlim_increment, ylim_min, ylim_max_plus, ylim_max ,ylim_increment,
+               COMPONENT,font):
+    data = [
+        {"VAR1": VAR1_T1, "VAR2": VAR1_T4, "TVAR1": T1},
+        {"VAR1": VAR1_T2, "VAR2": VAR1_T4, "TVAR1": T2},
+        {"VAR1": VAR1_T3, "VAR2": VAR1_T4, "TVAR1": T3}
+    ]
+    # Set up the figure and grid
+    fig = plt.figure(figsize=(15, 4))
+    gs = fig.add_gridspec(1, 3)
+    fig.subplots_adjust(wspace=0.4, hspace=0.4)
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    # Loop to create subplots
+    for i, item in enumerate(data):
+        ax = fig.add_subplot(gs[0, i])
+        log_plot(item["VAR1"], item["VAR2"], component, item["TVAR1"], T4, 
+                xgrid_min, xgrid_int, xgrid_max, ygrid_min, ygrid_int, ygrid_max,
+                kde_min_tolerance,CMAP, cbar_num_ticks, 
+                xlim_min, xlim_max_plus, xlim_max ,xlim_increment, ylim_min, ylim_max_plus, ylim_max ,ylim_increment,
+                COMPONENT,ax,fig,font)
+    plt.show()
