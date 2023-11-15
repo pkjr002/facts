@@ -96,7 +96,7 @@ def sub_plot(ax, x1, y1, x2 , y2, plot_info):
     'ssp585': np.array([149, 27, 30]) / 255
     }
     # ........................................
-    ax.scatter(x1, y1, marker='s', edgecolor='red', linestyle='None', s=1, facecolor='none',label=plot_info['label1'])
+    ax.scatter(x1, y1, marker='s', edgecolor='red', linestyle='None', s=10, facecolor='none',label=plot_info['label1'])
     ax.scatter(x2, y2, marker='o', edgecolor='blue', linestyle='None', s=1, facecolor='black',label=plot_info['label2'])
     #
     ax.set_xlabel(plot_info['x_label'], fontsize=6)
@@ -118,20 +118,22 @@ def sub_plot(ax, x1, y1, x2 , y2, plot_info):
 
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 def log_plot(VAR1,VAR2,VAR_name,TVAR1,TVAR2,
-             xgrid_min, xgrid_int, xgrid_max, ygrid_min, ygrid_int, ygrid_max,
-             kde_min_tolerance,CMAP, cbar_num_ticks, 
-            xlim_min, xlim_max_plus, xlim_max ,xlim_increment, 
-            ylim_min, ylim_max_plus, ylim_max ,ylim_increment,
-             COMPONENT,ax,fig,font,
+            xgrid_min, xgrid_max, ygrid_min, ygrid_max, linspace_int,
+            kde_min_tolerance,CMAP, cbar_num_ticks, 
+            xlim_min, xlim_max ,xlim_increment, ylim_min, ylim_max ,ylim_increment,
+            COMPONENT,ax,fig,font,
             kde_cbar_min=None,kde_cbar_max=None):
     # ........................................
-    #
     # Compute the KDE
     kde  = gaussian_kde([VAR1, VAR2])
     #
-    # Adjusted to match axis limits
-    xgrid = np.linspace(xgrid_min, xgrid_int, xgrid_max)  
-    ygrid = np.linspace(ygrid_min, ygrid_int, ygrid_max)  
+    if xgrid_min is None: xgrid_min = min(VAR1)
+    if xgrid_max is None: xgrid_max = max(VAR1) 
+    if ygrid_min is None: ygrid_min = min(VAR2)
+    if ygrid_max is None: ygrid_max = max(VAR2) 
+    #
+    xgrid = np.linspace(xgrid_min, xgrid_max, linspace_int)  
+    ygrid = np.linspace(ygrid_min, ygrid_max, linspace_int)  
     X, Y  = np.meshgrid(xgrid, ygrid)
     #
     # Evaluate the KDE on this grid
@@ -172,12 +174,16 @@ def log_plot(VAR1,VAR2,VAR_name,TVAR1,TVAR2,
     ax.set_xlabel(f"{COMPONENT} contribution in {TVAR1} (cm)", fontsize=font)
     ax.set_ylabel(f"{COMPONENT} contribution in {TVAR2} (cm)", fontsize=font)
     # Set axis limits and ticks
+    if xlim_min is None: xlim_min=xgrid_min 
+    if xlim_max is None: xlim_max=xgrid_max
     ax.set_xlim(xlim_min, xlim_max)
+    ax.set_xticks(np.arange(xlim_min, xlim_max+1, xlim_increment))
+    ax.set_xticklabels(np.arange(xlim_min, xlim_max+1, xlim_increment), fontsize=font, rotation=45)
+    if ylim_min is None: ylim_min=ygrid_min 
+    if ylim_max is None: ylim_max=ygrid_max
     ax.set_ylim(ylim_min, ylim_max)
-    ax.set_xticks(np.arange(xlim_min, xlim_max+xlim_max_plus, xlim_increment))
-    ax.set_xticklabels(np.arange(xlim_min, xlim_max+xlim_max_plus, xlim_increment), fontsize=font, rotation=45)
-    ax.set_yticks(np.arange(ylim_min, ylim_max+ylim_max_plus, ylim_increment))
-    ax.set_yticklabels(np.arange(ylim_min, ylim_max+ylim_max_plus, ylim_increment), fontsize=font)
+    ax.set_yticks(np.arange(ylim_min, ylim_max+1, ylim_increment))
+    ax.set_yticklabels(np.arange(ylim_min, ylim_max+1, ylim_increment), fontsize=font)
     # Add text
     ax.text(0.95, 0.95, VAR_name, horizontalalignment='right', verticalalignment='top', transform=ax.transAxes, fontsize=font+1.5)
     #
@@ -190,9 +196,9 @@ def log_plot(VAR1,VAR2,VAR_name,TVAR1,TVAR2,
 # PLOT :: 1 component for multiple years.
 #.............................................................
 def plot_1file(component,VAR1_T1,VAR1_T2, VAR1_T3, VAR1_T4, T1,T2,T3,T4,
-               xgrid_min, xgrid_int, xgrid_max, ygrid_min, ygrid_int, ygrid_max,
+               xgrid_min, xgrid_max, ygrid_min, ygrid_max, linspace_int,
                kde_min_tolerance,CMAP, cbar_num_ticks,
-               xlim_min, xlim_max_plus, xlim_max ,xlim_increment, ylim_min, ylim_max_plus, ylim_max ,ylim_increment,
+               xlim_min, xlim_max ,xlim_increment, ylim_min, ylim_max ,ylim_increment,
                COMPONENT,font):
     data = [
         {"VAR1": VAR1_T1, "VAR2": VAR1_T4, "TVAR1": T1},
@@ -208,8 +214,36 @@ def plot_1file(component,VAR1_T1,VAR1_T2, VAR1_T3, VAR1_T4, T1,T2,T3,T4,
     for i, item in enumerate(data):
         ax = fig.add_subplot(gs[0, i])
         log_plot(item["VAR1"], item["VAR2"], component, item["TVAR1"], T4, 
-                xgrid_min, xgrid_int, xgrid_max, ygrid_min, ygrid_int, ygrid_max,
+                xgrid_min, xgrid_max, ygrid_min, ygrid_max, linspace_int,
                 kde_min_tolerance,CMAP, cbar_num_ticks, 
-                xlim_min, xlim_max_plus, xlim_max ,xlim_increment, ylim_min, ylim_max_plus, ylim_max ,ylim_increment,
+                xlim_min, xlim_max ,xlim_increment, ylim_min, ylim_max ,ylim_increment,
+                COMPONENT,ax,fig,font)
+    plt.show()
+
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++    
+# PLOT :: Multiple files for the same year
+#.............................................................
+def plot_1file(component,VAR1_T1,VAR1_T2, VAR1_T3, VAR1_T4, T1,T2,T3,T4,
+               xgrid_min, xgrid_max, ygrid_min, ygrid_max, linspace_int,
+               kde_min_tolerance,CMAP, cbar_num_ticks,
+               xlim_min, xlim_max ,xlim_increment, ylim_min, ylim_max ,ylim_increment,
+               COMPONENT,font):
+    data = [
+        {"VAR1": VAR1_T1, "VAR2": VAR1_T4, "TVAR1": T1},
+        {"VAR1": VAR1_T2, "VAR2": VAR1_T4, "TVAR1": T2},
+        {"VAR1": VAR1_T3, "VAR2": VAR1_T4, "TVAR1": T3}
+    ]
+    # Set up the figure and grid
+    fig = plt.figure(figsize=(15, 4))
+    gs = fig.add_gridspec(1, 3)
+    fig.subplots_adjust(wspace=0.4, hspace=0.4)
+
+    # Loop to create subplots
+    for i, item in enumerate(data):
+        ax = fig.add_subplot(gs[0, i])
+        log_plot(item["VAR1"], item["VAR2"], component, item["TVAR1"], T4, 
+                xgrid_min, xgrid_max, ygrid_min, ygrid_max, linspace_int,
+                kde_min_tolerance,CMAP, cbar_num_ticks, 
+                xlim_min, xlim_max ,xlim_increment, ylim_min, ylim_max ,ylim_increment,
                 COMPONENT,ax,fig,font)
     plt.show()
