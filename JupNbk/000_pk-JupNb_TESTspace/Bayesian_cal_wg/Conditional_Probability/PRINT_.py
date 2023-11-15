@@ -1,7 +1,12 @@
+FILE_NAME='CondProb_notebook_2_AIS'
+#
 import nbformat
 from nbconvert import HTMLExporter
 from nbconvert.preprocessors import Preprocessor
-
+#
+from datetime import datetime
+today_date = datetime.now().strftime("%Y%m%d_%H%M")
+#
 class RemoveCodeCellPreprocessor(Preprocessor):
     def preprocess(self, nb, resources):
         new_cells = []
@@ -27,7 +32,7 @@ class RemoveCodeCellPreprocessor(Preprocessor):
         return nb, resources
 
 # Load the notebook
-with open('CondProb_notebook_d16_K14_PRINT.ipynb', 'r', encoding='utf-8') as file:
+with open(f'{FILE_NAME}.ipynb', 'r', encoding='utf-8') as file:
     notebook_content = nbformat.read(file, as_version=4)
 
 # Create the custom HTML exporter
@@ -38,5 +43,5 @@ html_exporter.register_preprocessor(RemoveCodeCellPreprocessor, enabled=True)
 (html_body, _) = html_exporter.from_notebook_node(notebook_content)
 
 # Save the HTML
-with open('CondProb_notebook_d16_K14_PRINT_.html', 'w', encoding='utf-8') as file:
+with open(f'./_print/{today_date}_{FILE_NAME}_.html', 'w', encoding='utf-8') as file:
     file.write(html_body)
