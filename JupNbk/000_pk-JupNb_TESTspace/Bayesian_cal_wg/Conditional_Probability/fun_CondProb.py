@@ -139,15 +139,9 @@ def log_plot(VAR1,VAR2,VAR_name,TVAR1,TVAR2,
     # Evaluate the KDE on this grid
     Z = kde([X.flatten(), Y.flatten()]).reshape(X.shape)
     #
-    #
-#     if kde_cbar_min and kde_cbar_max is not None:
-#         kde_cbar_min = Z.min()
-#         kde_cbar_max = Z.max()
-#         kde_cbar_min = max(kde_cbar_min, kde_min_tolerance)
-#         kde_cbar_max = max(kde_cbar_max, kde_cbar_min * 10)
-#
-    kde_cbar_min = max(Z.min(), kde_min_tolerance) if Z.min() is not None else kde_min_tolerance
-    kde_cbar_max = max(Z.max(), kde_cbar_min * 10) if Z.max() is not None else kde_cbar_min * 10
+    kde_cbar_min = max(Z.min(), kde_min_tolerance) if kde_cbar_min is None else kde_cbar_min
+    kde_cbar_max = Z.max() if kde_cbar_max is None else kde_cbar_max
+#     kde_cbar_max = max(Z.max(), kde_cbar_min * 100) if Z.max() is not None else kde_cbar_min * 100
 
     #
     # Use logarithmic norm
@@ -165,8 +159,10 @@ def log_plot(VAR1,VAR2,VAR_name,TVAR1,TVAR2,
     cbar.set_ticks(tick_values)
     #
     # Adjust label values.
-    cbar.set_ticklabels(['{:.3f}'.format(tick) for tick in tick_values])
-#     cbar.set_ticklabels(['{:.4e}'.format(tick) if tick < 0.0001 else '{:.4f}'.format(tick) for tick in tick_values])
+#     cbar.set_ticklabels(['{:.5f}'.format(tick) for tick in tick_values])
+    cbar.set_ticklabels(['{:.1e}'.format(tick) if tick < 0.0001 else '{:.4f}'.format(tick) for tick in tick_values])
+    for label in cbar.ax.get_yticklabels():
+        label.set_rotation(-45)
     #
     #
     # Set titles and labels
@@ -177,8 +173,9 @@ def log_plot(VAR1,VAR2,VAR_name,TVAR1,TVAR2,
     if xlim_min is None: xlim_min=xgrid_min 
     if xlim_max is None: xlim_max=xgrid_max
     ax.set_xlim(xlim_min, xlim_max)
-    ax.set_xticks(np.arange(xlim_min, xlim_max+1, xlim_increment))
-    ax.set_xticklabels(np.arange(xlim_min, xlim_max+1, xlim_increment), fontsize=font, rotation=45)
+    x_ticks = np.arange(xlim_min, xlim_max + 1, xlim_increment)
+    ax.set_xticks(x_ticks) 
+    ax.set_xticklabels(['{:.2f}'.format(tick) for tick in x_ticks], fontsize=font, rotation=45)
     if ylim_min is None: ylim_min=ygrid_min 
     if ylim_max is None: ylim_max=ygrid_max
     ax.set_ylim(ylim_min, ylim_max)
@@ -194,34 +191,6 @@ def log_plot(VAR1,VAR2,VAR_name,TVAR1,TVAR2,
       
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++    
 # PLOT :: 1 component for multiple years.
-#.............................................................
-def plot_1file(component,VAR1_T1,VAR1_T2, VAR1_T3, VAR1_T4, T1,T2,T3,T4,
-               xgrid_min, xgrid_max, ygrid_min, ygrid_max, linspace_int,
-               kde_min_tolerance,CMAP, cbar_num_ticks,
-               xlim_min, xlim_max ,xlim_increment, ylim_min, ylim_max ,ylim_increment,
-               COMPONENT,font):
-    data = [
-        {"VAR1": VAR1_T1, "VAR2": VAR1_T4, "TVAR1": T1},
-        {"VAR1": VAR1_T2, "VAR2": VAR1_T4, "TVAR1": T2},
-        {"VAR1": VAR1_T3, "VAR2": VAR1_T4, "TVAR1": T3}
-    ]
-    # Set up the figure and grid
-    fig = plt.figure(figsize=(15, 4))
-    gs = fig.add_gridspec(1, 3)
-    fig.subplots_adjust(wspace=0.4, hspace=0.4)
-
-    # Loop to create subplots
-    for i, item in enumerate(data):
-        ax = fig.add_subplot(gs[0, i])
-        log_plot(item["VAR1"], item["VAR2"], component, item["TVAR1"], T4, 
-                xgrid_min, xgrid_max, ygrid_min, ygrid_max, linspace_int,
-                kde_min_tolerance,CMAP, cbar_num_ticks, 
-                xlim_min, xlim_max ,xlim_increment, ylim_min, ylim_max ,ylim_increment,
-                COMPONENT,ax,fig,font)
-    plt.show()
-
-# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++    
-# PLOT :: Multiple files for the same year
 #.............................................................
 def plot_1file(component,VAR1_T1,VAR1_T2, VAR1_T3, VAR1_T4, T1,T2,T3,T4,
                xgrid_min, xgrid_max, ygrid_min, ygrid_max, linspace_int,
