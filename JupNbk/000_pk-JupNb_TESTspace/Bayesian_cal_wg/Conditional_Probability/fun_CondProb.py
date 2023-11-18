@@ -223,7 +223,7 @@ def plot_1file(component,VAR1_T1,VAR1_T2, VAR1_T3, VAR1_T4, T1,T2,T3,T4,
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++  
 # Plot contour that sums to 1 along columns.
 #.............................................................
-def gilford(xaxVAR, yaxVAR,K,BW,linspace_int, val):
+def gilford(ax, xaxVAR, yaxVAR,K,BW,linspace_int, val, xaxLAB,yaxLAB,title,scatter):
 
     # create 2D matrix.
     INdata = np.column_stack((xaxVAR, yaxVAR))
@@ -266,6 +266,31 @@ def gilford(xaxVAR, yaxVAR,K,BW,linspace_int, val):
         density_values_Normalized = density_values/density_values.sum(axis=0)
         PLOT_VAR=density_values_Normalized    
 
-    return PLOT_VAR, Xgrid, Ygrid, INdata
+
+    # PLOT
+    if PLOT_VAR.min() < 0:
+        min=PLOT_VAR.min()
+    else:
+        min=1e-3
+
+    clevels=np.linspace(min,PLOT_VAR.max(),10)
+    clabels=np.round(clevels,decimals=3).astype('str')
+    contour=ax.contourf(Xgrid, Ygrid, PLOT_VAR,levels=clevels,cmap='GnBu')
+    #
+    if scatter == 'YES':
+        ax.scatter(INdata[:, 0], INdata[:, 1], s=.5, facecolor='red')
+    ax.set_title(title,fontsize=8)
+    ax.set_xlabel(xaxLAB)
+    ax.set_ylabel(yaxLAB)
+    #
+    cbar=plt.colorbar(contour,label=val,ticks=clevels,orientation='horizontal',pad=0.1)
+    cbar.set_ticklabels(clabels)
+    cbar.ax.tick_params(labelsize=8)
+    cbar.ax.set_xticklabels(cbar.ax.get_xticklabels(), rotation=45)
+    # plt.show()
+
+
+    # return PLOT_VAR, Xgrid, Ygrid, INdata
+    # return PLOT_VAR
 # ^^^
 
