@@ -16,6 +16,7 @@ from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.colors import ListedColormap, BoundaryNorm
 #
 from scipy.stats import gaussian_kde
+from sklearn.neighbors import KernelDensity
 from matplotlib.colors import LogNorm
 from matplotlib.cm import ScalarMappable
 #
@@ -216,3 +217,55 @@ def plot_1file(component,VAR1_T1,VAR1_T2, VAR1_T3, VAR1_T4, T1,T2,T3,T4,
                 xlim_min, xlim_max ,xlim_increment, ylim_min, ylim_max ,ylim_increment,
                 COMPONENT,ax,fig,font)
     plt.show()
+
+
+
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++  
+# Plot contour that sums to 1 along columns.
+#.............................................................
+def gilford(xaxVAR, yaxVAR,K,BW,linspace_int, val):
+
+    # create 2D matrix.
+    INdata = np.column_stack((xaxVAR, yaxVAR))
+
+    # KDE
+    kde = KernelDensity(kernel=K, bandwidth=BW).fit(INdata)
+
+    # Create a grid of test points
+    xgrid = np.linspace(INdata[:,0].min()-1, INdata[:,0].max()+1, linspace_int)  
+    ygrid = np.linspace(INdata[:,1].min()-1, INdata[:,1].max()+1, linspace_int)  
+    Xgrid, Ygrid  = np.meshgrid(xgrid, ygrid)
+    grid_samples = np.vstack([Xgrid.ravel(), Ygrid.ravel()]).T
+
+    # Eval density model on the grid (log likelihoods)
+    log_density_values = kde.score_samples(grid_samples)
+    #Reshape 
+    log_density_values = log_density_values.reshape(Xgrid.shape)
+
+    if val == 'log_density_values':
+        PLOT_VAR=log_density_values
+
+    elif val == 'log_density_values_Normalized':
+        # Convert from log values
+        density_values = np.exp(log_density_values)
+        # Normalize
+        density_values_Normalized = density_values/density_values.sum(axis=0)
+        # Convert back to log values
+        log_density_values_Normalized = np.log(density_values_Normalized)
+        #
+        PLOT_VAR=log_density_values_Normalized    
+
+    elif val == 'density_values':
+        density_values = np.exp(log_density_values)
+        PLOT_VAR=density_values
+
+    elif val == 'density_values_Normalized':
+        # Convert from log values
+        density_values = np.exp(log_density_values)
+        # Normalize
+        density_values_Normalized = density_values/density_values.sum(axis=0)
+        PLOT_VAR=density_values_Normalized    
+
+    return PLOT_VAR, Xgrid, Ygrid, INdata
+# ^^^
+
