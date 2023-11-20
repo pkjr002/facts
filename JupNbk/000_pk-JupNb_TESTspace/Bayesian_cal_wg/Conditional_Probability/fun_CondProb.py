@@ -242,38 +242,63 @@ def gilford(ax, xaxVAR, yaxVAR,K,BW,linspace_int, val, xaxLAB,yaxLAB,title,scatt
     #Reshape 
     log_density_values = log_density_values.reshape(Xgrid.shape)
 
+    
+# ==================================================================================== 
+    # make the max matrix value 0.
+    adjusted_log_density_values = log_density_values - np.max(log_density_values)
+    
+    #calculate adjusted density.
+    adjusted_density_values = np.exp(adjusted_log_density_values)
+    # Normalize
+    normalized_density_values = adjusted_density_values / np.sum(adjusted_density_values, axis=0)
+    
+    # Get the TRUE Density values back
+    density_values = adjusted_density_values*np.exp(np.max(log_density_values))
+    
+    # Normalize log_density_values 
+    # do all of this in log scales (Log-Sum-Exp trick)
+    exp_sum = np.sum(np.exp(adjusted_log_density_values), axis=0)
+    # Readjust by adding back the adjustment factor
+    log_normalization_constant = np.log(exp_sum) + np.max(log_density_values)
+    # Normalize within the log space 
+    normalized_log_density_values = log_density_values - log_normalization_constant
+
+
+
     if val == 'log_density_values':
         PLOT_VAR=log_density_values
 
     elif val == 'log_density_values_Normalized':
-        # Convert from log values
-        density_values = np.exp(log_density_values)
-        # Normalize
-        density_values_Normalized = density_values/density_values.sum(axis=0)
-        # Convert back to log values
-        log_density_values_Normalized = np.log(density_values_Normalized)
-        #
-        PLOT_VAR=log_density_values_Normalized    
+#         # Convert from log values
+#         density_values = np.exp(log_density_values)
+#         # Normalize
+#         density_values_Normalized = density_values/density_values.sum(axis=0)
+#         # Convert back to log values
+#         log_density_values_Normalized = np.log(density_values_Normalized)
+#         #
+#         PLOT_VAR=log_density_values_Normalized    
+        PLOT_VAR=normalized_log_density_values
 
     elif val == 'density_values':
-        density_values = np.exp(log_density_values)
+#         density_values = np.exp(log_density_values)
         PLOT_VAR=density_values
 
     elif val == 'density_values_Normalized':
-        # Convert from log values
-        density_values = np.exp(log_density_values)
-        # Normalize
-        density_values_Normalized = density_values/density_values.sum(axis=0)
-        PLOT_VAR=density_values_Normalized    
+#         # Convert from log values
+#         density_values = np.exp(log_density_values)
+#         # Normalize
+#         density_values_Normalized = density_values/density_values.sum(axis=0)
+#         PLOT_VAR=density_values_Normalized    
+        PLOT_VAR=normalized_density_values
+# ====================================================================================
 
 
-    # PLOT
-    if PLOT_VAR.min() < 0:
-        min=PLOT_VAR.min()
-    else:
-        min=1e-3
-
-    clevels=np.linspace(min,PLOT_VAR.max(),10)
+    if val in ['density_values' , 'density_values_Normalized']:
+        clevels=np.linspace(1e-3,PLOT_VAR.max(),10)
+    else: 
+        clevels=np.linspace(PLOT_VAR.min(),PLOT_VAR.max(),10)
+        #
+#     clevels=np.linspace(PLOT_VAR.min(),PLOT_VAR.max(),10)
     clabels=np.round(clevels,decimals=3).astype('str')
     contour=ax.contourf(Xgrid, Ygrid, PLOT_VAR,levels=clevels,cmap='GnBu')
     #
@@ -291,6 +316,6 @@ def gilford(ax, xaxVAR, yaxVAR,K,BW,linspace_int, val, xaxLAB,yaxLAB,title,scatt
 
 
     # return PLOT_VAR, Xgrid, Ygrid, INdata
-    # return PLOT_VAR
+    return PLOT_VAR
 # ^^^
 
