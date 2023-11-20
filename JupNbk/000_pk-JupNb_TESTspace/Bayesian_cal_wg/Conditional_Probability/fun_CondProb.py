@@ -193,11 +193,10 @@ def log_plot(VAR1,VAR2,VAR_name,TVAR1,TVAR2,
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++    
 # PLOT :: 1 component for multiple years.
 #.............................................................
-def plot_1file(component,VAR1_T1,VAR1_T2, VAR1_T3, VAR1_T4, T1,T2,T3,T4,
+def plot_1file(component, VAR1_T1, VAR1_T2, VAR1_T3, VAR1_T4, T1, T2, T3, T4,
                xgrid_min, xgrid_max, ygrid_min, ygrid_max, linspace_int,
-               kde_min_tolerance,CMAP, cbar_num_ticks,
-               xlim_min, xlim_max ,xlim_increment, ylim_min, ylim_max ,ylim_increment,
-               COMPONENT,font):
+               kde_min_tolerance, CMAP, cbar_num_ticks,
+               COMPONENT, font, axis_limits):
     data = [
         {"VAR1": VAR1_T1, "VAR2": VAR1_T4, "TVAR1": T1},
         {"VAR1": VAR1_T2, "VAR2": VAR1_T4, "TVAR1": T2},
@@ -211,12 +210,16 @@ def plot_1file(component,VAR1_T1,VAR1_T2, VAR1_T3, VAR1_T4, T1,T2,T3,T4,
     # Loop to create subplots
     for i, item in enumerate(data):
         ax = fig.add_subplot(gs[0, i])
+        xlim_min, xlim_max, xlim_increment = axis_limits[i]['xlim']
+        ylim_min, ylim_max, ylim_increment = axis_limits[i]['ylim']
         log_plot(item["VAR1"], item["VAR2"], component, item["TVAR1"], T4, 
-                xgrid_min, xgrid_max, ygrid_min, ygrid_max, linspace_int,
-                kde_min_tolerance,CMAP, cbar_num_ticks, 
-                xlim_min, xlim_max ,xlim_increment, ylim_min, ylim_max ,ylim_increment,
-                COMPONENT,ax,fig,font)
+                 xgrid_min, xgrid_max, ygrid_min, ygrid_max, linspace_int,
+                 kde_min_tolerance, CMAP, cbar_num_ticks, 
+                 xlim_min, xlim_max, xlim_increment, ylim_min, ylim_max, ylim_increment,
+                 COMPONENT, ax, fig, font)
     plt.show()
+
+
 
 
 
