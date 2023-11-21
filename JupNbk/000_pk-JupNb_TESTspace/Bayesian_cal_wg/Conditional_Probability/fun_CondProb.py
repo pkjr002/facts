@@ -120,52 +120,52 @@ def sub_plot(ax, x1, y1, x2 , y2, plot_info):
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 def log_plot(VAR1,VAR2,VAR_name,TVAR1,TVAR2,
             xgrid_min, xgrid_max, ygrid_min, ygrid_max, linspace_int,
-            kde_min_tolerance,CMAP, cbar_num_ticks, 
+            kde_min_tolerance,CMAP, lOg, cbar_num_ticks, 
             xlim_min, xlim_max ,xlim_increment, ylim_min, ylim_max ,ylim_increment,
             COMPONENT,ax,fig,font,
             kde_cbar_min=None,kde_cbar_max=None):
     # ........................................
     # Compute the KDE
     kde  = gaussian_kde([VAR1, VAR2])
-    #
+    
     if xgrid_min is None: xgrid_min = min(VAR1)
     if xgrid_max is None: xgrid_max = max(VAR1) 
     if ygrid_min is None: ygrid_min = min(VAR2)
     if ygrid_max is None: ygrid_max = max(VAR2) 
-    #
+    
     xgrid = np.linspace(xgrid_min, xgrid_max, linspace_int)  
     ygrid = np.linspace(ygrid_min, ygrid_max, linspace_int)  
     X, Y  = np.meshgrid(xgrid, ygrid)
-    #
+    
     # Evaluate the KDE on this grid
     Z = kde([X.flatten(), Y.flatten()]).reshape(X.shape)
-    #
+    
+    # Colorbar limits.
     kde_cbar_min = max(Z.min(), kde_min_tolerance) if kde_cbar_min is None else kde_cbar_min
     kde_cbar_max = Z.max() if kde_cbar_max is None else kde_cbar_max
-#     kde_cbar_max = max(Z.max(), kde_cbar_min * 100) if Z.max() is not None else kde_cbar_min * 100
+    
+    # Use logarithmic norm for the pcolormesh
+    if lOg == 'LOG':
+        norm = LogNorm(vmin=kde_cbar_min, vmax=kde_cbar_max)
+        ## Plot the Normalized KDE
+        cax = ax.pcolormesh(X, Y, Z, shading='auto', norm=norm, cmap=CMAP)
+        cbar = fig.colorbar(cax, ax=ax)
+        tick_values = np.logspace(np.log10(kde_cbar_min), np.log10(kde_cbar_max), num=cbar_num_ticks)
+        cbar.set_ticks(tick_values)
+        cbar.set_ticklabels(['{:.1e}'.format(tick) if tick < 0.0001 else '{:.4f}'.format(tick) for tick in tick_values])
+        for label in cbar.ax.get_yticklabels():
+            label.set_rotation(-45)
 
-    #
-    # Use logarithmic norm
-    norm = LogNorm(vmin=kde_cbar_min, vmax=kde_cbar_max)
-    #
-    # Plot the KDE
-    cax = ax.pcolormesh(X, Y, Z, shading='auto', norm=norm, cmap=CMAP)
-    #
-    #
-    # Create the color bar
-    cbar = fig.colorbar(cax, ax=ax)
-    cbar_num_ticks=cbar_num_ticks
-#     tick_values = np.logspace(np.log10(kde_cbar_min), np.log10(kde_cbar_max), num=cbar_num_ticks)
-    tick_values = np.logspace(np.log10(kde_cbar_min), np.log10(kde_cbar_max), num=cbar_num_ticks)
-    cbar.set_ticks(tick_values)
-    #
-    # Adjust label values.
-#     cbar.set_ticklabels(['{:.5f}'.format(tick) for tick in tick_values])
-    cbar.set_ticklabels(['{:.1e}'.format(tick) if tick < 0.0001 else '{:.4f}'.format(tick) for tick in tick_values])
-    for label in cbar.ax.get_yticklabels():
-        label.set_rotation(-45)
-    #
-    #
+    elif lOg == 'LIN': 
+        # Plot the KDE
+        cax = ax.pcolormesh(X, Y, Z, shading='auto', cmap=CMAP)
+        cbar = fig.colorbar(cax, ax=ax)
+        tick_values = np.linspace(kde_cbar_min, kde_cbar_max, cbar_num_ticks)
+        cbar.set_ticks(tick_values)
+        cbar.set_ticklabels(['{:.1e}'.format(tick) if tick < 0.0001 else '{:.4f}'.format(tick) for tick in tick_values])
+        for label in cbar.ax.get_yticklabels():
+            label.set_rotation(-45)
+       
     # Set titles and labels
     ax.set_title(f"{COMPONENT} contribution to GMSL in {TVAR1} \n and that in {TVAR2}", fontsize=font)
     ax.set_xlabel(f"{COMPONENT} contribution in {TVAR1} (cm)", fontsize=font)
@@ -193,18 +193,19 @@ def log_plot(VAR1,VAR2,VAR_name,TVAR1,TVAR2,
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++    
 # PLOT :: 1 component for multiple years.
 #.............................................................
-def plot_1file(component, VAR1_T1, VAR1_T2, VAR1_T3, VAR1_T4, T1, T2, T3, T4,
+def plot_1file(component, VAR1_T1, VAR1_T2, VAR1_T3, VAR1_T4, VAR1_T5, T1, T2, T3, T4,T5,
                xgrid_min, xgrid_max, ygrid_min, ygrid_max, linspace_int,
-               kde_min_tolerance, CMAP, cbar_num_ticks,
+               kde_min_tolerance, CMAP, lOg,  cbar_num_ticks,
                COMPONENT, font, axis_limits):
     data = [
-        {"VAR1": VAR1_T1, "VAR2": VAR1_T4, "TVAR1": T1},
-        {"VAR1": VAR1_T2, "VAR2": VAR1_T4, "TVAR1": T2},
-        {"VAR1": VAR1_T3, "VAR2": VAR1_T4, "TVAR1": T3}
+        {"VAR1": VAR1_T1, "VAR2": VAR1_T5, "TVAR1": T1},
+        {"VAR1": VAR1_T2, "VAR2": VAR1_T5, "TVAR1": T2},
+        {"VAR1": VAR1_T3, "VAR2": VAR1_T5, "TVAR1": T3},
+        {"VAR1": VAR1_T4, "VAR2": VAR1_T5, "TVAR1": T4}
     ]
     # Set up the figure and grid
-    fig = plt.figure(figsize=(15, 4))
-    gs = fig.add_gridspec(1, 3)
+    # fig = plt.figure(figsize=(15, 4)); gs = fig.add_gridspec(1, 3); 
+    fig = plt.figure(figsize=(20, 4)); gs = fig.add_gridspec(1, 4)
     fig.subplots_adjust(wspace=0.4, hspace=0.4)
 
     # Loop to create subplots
@@ -212,12 +213,12 @@ def plot_1file(component, VAR1_T1, VAR1_T2, VAR1_T3, VAR1_T4, T1, T2, T3, T4,
         ax = fig.add_subplot(gs[0, i])
         xlim_min, xlim_max, xlim_increment = axis_limits[i]['xlim']
         ylim_min, ylim_max, ylim_increment = axis_limits[i]['ylim']
-        log_plot(item["VAR1"], item["VAR2"], component, item["TVAR1"], T4, 
+        log_plot(item["VAR1"], item["VAR2"], component, item["TVAR1"], T5, 
                  xgrid_min, xgrid_max, ygrid_min, ygrid_max, linspace_int,
-                 kde_min_tolerance, CMAP, cbar_num_ticks, 
+                 kde_min_tolerance, CMAP, lOg, cbar_num_ticks, 
                  xlim_min, xlim_max, xlim_increment, ylim_min, ylim_max, ylim_increment,
                  COMPONENT, ax, fig, font)
-    plt.show()
+    # plt.show()
 
 
 
