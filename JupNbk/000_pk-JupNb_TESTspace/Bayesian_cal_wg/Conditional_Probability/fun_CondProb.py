@@ -141,6 +141,7 @@ def log_plot(VAR1,VAR2,VAR_name,TVAR1,TVAR2,
     Z = kde([X.flatten(), Y.flatten()]).reshape(X.shape)
     
     # Colorbar limits.
+    # kde_cbar_min = Z.min() if kde_cbar_min is None else kde_cbar_min
     kde_cbar_min = max(Z.min(), kde_min_tolerance) if kde_cbar_min is None else kde_cbar_min
     kde_cbar_max = Z.max() if kde_cbar_max is None else kde_cbar_max
     
@@ -158,7 +159,7 @@ def log_plot(VAR1,VAR2,VAR_name,TVAR1,TVAR2,
 
     elif lOg == 'LIN': 
         # Plot the KDE
-        cax = ax.pcolormesh(X, Y, Z, shading='auto', cmap=CMAP)
+        cax = ax.pcolormesh(X, Y, Z, shading='auto', cmap=CMAP, vmin=kde_cbar_min, vmax=kde_cbar_max)
         cbar = fig.colorbar(cax, ax=ax)
         tick_values = np.linspace(kde_cbar_min, kde_cbar_max, cbar_num_ticks)
         cbar.set_ticks(tick_values)
@@ -196,7 +197,7 @@ def log_plot(VAR1,VAR2,VAR_name,TVAR1,TVAR2,
 def plot_1file(component, VAR1_T1, VAR1_T2, VAR1_T3, VAR1_T4, VAR1_T5, T1, T2, T3, T4,T5,
                xgrid_min, xgrid_max, ygrid_min, ygrid_max, linspace_int,
                kde_min_tolerance, CMAP, lOg,  cbar_num_ticks,
-               COMPONENT, font, axis_limits):
+               COMPONENT, font, axis_limits, kde_cbar_min=None,kde_cbar_max=None):
     data = [
         {"VAR1": VAR1_T1, "VAR2": VAR1_T5, "TVAR1": T1},
         {"VAR1": VAR1_T2, "VAR2": VAR1_T5, "TVAR1": T2},
@@ -217,7 +218,7 @@ def plot_1file(component, VAR1_T1, VAR1_T2, VAR1_T3, VAR1_T4, VAR1_T5, T1, T2, T
                  xgrid_min, xgrid_max, ygrid_min, ygrid_max, linspace_int,
                  kde_min_tolerance, CMAP, lOg, cbar_num_ticks, 
                  xlim_min, xlim_max, xlim_increment, ylim_min, ylim_max, ylim_increment,
-                 COMPONENT, ax, fig, font)
+                 COMPONENT, ax, fig, font,kde_cbar_min,kde_cbar_max)
     # plt.show()
 
 
