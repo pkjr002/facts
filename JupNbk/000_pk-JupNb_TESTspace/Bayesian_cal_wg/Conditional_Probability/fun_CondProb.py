@@ -150,7 +150,7 @@ def log_plot(VAR1,VAR2,VAR_name,TVAR1,TVAR2,
     if lOg == 'LOG':
         norm = LogNorm(vmin=kde_cbar_min, vmax=kde_cbar_max)
         ## Plot the Normalized KDE
-        cax = ax.pcolormesh(X, Y, Z, shading='auto', norm=norm, cmap=CMAP)
+        cax = ax.pcolormesh(X, Y, Z, shading='auto', norm=norm, cmap=CMAP);
         if isLastColumn:
             cbar = fig.colorbar(cax, ax=ax)
             tick_values = np.logspace(np.log10(kde_cbar_min), np.log10(kde_cbar_max), num=cbar_num_ticks)
@@ -161,7 +161,7 @@ def log_plot(VAR1,VAR2,VAR_name,TVAR1,TVAR2,
 
     elif lOg == 'LIN': 
         # Plot the KDE
-        cax = ax.pcolormesh(X, Y, Z, shading='auto', cmap=CMAP, vmin=kde_cbar_min, vmax=kde_cbar_max)
+        cax = ax.pcolormesh(X, Y, Z, shading='auto', cmap=CMAP, vmin=kde_cbar_min, vmax=kde_cbar_max);
         if isLastColumn:
             cbar = fig.colorbar(cax, ax=ax)
             tick_values = np.linspace(kde_cbar_min, kde_cbar_max, cbar_num_ticks)
@@ -215,12 +215,13 @@ def plot_1file(component, VAR1_T1, VAR1_T2, VAR1_T3, VAR1_T4, VAR1_T5, T1, T2, T
     ]
     # Set up the figure and grid
     # fig = plt.figure(figsize=(15, 4)); gs = fig.add_gridspec(1, 3); 
-    fig = plt.figure(figsize=(20, 4)); gs = fig.add_gridspec(1, 4);
+    fig = plt.figure(figsize=(20, 4)); 
+    gs = fig.add_gridspec(1, 4);
     fig.subplots_adjust(wspace=0.1, hspace=0.4);
 
     # Loop to create subplots
     for i, item in enumerate(data):
-        ax = fig.add_subplot(gs[0, i])
+        ax = fig.add_subplot(gs[0, i]);
         xlim_min, xlim_max, xlim_increment = axis_limits[i]['xlim']
         ylim_min, ylim_max, ylim_increment = axis_limits[i]['ylim']
         isFirstColumn = (i == 0)
