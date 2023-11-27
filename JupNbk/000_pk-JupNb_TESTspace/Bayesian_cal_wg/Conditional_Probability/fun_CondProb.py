@@ -330,7 +330,7 @@ def gilford(ax, xaxVAR, yaxVAR,K,BW,linspace_int, val, xaxLAB,yaxLAB,title,scatt
     ax.set_xlabel(xaxLAB)
     ax.set_ylabel(yaxLAB)
     #
-    cbar=plt.colorbar(contour,label=val,ticks=clevels,orientation='horizontal',pad=0.1)
+    cbar=plt.colorbar(contour,ax=ax,label=val,ticks=clevels,orientation='horizontal',pad=0.1)
     cbar.set_label(label=val, size=10, weight='bold', color='blue')
     cbar.set_ticklabels(clabels)
     cbar.ax.tick_params(labelsize=8)
