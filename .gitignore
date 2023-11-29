@@ -71,3 +71,6 @@ experiments-pkjr002/NZrerun/000_TEST_NZInsarGPS
 NZ_ReRun_2307.tgz
 nzOG.2309.tgz
 nzRE.2309.tgz
+
+# Jupyter Notebook (JupNbk), ISMIP data
+JupNbk/000_pk-JupNb_TESTspace/ISMIP6/003_newTFW/0_data
