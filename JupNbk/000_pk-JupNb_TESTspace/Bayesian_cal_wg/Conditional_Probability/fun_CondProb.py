@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 import xarray as xr
 import seaborn as sns
+from scipy.stats import linregress
 import glob
 import os
 import shutil
@@ -344,3 +345,50 @@ def gilford(ax, xaxVAR, yaxVAR,K,BW,linspace_int, val, xaxLAB,yaxLAB,title,scatt
     # return PLOT_VAR # make sure to uncoment output{}
 # ^^^
 
+
+
+
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++  
+# Plot the samples of a single year.
+#.............................................................
+def PLOT_samps(ssps,comp,data_,years_,color):
+    fig, ax = plt.subplots(5, 5, figsize=(15, 15))
+    for s1,ssp in enumerate(ssps):
+        for y1,year in enumerate(years_):
+            IDXtime = np.where(data_[comp][ssp]['time'] == year)[0][0]
+            Y_= data_[comp][ssp]['slc'][:,IDXtime]
+            ax[s1,y1].plot(Y_, color=color, marker='.', linestyle='none')
+            ax[s1, y1].set_ylim([-10,125])
+            # STAT----------------------------------------------------
+            p17_, p50_, p83_ = np.quantile(Y_, [0.17, 0.5, 0.83])
+            std_dev = np.std(Y_)
+            variance = np.var(Y_)
+            slope, intercept, r_value, p_value, std_err = linregress(range(len(Y_)), Y_)
+            #
+            # put PERCENTILES on plot 
+            percentiles = [(p50_, 'p50')]   #[(p17_, 'p17'), (p50_, 'p50'), (p95_, 'p95')]
+            for percentile, label in percentiles:
+                # Draw a horizontal line for each percentile
+                ax[s1, y1].axhline(y=percentile, color='blue', linestyle='--')
+                # Annotate each line
+                if percentile == p50_:
+                    ax[s1, y1].annotate(f'{label}: {percentile:.2f}', xy=(1, percentile), xycoords=('axes fraction', 'data'), 
+                                        xytext=(-60, -10),textcoords='offset points', horizontalalignment='center', verticalalignment='center',   color='black')
+            #
+            # STaT text Box----------------------------
+            STAT_textstr = '\n'.join((
+                f'STD: {std_dev:.2f}', f'Variance: {variance:.2f}',
+                
+                f'Slope: {slope:.2f}',
+                f'p(17,83): {p17_:.2f},{p83_:.2f}'
+            ))
+            ax[s1, y1].text(0.95, 0.95, STAT_textstr, transform=ax[s1, y1].transAxes, fontsize=8,
+                    verticalalignment='top', horizontalalignment='right', bbox=dict(boxstyle='round,pad=0.5', facecolor='white', edgecolor='black'))
+            #
+            plot_details = '\n'.join((f'{year}',  f'{ssp}'))
+            ax[s1, y1].text(0.05, 0.95, plot_details, transform=ax[s1, y1].transAxes, fontsize=8,
+                    verticalalignment='top', horizontalalignment='left', bbox=dict(boxstyle='round,pad=0.5', facecolor='white', edgecolor='black'))
+            #
+            # Label X_, Y_, Title_
+            ax[4, y1].set_xlabel('Samples')
+            ax[s1, 0].set_ylabel('SLC (cm)')
