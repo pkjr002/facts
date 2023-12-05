@@ -51,3 +51,6 @@ makefile
 
 Q-err.txt
 *.nc
+
+# Jupyter Notebook (JupNbk), ISMIP data
+notebooks/JupNbK_test_sapace/ISMIP6/003_newTFW/0_data
