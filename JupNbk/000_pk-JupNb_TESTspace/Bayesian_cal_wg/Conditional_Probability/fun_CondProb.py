@@ -246,7 +246,7 @@ def plot_1file(component, VAR1_T1, VAR1_T2, VAR1_T3, VAR1_T4, VAR1_T5, T1, T2, T
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++  
 # Plot contour that sums to 1 along columns.
 #.............................................................
-def gilford(ax, xaxVAR, yaxVAR,K,BW,linspace_int, val, xaxLAB,yaxLAB,title,scatter,CMAP,T1):
+def gilford(ax, xaxVAR, yaxVAR,K,BW,linspace_int, val, xaxLAB,yaxLAB,title,ssp,scatter,CMAP,T1, plotOPT=None):
 
     # create 2D matrix.
     INdata = np.column_stack((xaxVAR, yaxVAR))
@@ -315,30 +315,40 @@ def gilford(ax, xaxVAR, yaxVAR,K,BW,linspace_int, val, xaxLAB,yaxLAB,title,scatt
         PLOT_VAR=normalized_density_values
 # ====================================================================================
 
-
+    #_-_-_-_-_-_- FILL contour and COLORbar limits
     if val in ['density_values' , 'density_values_Normalized']:
-        clevels=np.linspace(1e-3,PLOT_VAR.max(),10)
+        if plotOPT is not None and 'c_bar_min' in plotOPT:
+            clevels=np.linspace(plotOPT['c_bar_min'],plotOPT['c_bar_max'],10)    
+        else:
+            clevels=np.linspace(1e-3,PLOT_VAR.max(),10)
     else: 
         clevels=np.linspace(PLOT_VAR.min(),PLOT_VAR.max(),10)
         #
-#     clevels=np.linspace(PLOT_VAR.min(),PLOT_VAR.max(),10)
     clabels=np.round(clevels,decimals=3).astype('str')
+    #
     contour=ax.contourf(Xgrid, Ygrid, PLOT_VAR,levels=clevels,cmap=CMAP)
     #
+    #_-_-_-_-_-_- Overlay a SCATTER of the original data
     if scatter == 'YES':
         ax.scatter(INdata[:, 0], INdata[:, 1], s=.5, facecolor='red')
+    #
+    #_-_-_-_-_-_- AXIS properties
     ax.set_title(title,fontsize=8)
     ax.set_xlabel(xaxLAB)
     ax.set_ylabel(yaxLAB)
     #
-    cbar=plt.colorbar(contour,ax=ax,label=val,ticks=clevels,orientation='horizontal',pad=0.1)
-    cbar.set_label(label=val, size=10, weight='bold', color='blue')
-    cbar.set_ticklabels(clabels)
-    cbar.ax.tick_params(labelsize=8)
-    cbar.ax.set_xticklabels(cbar.ax.get_xticklabels(), rotation=45)
+    if plotOPT['plotCBAR'] == 'YES':
+        cbar=plt.colorbar(contour,ax=ax,label=val,ticks=clevels,orientation='horizontal',pad=0.1)
+        # cbar=plt.colorbar(contour,ax=ax,label=val,ticks=clevels,orientation='vertical',pad=0.1)
+        cbar.set_label(label=val, size=10, weight='bold', color='blue')
+        cbar.set_ticklabels(clabels)
+        cbar.ax.tick_params(labelsize=8)
+        cbar.ax.set_xticklabels(cbar.ax.get_xticklabels(), rotation=45)
     #
-    ax.text(0.9, 0.1, f'{T1}', fontsize=12, color='black', weight='bold', ha='center', va='center', transform=ax.transAxes)
-    
+    ax.text(0.9, 0.1, f'{ssp}\n{T1}', fontsize=7, color='black', weight='bold', ha='center', va='center', transform=ax.transAxes)
+    #
+    if plotOPT is not None and 'y_ax_min' in plotOPT:
+        ax.set_ylim(plotOPT['y_ax_min'],plotOPT['y_ax_max'])
     
 
     # return PLOT_VAR, Xgrid, Ygrid, INdata
