@@ -241,6 +241,38 @@ def plot_1file(component, VAR1_T1, VAR1_T2, VAR1_T3, VAR1_T4, VAR1_T5, T1, T2, T
 
 
 
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++  
+# Function for plotting Conditional Probability.
+#.............................................................
+# Function for plotting
+# def plot_ConditionalProb(ax, var1, var2, t1, t2, ssp, k, bw, linspace_int, scatter, cmap, plotOPT):
+def plot_ConditionalProb(ax, var1, var2, t1, t2):
+    # Common parameters
+    ssp='ssp245'
+    #
+    k = 'gaussian'; bw = 1; linspace_int = 100; scatter = 'NO'; cmap = 'Reds'
+    plotOPT = {'y_ax_min':-10, 'y_ax_max': 75, 'c_bar_min': 0.001, 'c_bar_max': 0.252, 'plotCBAR' : 'YES'}
+    #
+    #-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    # AXIS variables
+
+    var1=var1[ssp]
+    var2=var2[ssp]
+
+    xaxVAR = var1['slc'][:, np.where(var1['time']==t1)[0][0]] 
+    yaxVAR = var2['slc'][:, np.where(var1['time']==t2)[0][0]] 
+    #
+    # LABELS
+    xaxLAB = f"{var1['filename'].split('.')[2]}_{t1}";  
+    yaxLAB = f"{var2['filename'].split('.')[2]}_{t2}"
+    #
+    title = f"{var2['filename'].split('.')[2]} ({var2['filename'].split('.')[-2]}) contribution in {t2} \n as a function of {t1} {var1['filename'].split('.')[2]} ({var1['filename'].split('.')[-2]}) contribution"
+    #
+    # PLOT
+    gilford(ax, xaxVAR, yaxVAR, k, bw, linspace_int, 'density_values_Normalized', xaxLAB, yaxLAB, title, ssp, scatter, cmap, t1, plotOPT)
+
+
+
 
 
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++  
@@ -402,3 +434,39 @@ def PLOT_samps(ssps,comp,data_,years_,color):
             # Label X_, Y_, Title_
             ax[4, y1].set_xlabel('Samples')
             ax[s1, 0].set_ylabel('SLC (cm)')
+
+
+
+
+# # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++  
+# # Read NC.
+# #.............................................................
+# ssps = ['ssp119', 'ssp126','ssp245','ssp370', 'ssp585']
+# #
+# station=0; region='global'
+# #
+# start_year=2020; end_year=2100; unit='cm'; 
+# #
+
+
+# # Dictionary of filenames
+# file_names = {
+#     'wf1f': 'total.workflow.wf1f.{}.nc'.format(region),
+#     'wf2f': 'total.workflow.wf2f.{}.nc'.format(region),
+#     'wf3f': 'total.workflow.wf3f.{}.nc'.format(region),
+#     'wf4' : 'total.workflow.wf4.{}.nc'.format(region)
+# }
+
+# # Base path of data folder (all ssp).
+# base_path = '/Users/dota/werk/2022_09_FACTS/0000_facts-OPdata/amarel/ar2208/factsv1.1.1'
+
+# # Dictionary to store the results
+# all_ssp = {key: {} for key in file_names}
+
+# # Loop over each SSP scenario
+# for ssp in ssps:
+#     for key, filename in file_names.items():
+#         file_path = f'{base_path}/coupling.{ssp}/output/coupling.{ssp}.{filename}'
+#         dat, slc, time, lat, lon = extract_nc_info(file_path, station, unit, start_year, end_year)
+#         all_ssp[key][ssp] = {'dat': dat, 'slc': slc, 'time': time, 'lat': lat, 'lon': lon, 'path': file_path, 'filename': filename}
+# del dat, slc, time, lat, lon, ssp, file_path, key, file_names, filename
