@@ -246,7 +246,7 @@ def plot_1file(component, VAR1_T1, VAR1_T2, VAR1_T3, VAR1_T4, VAR1_T5, T1, T2, T
 #.............................................................
 # Function for plotting
 # def plot_ConditionalProb(ax, var1, var2, t1, t2, ssp, k, bw, linspace_int, scatter, cmap, plotOPT):
-def plot_ConditionalProb(ax, var1, var2, t1, t2):
+def plot_ConditionalProb(ax, var1, var2, t1, t2,var1_lab,var2_lab):
     # Common parameters
     ssp='ssp245'
     #
@@ -263,10 +263,11 @@ def plot_ConditionalProb(ax, var1, var2, t1, t2):
     yaxVAR = var2['slc'][:, np.where(var1['time']==t2)[0][0]] 
     #
     # LABELS
-    xaxLAB = f"{var1['filename'].split('.')[2]}_{t1}";  
-    yaxLAB = f"{var2['filename'].split('.')[2]}_{t2}"
+    xaxLAB = f'{var1_lab}_{t1}'     #xaxLAB = f"{var1['filename'].split('.')[2]}_{t1}";  
+    yaxLAB = f'{var2_lab}_{t2}'     #yaxLAB = f"{var2['filename'].split('.')[2]}_{t2}"
     #
-    title = f"{var2['filename'].split('.')[2]} ({var2['filename'].split('.')[-2]}) contribution in {t2} \n as a function of {t1} {var1['filename'].split('.')[2]} ({var1['filename'].split('.')[-2]}) contribution"
+    # title = f"{var2['filename'].split('.')[2]} ({var2['filename'].split('.')[-2]}) contribution in {t2} \n as a function of {t1} {var1['filename'].split('.')[2]} ({var1['filename'].split('.')[-2]}) contribution"
+    title = f'{t2} {var2_lab}  \n as a function of \n {t1} {var1_lab} '
     #
     # PLOT
     gilford(ax, xaxVAR, yaxVAR, k, bw, linspace_int, 'density_values_Normalized', xaxLAB, yaxLAB, title, ssp, scatter, cmap, t1, plotOPT)
@@ -370,14 +371,15 @@ def gilford(ax, xaxVAR, yaxVAR,K,BW,linspace_int, val, xaxLAB,yaxLAB,title,ssp,s
     ax.set_ylabel(yaxLAB)
     #
     if plotOPT['plotCBAR'] == 'YES':
-        cbar=plt.colorbar(contour,ax=ax,label=val,ticks=clevels,orientation='horizontal',pad=0.1)
+        cbar=plt.colorbar(contour,ax=ax,label=val,ticks=clevels,orientation='horizontal',pad=0.2)
         # cbar=plt.colorbar(contour,ax=ax,label=val,ticks=clevels,orientation='vertical',pad=0.1)
         cbar.set_label(label=val, size=10, weight='bold', color='blue')
         cbar.set_ticklabels(clabels)
         cbar.ax.tick_params(labelsize=8)
         cbar.ax.set_xticklabels(cbar.ax.get_xticklabels(), rotation=45)
     #
-    ax.text(0.9, 0.1, f'{ssp}\n{T1}', fontsize=7, color='black', weight='bold', ha='center', va='center', transform=ax.transAxes)
+    # ax.text(0.9, 0.1, f'{ssp}\n{T1}', fontsize=7, color='black', weight='bold', ha='center', va='center', transform=ax.transAxes)
+    ax.text(0.9, 0.1, f'{ssp}', fontsize=7, color='black', weight='bold', ha='center', va='center', transform=ax.transAxes)
     #
     if plotOPT is not None and 'y_ax_min' in plotOPT:
         ax.set_ylim(plotOPT['y_ax_min'],plotOPT['y_ax_max'])
