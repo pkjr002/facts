@@ -7,6 +7,7 @@ import glob
 import os
 import shutil
 import re
+import sys
 import cartopy
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
@@ -395,14 +396,25 @@ def gilford(ax, xaxVAR, yaxVAR,K,BW,linspace_int, val, xaxLAB,yaxLAB,title,ssp,s
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++  
 # Plot the samples of a single year.
 #.............................................................
-def PLOT_samps(ssps,comp,data_,years_,color):
-    fig, ax = plt.subplots(5, 5, figsize=(15, 15))
+def PLOT_samps(ssps,comp,data_,years_,color,yaxis_limit):
+    
+    # How many subplots to plot
+    if len(ssps) == 5:
+        fig, ax = plt.subplots(5, 5, figsize=(15, 15))
+    elif len(ssps) == 1:
+        fig, ax = plt.subplots(1, 5, figsize=(15, 3))
+    else:
+        print("Error: ONLY 1 or 5 ssps permitted at the moment")
+        sys.exit(1) 
+
     for s1,ssp in enumerate(ssps):
         for y1,year in enumerate(years_):
             IDXtime = np.where(data_[comp][ssp]['time'] == year)[0][0]
             Y_= data_[comp][ssp]['slc'][:,IDXtime]
-            ax[s1,y1].plot(Y_, color=color, marker='.', linestyle='none')
-            ax[s1, y1].set_ylim([-10,125])
+            # PLOT------------------------------------------------------------
+            current_ax = ax[y1] if len(ssps) == 1 else ax[s1,y1]
+            current_ax.plot(Y_, color=color, marker='.', linestyle='none')
+            current_ax.set_ylim(yaxis_limit)   
             # STAT----------------------------------------------------
             p17_, p50_, p83_ = np.quantile(Y_, [0.17, 0.5, 0.83])
             std_dev = np.std(Y_)
@@ -413,12 +425,13 @@ def PLOT_samps(ssps,comp,data_,years_,color):
             percentiles = [(p50_, 'p50')]   #[(p17_, 'p17'), (p50_, 'p50'), (p95_, 'p95')]
             for percentile, label in percentiles:
                 # Draw a horizontal line for each percentile
-                ax[s1, y1].axhline(y=percentile, color='blue', linestyle='--')
+                current_ax.axhline(y=percentile, color='blue', linestyle='--')
                 # Annotate each line
                 if percentile == p50_:
-                    ax[s1, y1].annotate(f'{label}: {percentile:.2f}', xy=(1, percentile), xycoords=('axes fraction', 'data'), 
+                    current_ax.annotate(f'{label}: {percentile:.2f}', xy=(1, percentile), xycoords=('axes fraction', 'data'), 
                                         xytext=(-60, -10),textcoords='offset points', horizontalalignment='center', verticalalignment='center',   color='black')
             #
+            alpha=0.5
             # STaT text Box----------------------------
             STAT_textstr = '\n'.join((
                 f'STD: {std_dev:.2f}', f'Variance: {variance:.2f}',
@@ -426,17 +439,24 @@ def PLOT_samps(ssps,comp,data_,years_,color):
                 f'Slope: {slope:.2f}',
                 f'p(17,83): {p17_:.2f},{p83_:.2f}'
             ))
-            ax[s1, y1].text(0.95, 0.95, STAT_textstr, transform=ax[s1, y1].transAxes, fontsize=8,
-                    verticalalignment='top', horizontalalignment='right', bbox=dict(boxstyle='round,pad=0.5', facecolor='white', edgecolor='black'))
+            current_ax.text(0.95, 0.95, STAT_textstr, transform=current_ax.transAxes, fontsize=8,
+                    verticalalignment='top', horizontalalignment='right', bbox=dict(boxstyle='round,pad=0.5', facecolor='white', edgecolor='black', alpha=alpha),alpha=alpha)
             #
             plot_details = '\n'.join((f'{year}',  f'{ssp}'))
-            ax[s1, y1].text(0.05, 0.95, plot_details, transform=ax[s1, y1].transAxes, fontsize=8,
-                    verticalalignment='top', horizontalalignment='left', bbox=dict(boxstyle='round,pad=0.5', facecolor='white', edgecolor='black'))
+            current_ax.text(0.05, 0.95, plot_details, transform=current_ax.transAxes, fontsize=8,
+                    verticalalignment='top', horizontalalignment='left', bbox=dict(boxstyle='round,pad=0.5', facecolor='white', edgecolor='black', alpha=alpha),alpha=alpha)
+            #
+            data_dets = '\n'.join(( f'{data_[comp][ssp]["path"].split("/")[-1].split(".")[-3]}' , f'{data_[comp][ssp]["path"].split("/")[-1].split(".")[-2]}' ))
+            current_ax.text(0.05, 0.7, data_dets, transform=current_ax.transAxes, fontsize=8,
+                    verticalalignment='top', horizontalalignment='left', bbox=dict(boxstyle='round,pad=0.5', facecolor='white', edgecolor='black', alpha=alpha),alpha=alpha)
             #
             # Label X_, Y_, Title_
-            ax[4, y1].set_xlabel('Samples')
-            ax[s1, 0].set_ylabel('SLC (cm)')
-
+            if len(ssps) == 5: ax[4, y1].set_xlabel('Samples')
+            else: ax[y1].set_xlabel('Samples')
+            
+            
+            if len(ssps) == 5: ax[s1, 0].set_ylabel('SLC (cm)')
+            else: ax[s1].set_ylabel('SLC (cm)')
 
 
 
