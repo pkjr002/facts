@@ -431,23 +431,27 @@ def PLOT_samps(ssps,comp,data_,years_,color,yaxis_limit):
                     current_ax.annotate(f'{label}: {percentile:.2f}', xy=(1, percentile), xycoords=('axes fraction', 'data'), 
                                         xytext=(-60, -10),textcoords='offset points', horizontalalignment='center', verticalalignment='center',   color='black')
             #
+            # Trend................
+            istrend=check_trend(Y_)
+            #
             alpha=0.5
             # STaT text Box----------------------------
             STAT_textstr = '\n'.join((
                 f'STD: {std_dev:.2f}', f'Variance: {variance:.2f}',
                 
                 f'Slope: {slope:.2f}',
-                f'p(17,83): {p17_:.2f},{p83_:.2f}'
+                f'p(17,83): {p17_:.2f},{p83_:.2f}',
+                f'Trend: {istrend}'
             ))
             current_ax.text(0.95, 0.95, STAT_textstr, transform=current_ax.transAxes, fontsize=8,
                     verticalalignment='top', horizontalalignment='right', bbox=dict(boxstyle='round,pad=0.5', facecolor='white', edgecolor='black', alpha=alpha),alpha=alpha)
-            #
+            #    
             plot_details = '\n'.join((f'{year}',  f'{ssp}'))
             current_ax.text(0.05, 0.95, plot_details, transform=current_ax.transAxes, fontsize=8,
                     verticalalignment='top', horizontalalignment='left', bbox=dict(boxstyle='round,pad=0.5', facecolor='white', edgecolor='black', alpha=alpha),alpha=alpha)
             #
             data_dets = '\n'.join(( f'{data_[comp][ssp]["path"].split("/")[-1].split(".")[-3]}' , f'{data_[comp][ssp]["path"].split("/")[-1].split(".")[-2]}' ))
-            current_ax.text(0.05, 0.7, data_dets, transform=current_ax.transAxes, fontsize=8,
+            current_ax.text(0.05, 0.6, data_dets, transform=current_ax.transAxes, fontsize=8,
                     verticalalignment='top', horizontalalignment='left', bbox=dict(boxstyle='round,pad=0.5', facecolor='white', edgecolor='black', alpha=alpha),alpha=alpha)
             #
             # Label X_, Y_, Title_
@@ -460,35 +464,77 @@ def PLOT_samps(ssps,comp,data_,years_,color,yaxis_limit):
 
 
 
-# # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++  
-# # Read NC.
-# #.............................................................
-# ssps = ['ssp119', 'ssp126','ssp245','ssp370', 'ssp585']
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++  
+# Find Trend Based on auto-correlation.
+#.............................................................
+
+from statsmodels.stats.diagnostic import acorr_ljungbox
+
+def check_trend(data):
+
+    # Ljung-Box test to get auto-correlation coefficient.
+    lb_test = acorr_ljungbox(data, lags=len(data)-1, return_df=True)  # OR lags=[1,2,3,4,5]
+
+    # update trend based on p-value.
+    lb_test['trend'] = lb_test['lb_pvalue'].apply(lambda p: 'Yes' if p < 0.05 else 'No')
+    # print(lb_test)
+
+    # Conditionals for trend ..........................................................
+    # STRICT => Check if all values in 'trend' are 'Yes'
+    # trend_in_data = 'Yes' if (lb_test['trend'] == 'Yes').all() else 'No'
+
+    # PCENT => Check based on % of yes/no
+    frequency = lb_test['trend'].value_counts(normalize=True)
+    if frequency.get('Yes', 0) >= 0.80:
+        trend_in_data = 'Yes'
+    elif frequency.get('No', 0) >= 0.80:
+        trend_in_data = 'No'
+    else:
+        trend_in_data = 'CHK'  # Use this or any other label you prefer
+    # Output
+    # print("trend_in_data:", trend_in_data)
+    return trend_in_data
+# ..........................................
+
+
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++  
+# Dataframe to check for trend
+#.............................................................
+def df_samps_trend(ssps,data_,years_):
+    #
+    if len(ssps) >1: 
+        print("Error: ONLY 1 ssp permitted at the moment")
+        sys.exit(1) 
+    #
+    first_level_keys = list(data_.keys())
+    data_dict = {first_level_key: {} for first_level_key in first_level_keys} 
+    data_years_istrend = []
+    for c1,comp in enumerate(first_level_keys):
+        years_istrend=[]
+        for s1,ssp in enumerate(ssps):
+            year_istrend=[]
+            for y1,year in enumerate(years_):
+                IDXtime = np.where(data_[comp][ssp]['time'] == year)[0][0]
+                Y_= data_[comp][ssp]['slc'][:,IDXtime]
+                #
+                # Trend................
+                istrend=check_trend(Y_)
+                #
+                # populate the list
+                data_dict[comp][year] = istrend
+    return data_dict 
+
+
+
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# Xtras.
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+# first_level_keys = list(AIS_all_ssp.keys())
 # #
-# station=0; region='global'
-# #
-# start_year=2020; end_year=2100; unit='cm'; 
-# #
-
-
-# # Dictionary of filenames
-# file_names = {
-#     'wf1f': 'total.workflow.wf1f.{}.nc'.format(region),
-#     'wf2f': 'total.workflow.wf2f.{}.nc'.format(region),
-#     'wf3f': 'total.workflow.wf3f.{}.nc'.format(region),
-#     'wf4' : 'total.workflow.wf4.{}.nc'.format(region)
-# }
-
-# # Base path of data folder (all ssp).
-# base_path = '/Users/dota/werk/2022_09_FACTS/0000_facts-OPdata/amarel/ar2208/factsv1.1.1'
-
-# # Dictionary to store the results
-# all_ssp = {key: {} for key in file_names}
-
-# # Loop over each SSP scenario
-# for ssp in ssps:
-#     for key, filename in file_names.items():
-#         file_path = f'{base_path}/coupling.{ssp}/output/coupling.{ssp}.{filename}'
-#         dat, slc, time, lat, lon = extract_nc_info(file_path, station, unit, start_year, end_year)
-#         all_ssp[key][ssp] = {'dat': dat, 'slc': slc, 'time': time, 'lat': lat, 'lon': lon, 'path': file_path, 'filename': filename}
-# del dat, slc, time, lat, lon, ssp, file_path, key, file_names, filename
+# second_level_keys = {}
+# for first_level_key in AIS_all_ssp:
+#     nested_dict = AIS_all_ssp[first_level_key]
+#     # Collect the keys of the nested dictionary
+#     second_level_keys[first_level_key] = list(nested_dict.keys())
+# print(second_level_keys)
