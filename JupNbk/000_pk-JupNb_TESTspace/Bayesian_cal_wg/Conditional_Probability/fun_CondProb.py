@@ -251,7 +251,7 @@ def plot_ConditionalProb(ax, var1, var2, t1, t2,var1_lab,var2_lab,plotOPT):
     # Common parameters
     ssp='ssp245'
     #
-    k = 'gaussian'; bw = 1; linspace_int = 100; scatter = 'NO'; cmap = 'Reds'
+    k = 'gaussian'; bw = 1; linspace_int = 100; scatter = 'NO'; cmap = plotOPT['cmap'] 
     # plotOPT = {'y_ax_min':-10, 'y_ax_max': 75, 'c_bar_min': 0.001, 'c_bar_max': 0.252, 'plotCBAR' : 'YES'}
     plotOPT = plotOPT 
     #
@@ -269,7 +269,7 @@ def plot_ConditionalProb(ax, var1, var2, t1, t2,var1_lab,var2_lab,plotOPT):
     yaxLAB = f'{var2_lab}_{t2} (cm)'     #yaxLAB = f"{var2['filename'].split('.')[2]}_{t2}"
     #
     # title = f"{var2['filename'].split('.')[2]} ({var2['filename'].split('.')[-2]}) contribution in {t2} \n as a function of {t1} {var1['filename'].split('.')[2]} ({var1['filename'].split('.')[-2]}) contribution"
-    title = f'{t2} {var2_lab}  \n as a function of \n {t1} {var1_lab} '
+    title = f'{t2} {var2_lab}  \n conditional upon \n {t1} {var1_lab} '
     #
     # PLOT
     gilford(ax, xaxVAR, yaxVAR, k, bw, linspace_int, 'density_values_Normalized', xaxLAB, yaxLAB, title, ssp, scatter, cmap, t1, plotOPT)
@@ -400,7 +400,7 @@ def gilford(ax, xaxVAR, yaxVAR,K,BW,linspace_int, val, xaxLAB,yaxLAB,title,ssp,s
     relativeX = transforms.blended_transform_factory(ax.transAxes, ax.transData)
     # ax.text(0, Yp50_,'-', fontsize=14, ha='right', va='center', transform=relativeX)  #'\u2014'
     for Yp in [Yp05_, Yp50_, Yp95_]:
-        ax.text(0, Yp, '-', fontsize=14, ha='right', va='center', transform=relativeX)
+        ax.text(0, Yp, '--', fontsize=14, ha='right', va='center', transform=relativeX)
 
     # return PLOT_VAR, Xgrid, Ygrid, INdata
     # return PLOT_VAR # make sure to uncoment output{}
