@@ -247,12 +247,13 @@ def plot_1file(component, VAR1_T1, VAR1_T2, VAR1_T3, VAR1_T4, VAR1_T5, T1, T2, T
 #.............................................................
 # Function for plotting
 # def plot_ConditionalProb(ax, var1, var2, t1, t2, ssp, k, bw, linspace_int, scatter, cmap, plotOPT):
-def plot_ConditionalProb(ax, var1, var2, t1, t2,var1_lab,var2_lab):
+def plot_ConditionalProb(ax, var1, var2, t1, t2,var1_lab,var2_lab,plotOPT):
     # Common parameters
     ssp='ssp245'
     #
     k = 'gaussian'; bw = 1; linspace_int = 100; scatter = 'NO'; cmap = 'Reds'
-    plotOPT = {'y_ax_min':-10, 'y_ax_max': 75, 'c_bar_min': 0.001, 'c_bar_max': 0.252, 'plotCBAR' : 'YES'}
+    # plotOPT = {'y_ax_min':-10, 'y_ax_max': 75, 'c_bar_min': 0.001, 'c_bar_max': 0.252, 'plotCBAR' : 'YES'}
+    plotOPT = plotOPT 
     #
     #-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
     # AXIS variables
@@ -264,8 +265,8 @@ def plot_ConditionalProb(ax, var1, var2, t1, t2,var1_lab,var2_lab):
     yaxVAR = var2['slc'][:, np.where(var1['time']==t2)[0][0]] 
     #
     # LABELS
-    xaxLAB = f'{var1_lab}_{t1}'     #xaxLAB = f"{var1['filename'].split('.')[2]}_{t1}";  
-    yaxLAB = f'{var2_lab}_{t2}'     #yaxLAB = f"{var2['filename'].split('.')[2]}_{t2}"
+    xaxLAB = f'{var1_lab}_{t1} (cm)'     #xaxLAB = f"{var1['filename'].split('.')[2]}_{t1}";  
+    yaxLAB = f'{var2_lab}_{t2} (cm)'     #yaxLAB = f"{var2['filename'].split('.')[2]}_{t2}"
     #
     # title = f"{var2['filename'].split('.')[2]} ({var2['filename'].split('.')[-2]}) contribution in {t2} \n as a function of {t1} {var1['filename'].split('.')[2]} ({var1['filename'].split('.')[-2]}) contribution"
     title = f'{t2} {var2_lab}  \n as a function of \n {t1} {var1_lab} '
@@ -281,6 +282,9 @@ def plot_ConditionalProb(ax, var1, var2, t1, t2,var1_lab,var2_lab):
 # Plot contour that sums to 1 along columns.
 #.............................................................
 def gilford(ax, xaxVAR, yaxVAR,K,BW,linspace_int, val, xaxLAB,yaxLAB,title,ssp,scatter,CMAP,T1, plotOPT=None):
+
+    Xp05_, Xp50_, Xp95_ = np.quantile(xaxVAR, [0.05, 0.5, 0.95])
+    Yp05_, Yp50_, Yp95_ = np.quantile(yaxVAR, [0.05, 0.5, 0.95])
 
     # create 2D matrix.
     INdata = np.column_stack((xaxVAR, yaxVAR))
@@ -384,7 +388,19 @@ def gilford(ax, xaxVAR, yaxVAR,K,BW,linspace_int, val, xaxLAB,yaxLAB,title,ssp,s
     #
     if plotOPT is not None and 'y_ax_min' in plotOPT:
         ax.set_ylim(plotOPT['y_ax_min'],plotOPT['y_ax_max'])
-    
+    #
+    ax.set_xlim(Xp05_,Xp95_)
+    #
+    import matplotlib.transforms as transforms
+    relativeY = transforms.blended_transform_factory(ax.transData, ax.transAxes)
+    ax.text(Xp50_, 0, '|', fontsize=7, ha='center', va='top', transform=relativeY)
+    # for Xp in [Xp05_, Xp50_, Xp95_]:
+        # ax.text(Xp, 0, '|', fontsize=7, ha='center', va='top', transform=relativeY)
+
+    relativeX = transforms.blended_transform_factory(ax.transAxes, ax.transData)
+    # ax.text(0, Yp50_,'-', fontsize=14, ha='right', va='center', transform=relativeX)  #'\u2014'
+    for Yp in [Yp05_, Yp50_, Yp95_]:
+        ax.text(0, Yp, '-', fontsize=14, ha='right', va='center', transform=relativeX)
 
     # return PLOT_VAR, Xgrid, Ygrid, INdata
     # return PLOT_VAR # make sure to uncoment output{}
