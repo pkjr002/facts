@@ -1,0 +1,10 @@
+This branch is created for creating new emu projections that will involve floating Ice. 
+
+The data for notebook and the note book reside on local mac.
+
+This copyon amarel is to run the emulator  with the new data
+
+
+
+Current stat.
+12/07 - Working here to get facts up and running. Set all as default
