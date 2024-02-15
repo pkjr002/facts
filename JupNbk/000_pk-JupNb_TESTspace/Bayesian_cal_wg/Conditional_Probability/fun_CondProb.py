@@ -251,6 +251,7 @@ def plot_ConditionalProb(ax, var1, var2, t1, t2,var1_lab,var2_lab,plotOPT):
     # Common parameters
     ssp='ssp245'
     #
+    # k = 'gaussian'; bw = 1; linspace_int = 100; scatter = 'NO'; plot_type = 'box'; cmap = plotOPT['cmap'] 
     k = 'gaussian'; bw = 1; linspace_int = 100; scatter = 'NO'; cmap = plotOPT['cmap'] 
     # plotOPT = {'y_ax_min':-10, 'y_ax_max': 75, 'c_bar_min': 0.001, 'c_bar_max': 0.252, 'plotCBAR' : 'YES'}
     plotOPT = plotOPT 
@@ -281,7 +282,7 @@ def plot_ConditionalProb(ax, var1, var2, t1, t2,var1_lab,var2_lab,plotOPT):
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++  
 # Plot contour that sums to 1 along columns.
 #.............................................................
-def gilford(ax, xaxVAR, yaxVAR,K,BW,linspace_int, val, xaxLAB,yaxLAB,title,ssp,scatter,CMAP,T1, plotOPT=None):
+def gilford(ax, xaxVAR, yaxVAR,K,BW,linspace_int, val, xaxLAB,yaxLAB,title,ssp,scatter, CMAP,T1, plotOPT=None):
 
     Xp05_, Xp50_, Xp95_ = np.quantile(xaxVAR, [0.05, 0.5, 0.95])
     Yp05_, Yp50_, Yp95_ = np.quantile(yaxVAR, [0.05, 0.5, 0.95])
@@ -369,6 +370,25 @@ def gilford(ax, xaxVAR, yaxVAR,K,BW,linspace_int, val, xaxLAB,yaxLAB,title,ssp,s
     #_-_-_-_-_-_- Overlay a SCATTER of the original data
     if scatter == 'YES':
         ax.scatter(INdata[:, 0], INdata[:, 1], s=.5, facecolor='red')
+    #
+    #_-_-_-_-_-_- voilin/boxWhisk
+    if plotOPT is not None and 'plot_type' in plotOPT:
+        # Adjusting the bin width for the x-axis and recalculating the binned data
+        bin_width = 1
+        bins = np.arange(np.floor(np.min(INdata[:, 0])), np.ceil(np.max(INdata[:, 0])) + bin_width, bin_width)
+        x_binned = np.digitize(INdata[:, 0], bins)
+        binned_data = [INdata[:, 1][x_binned == i] for i in range(1, len(bins))]
+
+        # Filtering out empty bins
+        non_empty_bins = [data for data in binned_data if len(data) > 0]
+        positions_non_empty = [bins[i] + bin_width / 2 for i, data in enumerate(binned_data) if len(data) > 0]
+        if plotOPT['plot_type'] == 'violin':
+            ax.violinplot(non_empty_bins, positions=positions_non_empty, widths=bin_width * 0.8, showmeans=False, showextrema=True, showmedians=True)
+        if plotOPT['plot_type'] == 'box':
+            for i, data in enumerate(non_empty_bins):
+                ax.boxplot(data, positions=[positions_non_empty[i]], widths=bin_width * 0.8, vert=True, patch_artist=True)
+
+
     #
     #_-_-_-_-_-_- AXIS properties
     ax.set_title(title,fontsize=8)
