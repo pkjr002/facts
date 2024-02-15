@@ -298,4 +298,4 @@ dependencies:
     - wrapt==1.14.1
     - zipp==3.15.0
     - zope-interface==6.1
-prefix: ~/anaconda3/envs/plot_mac
+prefix: ~/anaconda/envs/plot_mac_export
