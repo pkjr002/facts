@@ -243,167 +243,156 @@ def plot_1file(component, VAR1_T1, VAR1_T2, VAR1_T3, VAR1_T4, VAR1_T5, T1, T2, T
 
 
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++  
-# Function for plotting Conditional Probability.
+# Fun: Conditional Probability Plotting.
 #.............................................................
-# Function for plotting
-# def plot_ConditionalProb(ax, var1, var2, t1, t2, ssp, k, bw, linspace_int, scatter, cmap, plotOPT):
+def plot_ConditionalProb_panel(all_ssp_data,plot_params,plotOPT):
+    fig, ax = plt.subplots(1, 4, figsize=(20, 4)); fig.subplots_adjust(wspace=0.3, hspace=0.4)
+    cbar_ax_defined = False  # Flag to track if the external color bar axis has been defined
+    #
+    # Loop through the dictionary and plot
+    for i, params in plot_params.items():
+        # AXIS-LABELS
+        var1_lab = next(key for key, val in all_ssp_data.items() if np.array_equal(val, params['var1']))
+        var2_lab = next(key for key, val in all_ssp_data.items() if np.array_equal(val, params['var2']))
+        #
+        if plotOPT['plotCBAR'] == 'YES':
+            plot_ConditionalProb(ax[i], params['var1'], params['var2'], params['t1'], params['t2'],var1_lab,var2_lab,plotOPT)
+        if plotOPT['plotCBAR'] == 'YES_1':
+            showCBAR = 1 if i == 3 else 0
+            plotOPT['showCBAR'] = showCBAR
+            plotOPT['cbar_ax'] = fig.add_axes([0.95, 0.15, 0.03, 0.7])  # [left, bottom, width, height]
+            plot_ConditionalProb(ax[i], params['var1'], params['var2'], params['t1'], params['t2'],var1_lab,var2_lab,plotOPT)      
+    plt.show()        
+#.............................................................
 def plot_ConditionalProb(ax, var1, var2, t1, t2,var1_lab,var2_lab,plotOPT):
-    # Common parameters
-    ssp='ssp245'
-    #
-    # k = 'gaussian'; bw = 1; linspace_int = 100; scatter = 'NO'; plot_type = 'box'; cmap = plotOPT['cmap'] 
-    k = 'gaussian'; bw = 1; linspace_int = 100; scatter = 'NO'; cmap = plotOPT['cmap'] 
-    # plotOPT = {'y_ax_min':-10, 'y_ax_max': 75, 'c_bar_min': 0.001, 'c_bar_max': 0.252, 'plotCBAR' : 'YES'}
-    plotOPT = plotOPT 
-    #
     #-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
-    # AXIS variables
-
+    # Unpack Plot Options
+    ssp = plotOPT['ssps']
+    kernel = plotOPT['kernel']; 
+    bw_kde = plotOPT['bw_kde']; 
+    kde_grid_int = plotOPT['kde_grid_int']
+    val=plotOPT['val']
+    scatter = plotOPT['scatter']; 
+    cmap = plotOPT['cmap'] 
+    #-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    # Define AXIS variables
     var1=var1[ssp]
     var2=var2[ssp]
-
+    # Extract slc for a specified time slice.
     xaxVAR = var1['slc'][:, np.where(var1['time']==t1)[0][0]] 
     yaxVAR = var2['slc'][:, np.where(var1['time']==t2)[0][0]] 
-    #
     # LABELS
-    xaxLAB = f'{var1_lab}_{t1} (cm)'     #xaxLAB = f"{var1['filename'].split('.')[2]}_{t1}";  
-    yaxLAB = f'{var2_lab}_{t2} (cm)'     #yaxLAB = f"{var2['filename'].split('.')[2]}_{t2}"
-    #
-    # title = f"{var2['filename'].split('.')[2]} ({var2['filename'].split('.')[-2]}) contribution in {t2} \n as a function of {t1} {var1['filename'].split('.')[2]} ({var1['filename'].split('.')[-2]}) contribution"
-    title = f'{t2} {var2_lab}  \n conditional upon \n {t1} {var1_lab} '
-    #
-    # PLOT
-    gilford(ax, xaxVAR, yaxVAR, k, bw, linspace_int, 'density_values_Normalized', xaxLAB, yaxLAB, title, ssp, scatter, cmap, t1, plotOPT)
-
-
+    xaxLAB = f'{var1_lab}_{t1} (cm)'     
+    yaxLAB = f'{var2_lab}_{t2} (cm)'  
+    title  = f'{t2} {var2_lab}  \n conditional upon \n {t1} {var1_lab} '
+    #-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    # PLOT Conditional Probability figure.
+    gilford(ax, xaxVAR, yaxVAR, kernel, bw_kde, kde_grid_int, val, xaxLAB, yaxLAB, title, ssp, scatter, cmap, t1, plotOPT)
 
 
 
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++  
 # Plot contour that sums to 1 along columns.
 #.............................................................
-def gilford(ax, xaxVAR, yaxVAR,K,BW,linspace_int, val, xaxLAB,yaxLAB,title,ssp,scatter, CMAP,T1, plotOPT=None):
-
-    Xp05_, Xp50_, Xp95_ = np.quantile(xaxVAR, [0.05, 0.5, 0.95])
-    Yp05_, Yp50_, Yp95_ = np.quantile(yaxVAR, [0.05, 0.5, 0.95])
-
-    # create 2D matrix.
+def gilford(ax, xaxVAR, yaxVAR,kernel,bw_kde,kde_grid_int, val, xaxLAB,yaxLAB,title,ssp,scatter, CMAP,T1, plotOPT=None):
+    #-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    # Extract Quantiles
+    Xp05_, Xp17_, Xp50_, Xp83_, Xp95_ = np.quantile(xaxVAR, [0.05, 0.17, 0.5, 0.83, 0.95])
+    Yp05_, Yp17_, Yp50_, Yp83_, Yp95_ = np.quantile(yaxVAR, [0.05, 0.17, 0.5, 0.83, 0.95])
+    #-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    # Create 2D matrix.
     INdata = np.column_stack((xaxVAR, yaxVAR))
-
     # KDE
-    kde = KernelDensity(kernel=K, bandwidth=BW).fit(INdata)
-
+    kde = KernelDensity(kernel=kernel, bandwidth=bw_kde).fit(INdata)
     # Create a grid of test points
-    xgrid = np.linspace(INdata[:,0].min()-1, INdata[:,0].max()+1, linspace_int)  
-    ygrid = np.linspace(INdata[:,1].min()-1, INdata[:,1].max()+1, linspace_int)  
+    xgrid = np.linspace(INdata[:,0].min()-1, INdata[:,0].max()+1, kde_grid_int)  
+    ygrid = np.linspace(INdata[:,1].min()-1, INdata[:,1].max()+1, kde_grid_int)  
     Xgrid, Ygrid  = np.meshgrid(xgrid, ygrid)
     grid_samples = np.vstack([Xgrid.ravel(), Ygrid.ravel()]).T
-
+    #
     # Eval density model on the grid (log likelihoods)
     log_density_values = kde.score_samples(grid_samples)
     #Reshape 
     log_density_values = log_density_values.reshape(Xgrid.shape)
-
-    
-# ==================================================================================== 
+    #
+    #-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
     # make the max matrix value 0.
     adjusted_log_density_values = log_density_values - np.max(log_density_values)
-    
     #calculate adjusted density.
     adjusted_density_values = np.exp(adjusted_log_density_values)
     # Normalize
     normalized_density_values = adjusted_density_values / np.sum(adjusted_density_values, axis=0)
-    
     # Get the TRUE Density values back
     density_values = adjusted_density_values*np.exp(np.max(log_density_values))
-    
-    # Normalize log_density_values 
-    # do all of this in log scales (Log-Sum-Exp trick)
+    #
+    # Normalize log_density_values. Do all of this in log scales (Log-Sum-Exp trick)
     exp_sum = np.sum(np.exp(adjusted_log_density_values), axis=0)
     # Readjust by adding back the adjustment factor
     log_normalization_constant = np.log(exp_sum) + np.max(log_density_values)
     # Normalize within the log space 
     normalized_log_density_values = log_density_values - log_normalization_constant
-
-
-
+    #-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
     if val == 'log_density_values':
         PLOT_VAR=log_density_values
-
     elif val == 'log_density_values_Normalized':
-#         # Convert from log values
-#         density_values = np.exp(log_density_values)
-#         # Normalize
-#         density_values_Normalized = density_values/density_values.sum(axis=0)
-#         # Convert back to log values
-#         log_density_values_Normalized = np.log(density_values_Normalized)
-#         #
-#         PLOT_VAR=log_density_values_Normalized    
         PLOT_VAR=normalized_log_density_values
-
     elif val == 'density_values':
-#         density_values = np.exp(log_density_values)
         PLOT_VAR=density_values
-
     elif val == 'density_values_Normalized':
-#         # Convert from log values
-#         density_values = np.exp(log_density_values)
-#         # Normalize
-#         density_values_Normalized = density_values/density_values.sum(axis=0)
-#         PLOT_VAR=density_values_Normalized    
         PLOT_VAR=normalized_density_values
-# ====================================================================================
-
-    #_-_-_-_-_-_- FILL contour and COLORbar limits
+    #
+    #-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    # FILL contour and COLORbar limits
     if val in ['density_values' , 'density_values_Normalized']:
         if plotOPT is not None and 'c_bar_min' in plotOPT:
             clevels=np.linspace(plotOPT['c_bar_min'],plotOPT['c_bar_max'],10)    
-        else:
-            clevels=np.linspace(1e-3,PLOT_VAR.max(),10)
-    else: 
-        clevels=np.linspace(PLOT_VAR.min(),PLOT_VAR.max(),10)
-        #
+        else: clevels=np.linspace(1e-3,PLOT_VAR.max(),10)
+    else: clevels=np.linspace(PLOT_VAR.min(),PLOT_VAR.max(),10)
+    # PLOT:: contour
     clabels=np.round(clevels,decimals=3).astype('str')
-    #
     contour=ax.contourf(Xgrid, Ygrid, PLOT_VAR,levels=clevels,cmap=CMAP)
-    #
-    #_-_-_-_-_-_- Overlay a SCATTER of the original data
+    # COLORBAR::
+    if plotOPT['plotCBAR'] is not None:
+        if plotOPT['plotCBAR'] == 'YES':
+            cbar=plt.colorbar(contour,ax=ax,label=val,ticks=clevels,orientation='horizontal',pad=0.2)
+            # cbar=plt.colorbar(contour,ax=ax,label=val,ticks=clevels,orientation='vertical',pad=0.1)
+            cbar.set_label(label=val, size=10, weight='bold', color='blue')
+            cbar.set_ticklabels(clabels)
+            cbar.ax.tick_params(labelsize=8)
+            cbar.ax.set_xticklabels(cbar.ax.get_xticklabels(), rotation=45)  
+        if plotOPT['plotCBAR'] == 'YES_1' and plotOPT['showCBAR'] == 1:
+            cbar=plt.colorbar(contour,ax=plotOPT['cbar_ax'],label=val,ticks=clevels,orientation='vertical',pad=0.1)    
+            cbar.set_label(label=val, size=10, weight='bold', color='blue')
+            cbar.set_ticklabels(clabels)
+            cbar.ax.tick_params(labelsize=8)
+            # cbar.ax.set_xticklabels(cbar.ax.get_xticklabels(), rotation=45)        
+    #-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    # PLOT:: SCATTER of the original data
     if scatter == 'YES':
         ax.scatter(INdata[:, 0], INdata[:, 1], s=.5, facecolor='red')
     #
-    #_-_-_-_-_-_- voilin/boxWhisk
+    # PLOT:: voilin/boxWhisk
     if plotOPT is not None and 'plot_type' in plotOPT:
         # Adjusting the bin width for the x-axis and recalculating the binned data
-        bin_width = 1
-        bins = np.arange(np.floor(np.min(INdata[:, 0])), np.ceil(np.max(INdata[:, 0])) + bin_width, bin_width)
+        bw_violin = plotOPT['bw_violin']
+        bins = np.arange(np.floor(np.min(INdata[:, 0])), np.ceil(np.max(INdata[:, 0])) + bw_violin, bw_violin)
         x_binned = np.digitize(INdata[:, 0], bins)
         binned_data = [INdata[:, 1][x_binned == i] for i in range(1, len(bins))]
-
+        #
         # Filtering out empty bins
         non_empty_bins = [data for data in binned_data if len(data) > 0]
-        positions_non_empty = [bins[i] + bin_width / 2 for i, data in enumerate(binned_data) if len(data) > 0]
+        positions_non_empty = [bins[i] + bw_violin / 2 for i, data in enumerate(binned_data) if len(data) > 0]
         if plotOPT['plot_type'] == 'violin':
-            ax.violinplot(non_empty_bins, positions=positions_non_empty, widths=bin_width * 0.8, showmeans=False, showextrema=True, showmedians=True)
+            ax.violinplot(non_empty_bins, positions=positions_non_empty, widths=bw_violin * 0.8, showmeans=False, showextrema=True, showmedians=True)
         if plotOPT['plot_type'] == 'box':
             for i, data in enumerate(non_empty_bins):
-                ax.boxplot(data, positions=[positions_non_empty[i]], widths=bin_width * 0.8, vert=True, patch_artist=True)
-
-
-    #
-    #_-_-_-_-_-_- AXIS properties
+                ax.boxplot(data, positions=[positions_non_empty[i]], widths=bw_violin * 0.8, vert=True, patch_artist=True)
+    #-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    # AXIS properties
     ax.set_title(title,fontsize=8)
     ax.set_xlabel(xaxLAB)
     ax.set_ylabel(yaxLAB)
     #
-    if plotOPT['plotCBAR'] == 'YES':
-        cbar=plt.colorbar(contour,ax=ax,label=val,ticks=clevels,orientation='horizontal',pad=0.2)
-        # cbar=plt.colorbar(contour,ax=ax,label=val,ticks=clevels,orientation='vertical',pad=0.1)
-        cbar.set_label(label=val, size=10, weight='bold', color='blue')
-        cbar.set_ticklabels(clabels)
-        cbar.ax.tick_params(labelsize=8)
-        cbar.ax.set_xticklabels(cbar.ax.get_xticklabels(), rotation=45)
-    #
-    # ax.text(0.9, 0.1, f'{ssp}\n{T1}', fontsize=7, color='black', weight='bold', ha='center', va='center', transform=ax.transAxes)
     ax.text(0.9, 0.1, f'{ssp}', fontsize=7, color='black', weight='bold', ha='center', va='center', transform=ax.transAxes)
     #
     if plotOPT is not None and 'y_ax_min' in plotOPT:
@@ -421,9 +410,7 @@ def gilford(ax, xaxVAR, yaxVAR,K,BW,linspace_int, val, xaxLAB,yaxLAB,title,ssp,s
     # ax.text(0, Yp50_,'-', fontsize=14, ha='right', va='center', transform=relativeX)  #'\u2014'
     for Yp in [Yp05_, Yp50_, Yp95_]:
         ax.text(0, Yp, '--', fontsize=14, ha='right', va='center', transform=relativeX)
-
-    # return PLOT_VAR, Xgrid, Ygrid, INdata
-    # return PLOT_VAR # make sure to uncoment output{}
+#            
 # ^^^
 
 
