@@ -297,8 +297,8 @@ def plot_ConditionalProb(ax, var1, var2, t1, t2,var1_lab,var2_lab,plotOPT):
 def gilford(ax, xaxVAR, yaxVAR,kernel,bw_kde,kde_grid_int, val, xaxLAB,yaxLAB,title,ssp,scatter, CMAP,T1, plotOPT=None):
     #-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
     # Extract Quantiles
-    Xp05_, Xp17_, Xp50_, Xp83_, Xp95_ = np.quantile(xaxVAR, [0.05, 0.17, 0.5, 0.83, 0.95])
-    Yp05_, Yp17_, Yp50_, Yp83_, Yp95_ = np.quantile(yaxVAR, [0.05, 0.17, 0.5, 0.83, 0.95])
+    Xp01_, Xp17_, Xp50_, Xp83_, Xp99_ = np.quantile(xaxVAR, [0.01, 0.17, 0.5, 0.83, 0.99])
+    Yp05_, Yp17_, Yp50_, Yp83_, Yp95_ = np.quantile(yaxVAR, [0.5, 0.17, 0.5, 0.83, 0.95])
     #-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
     # Create 2D matrix.
     INdata = np.column_stack((xaxVAR, yaxVAR))
@@ -373,20 +373,35 @@ def gilford(ax, xaxVAR, yaxVAR,kernel,bw_kde,kde_grid_int, val, xaxLAB,yaxLAB,ti
     #
     # PLOT:: voilin/boxWhisk
     if plotOPT is not None and 'plot_type' in plotOPT:
-        # Adjusting the bin width for the x-axis and recalculating the binned data
-        bw_violin = plotOPT['bw_violin']
-        bins = np.arange(np.floor(np.min(INdata[:, 0])), np.ceil(np.max(INdata[:, 0])) + bw_violin, bw_violin)
-        x_binned = np.digitize(INdata[:, 0], bins)
-        binned_data = [INdata[:, 1][x_binned == i] for i in range(1, len(bins))]
-        #
-        # Filtering out empty bins
-        non_empty_bins = [data for data in binned_data if len(data) > 0]
-        positions_non_empty = [bins[i] + bw_violin / 2 for i, data in enumerate(binned_data) if len(data) > 0]
+        num_violins = plotOPT['num_violins']
+        x_min, x_max = np.floor(np.min(INdata[:, 0])), np.ceil(np.max(INdata[:, 0]))
+        bin_edges = np.linspace(x_min, x_max, num=num_violins+1, endpoint=True)
+        x_binned = np.digitize(INdata[:, 0], bin_edges, right=True)
+
+        # Group data by bins
+        binned_data = [INdata[:, 1][x_binned == i] for i in range(1, len(bin_edges))]
+
+        positions = np.arange(1, num_violins + 1) * (x_max - x_min) / num_violins - ((x_max - x_min) / (2 * num_violins)) + x_min
+
         if plotOPT['plot_type'] == 'violin':
-            ax.violinplot(non_empty_bins, positions=positions_non_empty, widths=bw_violin * 0.8, showmeans=False, showextrema=True, showmedians=True)
-        if plotOPT['plot_type'] == 'box':
-            for i, data in enumerate(non_empty_bins):
-                ax.boxplot(data, positions=[positions_non_empty[i]], widths=bw_violin * 0.8, vert=True, patch_artist=True)
+            ax.violinplot(binned_data, positions=positions, widths=(x_max - x_min) / num_violins * 0.8, showmeans=False, showextrema=True, showmedians=True)
+        elif plotOPT['plot_type'] == 'box':
+            for i, data in enumerate(binned_data):
+                ax.boxplot(data, positions=[positions[i]], widths=(x_max - x_min) / num_violins * 0.8, vert=True, patch_artist=True)
+
+        #bw_violin = plotOPT['bw_violin']
+        #bins = np.arange(np.floor(np.min(INdata[:, 0])), np.ceil(np.max(INdata[:, 0])) + bw_violin, bw_violin)
+        #x_binned = np.digitize(INdata[:, 0], bins)
+        #binned_data = [INdata[:, 1][x_binned == i] for i in range(1, len(bins))]
+        ##
+        ## Filtering out empty bins
+        #non_empty_bins = [data for data in binned_data if len(data) > 0]
+        #positions_non_empty = [bins[i] + bw_violin / 2 for i, data in enumerate(binned_data) if len(data) > 0]
+        #if plotOPT['plot_type'] == 'violin':
+        #    ax.violinplot(non_empty_bins, positions=positions_non_empty, widths=bw_violin * 0.8, showmeans=False, showextrema=True, showmedians=True)
+        #if plotOPT['plot_type'] == 'box':
+        #    for i, data in enumerate(non_empty_bins):
+        #        ax.boxplot(data, positions=[positions_non_empty[i]], widths=bw_violin * 0.8, vert=True, patch_artist=True)
     #-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
     # AXIS properties
     ax.set_title(title,fontsize=8)
@@ -398,7 +413,8 @@ def gilford(ax, xaxVAR, yaxVAR,kernel,bw_kde,kde_grid_int, val, xaxLAB,yaxLAB,ti
     if plotOPT is not None and 'y_ax_min' in plotOPT:
         ax.set_ylim(plotOPT['y_ax_min'],plotOPT['y_ax_max'])
     #
-    ax.set_xlim(Xp05_,Xp95_)
+    # ax.set_xlim(Xp01_,Xp99_)
+    ax.set_xlim(x_min,x_max)
     #
     import matplotlib.transforms as transforms
     relativeY = transforms.blended_transform_factory(ax.transData, ax.transAxes)
