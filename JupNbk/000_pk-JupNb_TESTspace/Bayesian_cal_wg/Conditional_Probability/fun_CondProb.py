@@ -240,6 +240,137 @@ def plot_1file(component, VAR1_T1, VAR1_T2, VAR1_T3, VAR1_T4, VAR1_T5, T1, T2, T
                  isFirstColumn=isFirstColumn,isLastColumn=isLastColumn,isTopPlot=isTopPlot)
     # plt.show()
 
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++  
+# Plot the samples of a single year.
+#.............................................................
+def PLOT_samps(ssps,comp,data_,years_,color,yaxis_limit):
+    
+    # How many subplots to plot
+    if len(ssps) == 5:
+        fig, ax = plt.subplots(5, 5, figsize=(15, 15))
+    elif len(ssps) == 1:
+        fig, ax = plt.subplots(1, 5, figsize=(15, 3))
+    else:
+        print("Error: ONLY 1 or 5 ssps permitted at the moment")
+        sys.exit(1) 
+
+    for s1,ssp in enumerate(ssps):
+        for y1,year in enumerate(years_):
+            IDXtime = np.where(data_[comp][ssp]['time'] == year)[0][0]
+            Y_= data_[comp][ssp]['slc'][:,IDXtime]
+            # PLOT------------------------------------------------------------
+            current_ax = ax[y1] if len(ssps) == 1 else ax[s1,y1]
+            current_ax.plot(Y_, color=color, marker='.', linestyle='none')
+            current_ax.set_ylim(yaxis_limit)   
+            # STAT----------------------------------------------------
+            p17_, p50_, p83_ = np.quantile(Y_, [0.17, 0.5, 0.83])
+            std_dev = np.std(Y_)
+            variance = np.var(Y_)
+            slope, intercept, r_value, p_value, std_err = linregress(range(len(Y_)), Y_)
+            #
+            # put PERCENTILES on plot 
+            percentiles = [(p50_, 'p50')]   #[(p17_, 'p17'), (p50_, 'p50'), (p95_, 'p95')]
+            for percentile, label in percentiles:
+                # Draw a horizontal line for each percentile
+                current_ax.axhline(y=percentile, color='blue', linestyle='--')
+                # Annotate each line
+                if percentile == p50_:
+                    current_ax.annotate(f'{label}: {percentile:.2f}', xy=(1, percentile), xycoords=('axes fraction', 'data'), 
+                                        xytext=(-60, -10),textcoords='offset points', horizontalalignment='center', verticalalignment='center',   color='black')
+            #
+            # Trend................
+            istrend=check_trend(Y_)
+            #
+            alpha=0.5
+            # STaT text Box----------------------------
+            STAT_textstr = '\n'.join((
+                f'STD: {std_dev:.2f}', f'Variance: {variance:.2f}',
+                
+                f'Slope: {slope:.2f}',
+                f'p(17,83): {p17_:.2f},{p83_:.2f}',
+                f'Trend: {istrend}'
+            ))
+            current_ax.text(0.95, 0.95, STAT_textstr, transform=current_ax.transAxes, fontsize=8,
+                    verticalalignment='top', horizontalalignment='right', bbox=dict(boxstyle='round,pad=0.5', facecolor='white', edgecolor='black', alpha=alpha),alpha=alpha)
+            #    
+            plot_details = '\n'.join((f'{year}',  f'{ssp}'))
+            current_ax.text(0.05, 0.95, plot_details, transform=current_ax.transAxes, fontsize=8,
+                    verticalalignment='top', horizontalalignment='left', bbox=dict(boxstyle='round,pad=0.5', facecolor='white', edgecolor='black', alpha=alpha),alpha=alpha)
+            #
+            data_dets = '\n'.join(( f'{data_[comp][ssp]["path"].split("/")[-1].split(".")[-3]}' , f'{data_[comp][ssp]["path"].split("/")[-1].split(".")[-2]}' ))
+            current_ax.text(0.05, 0.6, data_dets, transform=current_ax.transAxes, fontsize=8,
+                    verticalalignment='top', horizontalalignment='left', bbox=dict(boxstyle='round,pad=0.5', facecolor='white', edgecolor='black', alpha=alpha),alpha=alpha)
+            #
+            # Label X_, Y_, Title_
+            if len(ssps) == 5: ax[4, y1].set_xlabel('Samples')
+            else: ax[y1].set_xlabel('Samples')
+            
+            
+            if len(ssps) == 5: ax[s1, 0].set_ylabel('SLC (cm)')
+            else: ax[s1].set_ylabel('SLC (cm)')
+
+
+
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++  
+# Find Trend Based on auto-correlation.
+#.............................................................
+
+from statsmodels.stats.diagnostic import acorr_ljungbox
+
+def check_trend(data):
+
+    # Ljung-Box test to get auto-correlation coefficient.
+    lb_test = acorr_ljungbox(data, lags=len(data)-1, return_df=True)  # OR lags=[1,2,3,4,5]
+
+    # update trend based on p-value.
+    lb_test['trend'] = lb_test['lb_pvalue'].apply(lambda p: 'Yes' if p < 0.05 else 'No')
+    # print(lb_test)
+
+    # Conditionals for trend ..........................................................
+    # STRICT => Check if all values in 'trend' are 'Yes'
+    # trend_in_data = 'Yes' if (lb_test['trend'] == 'Yes').all() else 'No'
+
+    # PCENT => Check based on % of yes/no
+    frequency = lb_test['trend'].value_counts(normalize=True)
+    if frequency.get('Yes', 0) >= 0.80:
+        trend_in_data = 'Yes'
+    elif frequency.get('No', 0) >= 0.80:
+        trend_in_data = 'No'
+    else:
+        trend_in_data = 'CHK'  # Use this or any other label you prefer
+    # Output
+    # print("trend_in_data:", trend_in_data)
+    return trend_in_data
+# ..........................................
+
+
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++  
+# Dataframe to check for trend
+#.............................................................
+def df_samps_trend(ssps,data_,years_):
+    #
+    if len(ssps) >1: 
+        print("Error: ONLY 1 ssp permitted at the moment")
+        sys.exit(1) 
+    #
+    first_level_keys = list(data_.keys())
+    data_dict = {first_level_key: {} for first_level_key in first_level_keys} 
+    data_years_istrend = []
+    for c1,comp in enumerate(first_level_keys):
+        years_istrend=[]
+        for s1,ssp in enumerate(ssps):
+            year_istrend=[]
+            for y1,year in enumerate(years_):
+                IDXtime = np.where(data_[comp][ssp]['time'] == year)[0][0]
+                Y_= data_[comp][ssp]['slc'][:,IDXtime]
+                #
+                # Trend................
+                istrend=check_trend(Y_)
+                #
+                # populate the list
+                data_dict[comp][year] = istrend
+    return data_dict 
+
 
 
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++  
@@ -388,20 +519,6 @@ def gilford(ax, xaxVAR, yaxVAR,kernel,bw_kde,kde_grid_int, val, xaxLAB,yaxLAB,ti
         elif plotOPT['plot_type'] == 'box':
             for i, data in enumerate(binned_data):
                 ax.boxplot(data, positions=[positions[i]], widths=(x_max - x_min) / num_violins * 0.8, vert=True, patch_artist=True)
-
-        #bw_violin = plotOPT['bw_violin']
-        #bins = np.arange(np.floor(np.min(INdata[:, 0])), np.ceil(np.max(INdata[:, 0])) + bw_violin, bw_violin)
-        #x_binned = np.digitize(INdata[:, 0], bins)
-        #binned_data = [INdata[:, 1][x_binned == i] for i in range(1, len(bins))]
-        ##
-        ## Filtering out empty bins
-        #non_empty_bins = [data for data in binned_data if len(data) > 0]
-        #positions_non_empty = [bins[i] + bw_violin / 2 for i, data in enumerate(binned_data) if len(data) > 0]
-        #if plotOPT['plot_type'] == 'violin':
-        #    ax.violinplot(non_empty_bins, positions=positions_non_empty, widths=bw_violin * 0.8, showmeans=False, showextrema=True, showmedians=True)
-        #if plotOPT['plot_type'] == 'box':
-        #    for i, data in enumerate(non_empty_bins):
-        #        ax.boxplot(data, positions=[positions_non_empty[i]], widths=bw_violin * 0.8, vert=True, patch_artist=True)
     #-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
     # AXIS properties
     ax.set_title(title,fontsize=8)
@@ -428,152 +545,3 @@ def gilford(ax, xaxVAR, yaxVAR,kernel,bw_kde,kde_grid_int, val, xaxLAB,yaxLAB,ti
         ax.text(0, Yp, '--', fontsize=14, ha='right', va='center', transform=relativeX)
 #            
 # ^^^
-
-
-
-
-# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++  
-# Plot the samples of a single year.
-#.............................................................
-def PLOT_samps(ssps,comp,data_,years_,color,yaxis_limit):
-    
-    # How many subplots to plot
-    if len(ssps) == 5:
-        fig, ax = plt.subplots(5, 5, figsize=(15, 15))
-    elif len(ssps) == 1:
-        fig, ax = plt.subplots(1, 5, figsize=(15, 3))
-    else:
-        print("Error: ONLY 1 or 5 ssps permitted at the moment")
-        sys.exit(1) 
-
-    for s1,ssp in enumerate(ssps):
-        for y1,year in enumerate(years_):
-            IDXtime = np.where(data_[comp][ssp]['time'] == year)[0][0]
-            Y_= data_[comp][ssp]['slc'][:,IDXtime]
-            # PLOT------------------------------------------------------------
-            current_ax = ax[y1] if len(ssps) == 1 else ax[s1,y1]
-            current_ax.plot(Y_, color=color, marker='.', linestyle='none')
-            current_ax.set_ylim(yaxis_limit)   
-            # STAT----------------------------------------------------
-            p17_, p50_, p83_ = np.quantile(Y_, [0.17, 0.5, 0.83])
-            std_dev = np.std(Y_)
-            variance = np.var(Y_)
-            slope, intercept, r_value, p_value, std_err = linregress(range(len(Y_)), Y_)
-            #
-            # put PERCENTILES on plot 
-            percentiles = [(p50_, 'p50')]   #[(p17_, 'p17'), (p50_, 'p50'), (p95_, 'p95')]
-            for percentile, label in percentiles:
-                # Draw a horizontal line for each percentile
-                current_ax.axhline(y=percentile, color='blue', linestyle='--')
-                # Annotate each line
-                if percentile == p50_:
-                    current_ax.annotate(f'{label}: {percentile:.2f}', xy=(1, percentile), xycoords=('axes fraction', 'data'), 
-                                        xytext=(-60, -10),textcoords='offset points', horizontalalignment='center', verticalalignment='center',   color='black')
-            #
-            # Trend................
-            istrend=check_trend(Y_)
-            #
-            alpha=0.5
-            # STaT text Box----------------------------
-            STAT_textstr = '\n'.join((
-                f'STD: {std_dev:.2f}', f'Variance: {variance:.2f}',
-                
-                f'Slope: {slope:.2f}',
-                f'p(17,83): {p17_:.2f},{p83_:.2f}',
-                f'Trend: {istrend}'
-            ))
-            current_ax.text(0.95, 0.95, STAT_textstr, transform=current_ax.transAxes, fontsize=8,
-                    verticalalignment='top', horizontalalignment='right', bbox=dict(boxstyle='round,pad=0.5', facecolor='white', edgecolor='black', alpha=alpha),alpha=alpha)
-            #    
-            plot_details = '\n'.join((f'{year}',  f'{ssp}'))
-            current_ax.text(0.05, 0.95, plot_details, transform=current_ax.transAxes, fontsize=8,
-                    verticalalignment='top', horizontalalignment='left', bbox=dict(boxstyle='round,pad=0.5', facecolor='white', edgecolor='black', alpha=alpha),alpha=alpha)
-            #
-            data_dets = '\n'.join(( f'{data_[comp][ssp]["path"].split("/")[-1].split(".")[-3]}' , f'{data_[comp][ssp]["path"].split("/")[-1].split(".")[-2]}' ))
-            current_ax.text(0.05, 0.6, data_dets, transform=current_ax.transAxes, fontsize=8,
-                    verticalalignment='top', horizontalalignment='left', bbox=dict(boxstyle='round,pad=0.5', facecolor='white', edgecolor='black', alpha=alpha),alpha=alpha)
-            #
-            # Label X_, Y_, Title_
-            if len(ssps) == 5: ax[4, y1].set_xlabel('Samples')
-            else: ax[y1].set_xlabel('Samples')
-            
-            
-            if len(ssps) == 5: ax[s1, 0].set_ylabel('SLC (cm)')
-            else: ax[s1].set_ylabel('SLC (cm)')
-
-
-
-# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++  
-# Find Trend Based on auto-correlation.
-#.............................................................
-
-from statsmodels.stats.diagnostic import acorr_ljungbox
-
-def check_trend(data):
-
-    # Ljung-Box test to get auto-correlation coefficient.
-    lb_test = acorr_ljungbox(data, lags=len(data)-1, return_df=True)  # OR lags=[1,2,3,4,5]
-
-    # update trend based on p-value.
-    lb_test['trend'] = lb_test['lb_pvalue'].apply(lambda p: 'Yes' if p < 0.05 else 'No')
-    # print(lb_test)
-
-    # Conditionals for trend ..........................................................
-    # STRICT => Check if all values in 'trend' are 'Yes'
-    # trend_in_data = 'Yes' if (lb_test['trend'] == 'Yes').all() else 'No'
-
-    # PCENT => Check based on % of yes/no
-    frequency = lb_test['trend'].value_counts(normalize=True)
-    if frequency.get('Yes', 0) >= 0.80:
-        trend_in_data = 'Yes'
-    elif frequency.get('No', 0) >= 0.80:
-        trend_in_data = 'No'
-    else:
-        trend_in_data = 'CHK'  # Use this or any other label you prefer
-    # Output
-    # print("trend_in_data:", trend_in_data)
-    return trend_in_data
-# ..........................................
-
-
-# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++  
-# Dataframe to check for trend
-#.............................................................
-def df_samps_trend(ssps,data_,years_):
-    #
-    if len(ssps) >1: 
-        print("Error: ONLY 1 ssp permitted at the moment")
-        sys.exit(1) 
-    #
-    first_level_keys = list(data_.keys())
-    data_dict = {first_level_key: {} for first_level_key in first_level_keys} 
-    data_years_istrend = []
-    for c1,comp in enumerate(first_level_keys):
-        years_istrend=[]
-        for s1,ssp in enumerate(ssps):
-            year_istrend=[]
-            for y1,year in enumerate(years_):
-                IDXtime = np.where(data_[comp][ssp]['time'] == year)[0][0]
-                Y_= data_[comp][ssp]['slc'][:,IDXtime]
-                #
-                # Trend................
-                istrend=check_trend(Y_)
-                #
-                # populate the list
-                data_dict[comp][year] = istrend
-    return data_dict 
-
-
-
-# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# Xtras.
-# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-# first_level_keys = list(AIS_all_ssp.keys())
-# #
-# second_level_keys = {}
-# for first_level_key in AIS_all_ssp:
-#     nested_dict = AIS_all_ssp[first_level_key]
-#     # Collect the keys of the nested dictionary
-#     second_level_keys[first_level_key] = list(nested_dict.keys())
-# print(second_level_keys)
