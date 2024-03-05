@@ -377,8 +377,13 @@ def df_samps_trend(ssps,data_,years_):
 # Fun: Conditional Probability Plotting.
 #.............................................................
 def plot_ConditionalProb_panel(all_ssp_data,plot_params,plotOPT):
-    fig, ax = plt.subplots(1, 4, figsize=(20, 4)); fig.subplots_adjust(wspace=0.3, hspace=0.4)
-    cbar_ax_defined = False  # Flag to track if the external color bar axis has been defined
+    #
+    panel_no=len(plot_params)
+    if panel_no == 4:     fig, ax = plt.subplots(1, 4, figsize=(20, 4)); 
+    elif panel_no == 5:   fig, ax = plt.subplots(1, 5, figsize=(25, 4)); 
+    else :                raise ValueError(f"Unexpected number of panels: {panel_no}. Expected 4 or 5.")
+    #
+    fig.subplots_adjust(wspace=0.3, hspace=0.4)
     #
     # Loop through the dictionary and plot
     for i, params in plot_params.items():
@@ -389,7 +394,7 @@ def plot_ConditionalProb_panel(all_ssp_data,plot_params,plotOPT):
         if plotOPT['plotCBAR'] == 'YES':
             plot_ConditionalProb(ax[i], params['var1'], params['var2'], params['t1'], params['t2'],var1_lab,var2_lab,plotOPT)
         if plotOPT['plotCBAR'] == 'YES_1':
-            showCBAR = 1 if i == 3 else 0
+            showCBAR = 1 if i == 4 or 5 else 0
             plotOPT['showCBAR'] = showCBAR
             plotOPT['cbar_ax'] = fig.add_axes([0.95, 0.15, 0.03, 0.7])  # [left, bottom, width, height]
             plot_ConditionalProb(ax[i], params['var1'], params['var2'], params['t1'], params['t2'],var1_lab,var2_lab,plotOPT)      
@@ -428,16 +433,27 @@ def plot_ConditionalProb(ax, var1, var2, t1, t2,var1_lab,var2_lab,plotOPT):
 def gilford(ax, xaxVAR, yaxVAR,kernel,bw_kde,kde_grid_int, val, xaxLAB,yaxLAB,title,ssp,scatter, CMAP,T1, plotOPT=None):
     #-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
     # Extract Quantiles
-    Xp01_, Xp17_, Xp50_, Xp83_, Xp99_ = np.quantile(xaxVAR, [0.01, 0.17, 0.5, 0.83, 0.99])
-    Yp05_, Yp17_, Yp50_, Yp83_, Yp95_ = np.quantile(yaxVAR, [0.5, 0.17, 0.5, 0.83, 0.95])
+    quantiles = [0.01, 0.05, 0.17, 0.5, 0.83, 0.95, 0.99]
+    Xp01_, Xp05_, Xp17_, Xp50_, Xp83_, Xp95_, Xp99_ = np.quantile(xaxVAR, quantiles)
+    Yp01_, Yp05_, Yp17_, Yp50_, Yp83_, Yp95_, Yp99_ = np.quantile(yaxVAR, quantiles)
     #-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
     # Create 2D matrix.
     INdata = np.column_stack((xaxVAR, yaxVAR))
     # KDE
     kde = KernelDensity(kernel=kernel, bandwidth=bw_kde).fit(INdata)
+    #-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
     # Create a grid of test points
-    xgrid = np.linspace(INdata[:,0].min()-1, INdata[:,0].max()+1, kde_grid_int)  
-    ygrid = np.linspace(INdata[:,1].min()-1, INdata[:,1].max()+1, kde_grid_int)  
+    # simple.
+    # xgrid = np.linspace(INdata[:,0].min()-1, INdata[:,0].max()+1, kde_grid_int)  
+    # ygrid = np.linspace(INdata[:,1].min()-1, INdata[:,1].max()+1, kde_grid_int)  
+    # %age
+    bandwidth_extension_factor = bw_kde * 4  #2 is eg
+    # Create a grid of test points, extended by a function of the bandwidth
+    xgrid = np.linspace(INdata[:,0].min() - bandwidth_extension_factor, 
+                    INdata[:,0].max() + bandwidth_extension_factor, kde_grid_int)
+    ygrid = np.linspace(INdata[:,1].min() - bandwidth_extension_factor, 
+                    INdata[:,1].max() + bandwidth_extension_factor, kde_grid_int)
+    #-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
     Xgrid, Ygrid  = np.meshgrid(xgrid, ygrid)
     grid_samples = np.vstack([Xgrid.ravel(), Ygrid.ravel()]).T
     #
