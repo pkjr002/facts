@@ -390,13 +390,14 @@ def plot_ConditionalProb_panel(all_ssp_data,plot_params,plotOPT):
         # AXIS-LABELS
         var1_lab = next(key for key, val in all_ssp_data.items() if np.array_equal(val, params['var1']))
         var2_lab = next(key for key, val in all_ssp_data.items() if np.array_equal(val, params['var2']))
+        plotOPT['YaxLab_disp'] = 'YES' if i == 0 else 'NO' 
         #
         if plotOPT['plotCBAR'] == 'YES':
             plot_ConditionalProb(ax[i], params['var1'], params['var2'], params['t1'], params['t2'],var1_lab,var2_lab,plotOPT)
         if plotOPT['plotCBAR'] == 'YES_1':
             showCBAR = 1 if i == 4 or 5 else 0
             plotOPT['showCBAR'] = showCBAR
-            plotOPT['cbar_ax'] = fig.add_axes([0.95, 0.15, 0.03, 0.7])  # [left, bottom, width, height]
+            plotOPT['cbar_ax'] = fig.add_axes([0.92, 0.15, 0.01, 0.7])  # controls the shape [left, bottom, width, height]
             plot_ConditionalProb(ax[i], params['var1'], params['var2'], params['t1'], params['t2'],var1_lab,var2_lab,plotOPT)      
     plt.show()        
 #.............................................................
@@ -508,7 +509,7 @@ def gilford(ax, xaxVAR, yaxVAR,kernel,bw_kde,kde_grid_int, val, xaxLAB,yaxLAB,ti
             cbar.ax.tick_params(labelsize=8)
             cbar.ax.set_xticklabels(cbar.ax.get_xticklabels(), rotation=45)  
         if plotOPT['plotCBAR'] == 'YES_1' and plotOPT['showCBAR'] == 1:
-            cbar=plt.colorbar(contour,ax=plotOPT['cbar_ax'],label=val,ticks=clevels,orientation='vertical',pad=0.1)    
+            cbar=plt.colorbar(contour,cax=plotOPT['cbar_ax'],label=val,ticks=clevels,orientation='vertical',pad=0.01)    
             cbar.set_label(label=val, size=10, weight='bold', color='blue')
             cbar.set_ticklabels(clabels)
             cbar.ax.tick_params(labelsize=8)
@@ -538,8 +539,8 @@ def gilford(ax, xaxVAR, yaxVAR,kernel,bw_kde,kde_grid_int, val, xaxLAB,yaxLAB,ti
     #-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
     # AXIS properties
     ax.set_title(title,fontsize=8)
+    if plotOPT['YaxLab_disp'] == 'YES':     ax.set_ylabel(yaxLAB)
     ax.set_xlabel(xaxLAB)
-    ax.set_ylabel(yaxLAB)
     #
     ax.text(0.9, 0.1, f'{ssp}', fontsize=7, color='black', weight='bold', ha='center', va='center', transform=ax.transAxes)
     #
@@ -559,5 +560,14 @@ def gilford(ax, xaxVAR, yaxVAR,kernel,bw_kde,kde_grid_int, val, xaxLAB,yaxLAB,ti
     # ax.text(0, Yp50_,'-', fontsize=14, ha='right', va='center', transform=relativeX)  #'\u2014'
     for Yp in [Yp05_, Yp50_, Yp95_]:
         ax.text(0, Yp, '--', fontsize=14, ha='right', va='center', transform=relativeX)
-#            
-# ^^^
+    
+    # Adjust tick settings to ensure correct display
+    ax.tick_params(axis='y', which='both', labelleft=True, labelright=False)
+    ax.tick_params(axis='x', which='both', top=True, bottom=True, labeltop=False)
+    
+    # Ensure right side ticks are visible
+    # This might be redundant depending on Matplotlib version, but ensures compatibility
+    ax.yaxis.set_ticks_position('both')
+    ax.xaxis.set_ticks_position('both')
+
+# ^^cx^
