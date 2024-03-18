@@ -517,26 +517,37 @@ def gilford(ax, xaxVAR, yaxVAR,kernel,bw_kde,kde_grid_int, val, xaxLAB,yaxLAB,ti
     # PLOT:: RAW original data  
     if plt_og == 'YES':
         numbers = np.linspace(1, 2000, 2000)    
-        x_min, x_max = np.floor(np.min(numbers)), np.ceil(numbers) 
+        x_min, x_max = np.floor(np.min(numbers)), np.ceil(np.max(numbers)) 
         #
-        color = 'tab:red'
+        color = 'tab:blue'
         ax.set_xlabel('')
         ax.set_ylabel('', color=color)
         ax.plot(numbers,INdata[:, 0], 'o', linestyle='none', color=color)
         ax.tick_params(axis='y', labelcolor=color)
         #
         ax2 = ax.twinx()  
-        color = 'tab:blue'
+        color = 'tab:orange'
         ax2.set_ylabel('', color=color)
         ax2.plot(numbers,INdata[:, 1], 'x', linestyle='none', color=color)
         ax2.tick_params(axis='y', labelcolor=color)
+        #
+        if plotOPT['fix_ax_lim'] == 'NO':
+            ax.set_xlim(x_min,x_max)
+            ax.set_ylim(np.floor(np.min(INdata[:, 0])), np.ceil(np.max(INdata[:, 0])))
+            ax2.set_ylim(np.floor(np.min(INdata[:, 1])), np.ceil(np.max(INdata[:, 1])))
+        elif plotOPT['fix_ax_lim'] == 'YES': 
+            # ax.set_ylim(np.floor(np.min(INdata[:, 1])), np.ceil(np.max(INdata[:, 1])))
+            # ax2.set_ylim(np.floor(np.min(INdata[:, 1])), np.ceil(np.max(INdata[:, 1])))
+            ax.set_ylim(-10, np.ceil(np.max(INdata[:, 1])))
+            ax2.set_ylim(-10, np.ceil(np.max(INdata[:, 1])))
     #-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
     # PLOT:: SCATTER of the original data
     if plt_scatter == 'YES':
         ax.scatter(INdata[:, 0], INdata[:, 1], s=.5, facecolor='red')
+        # ax.set_xlim(x_min,x_max)
     #-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
     # PLOT:: voilin/boxWhisk
-    if plotOPT is not None and 'plt_overlay' in plotOPT:
+    if plotOPT is not None and plotOPT['plt_overlay'] in ['violin', 'box']:
         num_violins = plotOPT['num_violins']
         x_min, x_max = np.floor(np.min(INdata[:, 0])), np.ceil(np.max(INdata[:, 0]))
         bin_edges = np.linspace(x_min, x_max, num=num_violins+1, endpoint=True)
@@ -552,6 +563,10 @@ def gilford(ax, xaxVAR, yaxVAR,kernel,bw_kde,kde_grid_int, val, xaxLAB,yaxLAB,ti
         elif plotOPT['plt_overlay'] == 'box':
             for i, data in enumerate(binned_data):
                 ax.boxplot(data, positions=[positions[i]], widths=(x_max - x_min) / num_violins * 0.8, vert=True, patch_artist=True)
+        #
+        ax.set_xlim(x_min,x_max)
+        if plotOPT is not None and 'y_ax_min' in plotOPT:
+            ax.set_ylim(plotOPT['y_ax_min'],plotOPT['y_ax_max'])
     #-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
     # AXIS properties
     ax.set_title(title,fontsize=8)
@@ -560,11 +575,7 @@ def gilford(ax, xaxVAR, yaxVAR,kernel,bw_kde,kde_grid_int, val, xaxLAB,yaxLAB,ti
     #
     ax.text(0.9, 0.1, f'{ssp}', fontsize=7, color='black', weight='bold', ha='center', va='center', transform=ax.transAxes)
     #
-    if plotOPT is not None and 'y_ax_min' in plotOPT:
-        ax.set_ylim(plotOPT['y_ax_min'],plotOPT['y_ax_max'])
-    #
     # ax.set_xlim(Xp01_,Xp99_)
-    ax.set_xlim(x_min,x_max)
     #
     # ................................................................................................
     if plotOPT['mark_ax_ptile'] == 'YES':
