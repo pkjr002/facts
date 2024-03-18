@@ -12,6 +12,7 @@ import cartopy
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
 import matplotlib.gridspec as gridspec
+import matplotlib.transforms as transforms
 #
 from mpl_toolkits.basemap import Basemap
 from mpl_toolkits.mplot3d import Axes3D
@@ -409,7 +410,8 @@ def plot_ConditionalProb(ax, var1, var2, t1, t2,var1_lab,var2_lab,plotOPT):
     bw_kde = plotOPT['bw_kde']; 
     kde_grid_int = plotOPT['kde_grid_int']
     val=plotOPT['val']
-    scatter = plotOPT['scatter']; 
+    plt_og = plotOPT['plt_og']; 
+    plt_scatter = plotOPT['plt_scatter']; 
     cmap = plotOPT['cmap'] 
     #-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
     # Define AXIS variables
@@ -424,14 +426,14 @@ def plot_ConditionalProb(ax, var1, var2, t1, t2,var1_lab,var2_lab,plotOPT):
     title  = f'{t2} {var2_lab}  \n conditional upon \n {t1} {var1_lab} '
     #-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
     # PLOT Conditional Probability figure.
-    gilford(ax, xaxVAR, yaxVAR, kernel, bw_kde, kde_grid_int, val, xaxLAB, yaxLAB, title, ssp, scatter, cmap, t1, plotOPT)
+    gilford(ax, xaxVAR, yaxVAR, kernel, bw_kde, kde_grid_int, val, xaxLAB, yaxLAB, title, ssp, plt_og,plt_scatter, cmap, t1, plotOPT)
 
 
 
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++  
 # Plot contour that sums to 1 along columns.
 #.............................................................
-def gilford(ax, xaxVAR, yaxVAR,kernel,bw_kde,kde_grid_int, val, xaxLAB,yaxLAB,title,ssp,scatter, CMAP,T1, plotOPT=None):
+def gilford(ax, xaxVAR, yaxVAR,kernel,bw_kde,kde_grid_int, val, xaxLAB,yaxLAB,title,ssp,plt_og,plt_scatter, CMAP,T1, plotOPT=None):
     #-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
     # Extract Quantiles
     quantiles = [0.01, 0.05, 0.17, 0.5, 0.83, 0.95, 0.99]
@@ -490,37 +492,51 @@ def gilford(ax, xaxVAR, yaxVAR,kernel,bw_kde,kde_grid_int, val, xaxLAB,yaxLAB,ti
         PLOT_VAR=normalized_density_values
     #
     #-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
-    # FILL contour and COLORbar limits
-    if val in ['density_values' , 'density_values_Normalized']:
-        if plotOPT is not None and 'c_bar_min' in plotOPT:
-            clevels=np.linspace(plotOPT['c_bar_min'],plotOPT['c_bar_max'],10)    
-        else: clevels=np.linspace(1e-3,PLOT_VAR.max(),10)
-    else: clevels=np.linspace(PLOT_VAR.min(),PLOT_VAR.max(),10)
-    # PLOT:: contour
-    clabels=np.round(clevels,decimals=3).astype('str')
-    contour=ax.contourf(Xgrid, Ygrid, PLOT_VAR,levels=clevels,cmap=CMAP)
-    # COLORBAR::
-    if plotOPT['plotCBAR'] is not None:
-        if plotOPT['plotCBAR'] == 'YES':
-            cbar=plt.colorbar(contour,ax=ax,label=val,ticks=clevels,orientation='horizontal',pad=0.2)
-            # cbar=plt.colorbar(contour,ax=ax,label=val,ticks=clevels,orientation='vertical',pad=0.1)
-            cbar.set_label(label=val, size=10, weight='bold', color='blue')
-            cbar.set_ticklabels(clabels)
-            cbar.ax.tick_params(labelsize=8)
-            cbar.ax.set_xticklabels(cbar.ax.get_xticklabels(), rotation=45)  
-        if plotOPT['plotCBAR'] == 'YES_1' and plotOPT['showCBAR'] == 1:
-            cbar=plt.colorbar(contour,cax=plotOPT['cbar_ax'],label=val,ticks=clevels,orientation='vertical',pad=0.01)    
+    # PLOT:: Choose PLOT_VAR and fill contour and COLORbar limits
+    if val in ['density_values' , 'density_values_Normalized', 'log_density_values', 'log_density_values_Normalized']:
+        if val in ['density_values' , 'density_values_Normalized']:
+            if plotOPT is not None and 'c_bar_min' in plotOPT:
+                clevels=np.linspace(plotOPT['c_bar_min'],plotOPT['c_bar_max'],10)    
+            else: clevels=np.linspace(1e-3,PLOT_VAR.max(),10)
+        else: clevels=np.linspace(PLOT_VAR.min(),PLOT_VAR.max(),10)
+        # PLOT:: contour
+        clabels=np.round(clevels,decimals=3).astype('str')
+        contour=ax.contourf(Xgrid, Ygrid, PLOT_VAR,levels=clevels,cmap=CMAP)
+        # COLORBAR::
+        if plotOPT['plotCBAR'] is not None:
+            if plotOPT['plotCBAR'] == 'YES':
+                cbar=plt.colorbar(contour,ax=ax,label=val,ticks=clevels,orientation='horizontal',pad=0.2)
+                cbar.ax.set_xticklabels(cbar.ax.get_xticklabels(), rotation=45)  
+            if plotOPT['plotCBAR'] == 'YES_1' and plotOPT['showCBAR'] == 1:
+                cbar=plt.colorbar(contour,cax=plotOPT['cbar_ax'],label=val,ticks=clevels,orientation='vertical',pad=0.01)    
             cbar.set_label(label=val, size=10, weight='bold', color='blue')
             cbar.set_ticklabels(clabels)
             cbar.ax.tick_params(labelsize=8)
             # cbar.ax.set_xticklabels(cbar.ax.get_xticklabels(), rotation=45)        
     #-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    # PLOT:: RAW original data  
+    if plt_og == 'YES':
+        numbers = np.linspace(1, 2000, 2000)    
+        x_min, x_max = np.floor(np.min(numbers)), np.ceil(numbers) 
+        #
+        color = 'tab:red'
+        ax.set_xlabel('')
+        ax.set_ylabel('', color=color)
+        ax.plot(numbers,INdata[:, 0], 'o', linestyle='none', color=color)
+        ax.tick_params(axis='y', labelcolor=color)
+        #
+        ax2 = ax.twinx()  
+        color = 'tab:blue'
+        ax2.set_ylabel('', color=color)
+        ax2.plot(numbers,INdata[:, 1], 'x', linestyle='none', color=color)
+        ax2.tick_params(axis='y', labelcolor=color)
+    #-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
     # PLOT:: SCATTER of the original data
-    if scatter == 'YES':
+    if plt_scatter == 'YES':
         ax.scatter(INdata[:, 0], INdata[:, 1], s=.5, facecolor='red')
-    #
+    #-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
     # PLOT:: voilin/boxWhisk
-    if plotOPT is not None and 'plot_type' in plotOPT:
+    if plotOPT is not None and 'plt_overlay' in plotOPT:
         num_violins = plotOPT['num_violins']
         x_min, x_max = np.floor(np.min(INdata[:, 0])), np.ceil(np.max(INdata[:, 0]))
         bin_edges = np.linspace(x_min, x_max, num=num_violins+1, endpoint=True)
@@ -531,9 +547,9 @@ def gilford(ax, xaxVAR, yaxVAR,kernel,bw_kde,kde_grid_int, val, xaxLAB,yaxLAB,ti
 
         positions = np.arange(1, num_violins + 1) * (x_max - x_min) / num_violins - ((x_max - x_min) / (2 * num_violins)) + x_min
 
-        if plotOPT['plot_type'] == 'violin':
+        if plotOPT['plt_overlay'] == 'violin':
             ax.violinplot(binned_data, positions=positions, widths=(x_max - x_min) / num_violins * 0.8, showmeans=False, showextrema=True, showmedians=True)
-        elif plotOPT['plot_type'] == 'box':
+        elif plotOPT['plt_overlay'] == 'box':
             for i, data in enumerate(binned_data):
                 ax.boxplot(data, positions=[positions[i]], widths=(x_max - x_min) / num_violins * 0.8, vert=True, patch_artist=True)
     #-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
@@ -550,24 +566,23 @@ def gilford(ax, xaxVAR, yaxVAR,kernel,bw_kde,kde_grid_int, val, xaxLAB,yaxLAB,ti
     # ax.set_xlim(Xp01_,Xp99_)
     ax.set_xlim(x_min,x_max)
     #
-    import matplotlib.transforms as transforms
-    relativeY = transforms.blended_transform_factory(ax.transData, ax.transAxes)
-    ax.text(Xp50_, 0, '|', fontsize=7, ha='center', va='top', transform=relativeY)
-    # for Xp in [Xp05_, Xp50_, Xp95_]:
-        # ax.text(Xp, 0, '|', fontsize=7, ha='center', va='top', transform=relativeY)
-
-    relativeX = transforms.blended_transform_factory(ax.transAxes, ax.transData)
-    # ax.text(0, Yp50_,'-', fontsize=14, ha='right', va='center', transform=relativeX)  #'\u2014'
-    for Yp in [Yp05_, Yp50_, Yp95_]:
-        ax.text(0, Yp, '--', fontsize=14, ha='right', va='center', transform=relativeX)
-    
+    # ................................................................................................
+    if plotOPT['mark_ax_ptile'] == 'YES':
+        qq=['5','50','95']
+        relativeY = transforms.blended_transform_factory(ax.transData, ax.transAxes)
+        # ax.text(Xp50_, 0, '|', fontsize=7, ha='center', va='top', transform=relativeY)
+        for i,Xp in enumerate([Xp05_, Xp50_, Xp95_]):
+            ax.text(Xp, 0, '|', fontsize=15, color='blue', ha='center', va='top', transform=relativeY)
+            ax.text(Xp, 0.05, f'p{qq[i]}' , fontsize=10, color='blue', ha='center', va='top', transform=relativeY)
+        #
+        relativeX = transforms.blended_transform_factory(ax.transAxes, ax.transData)
+        # ax.text(0, Yp50_,'-', fontsize=14, ha='right', va='center', transform=relativeX)  #'\u2014'
+        for i,Yp in enumerate([Yp05_, Yp50_, Yp95_]):
+            ax.text(0.05, Yp, '--', fontsize=14, color='blue', ha='right', va='center', transform=relativeX)
+            ax.text(0.05, Yp, f'p{qq[i]}', fontsize=10, color='blue', ha='right', va='center', transform=relativeX)
+    # ................................................................................................
     # Adjust tick settings to ensure correct display
     ax.tick_params(axis='y', which='both', labelleft=True, labelright=False)
-    ax.tick_params(axis='x', which='both', top=True, bottom=True, labeltop=False)
-    
-    # Ensure right side ticks are visible
-    # This might be redundant depending on Matplotlib version, but ensures compatibility
-    ax.yaxis.set_ticks_position('both')
-    ax.xaxis.set_ticks_position('both')
+    ax.tick_params(axis='x', which='both', top=False, bottom=True, labeltop=False)
 
 # ^^cx^
