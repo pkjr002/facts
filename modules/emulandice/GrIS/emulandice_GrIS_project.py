@@ -106,8 +106,8 @@ def emulandice_project_GrIS(pipeline_id, icesource="GrIS"):
 
 	# Generate samples for trends correlated among ice sheets
 	# Note: Keep seed hard-coded and matched with AIS module within emulandice module set
-	np.random.seed(8071)
-	trend_q = np.random.random_sample(nsamps)
+	rng = np.random.default_rng(8071)
+	trend_q = rng.random(nsamps)
 
 	# Calculate the trend contributions over time for each ice sheet component
 	gis_trend = truncnorm.ppf(trend_q, a=0, b=99999, loc=trend_mean["GIS"], scale=trend_sd["GIS"])[:,np.newaxis] * (targyears - baseyear)[np.newaxis,:]
@@ -153,7 +153,7 @@ def WriteNetCDF(slr, region, targyears, baseyear, scenario, nsamps, pipeline_id)
 	lon_var = rootgrp.createVariable("lon", "f4", ("locations",))
 
 	# Create a data variable
-	samps = rootgrp.createVariable("sea_level_change", "i2", ("samples", "years", "locations"), zlib=True, complevel=4)
+	samps = rootgrp.createVariable("sea_level_change", "f4", ("samples", "years", "locations"), zlib=True, complevel=4)
 
 	# Assign attributes
 	rootgrp.description = nc_description

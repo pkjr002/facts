@@ -17,10 +17,15 @@ The **global-options** section of config.yml specifies options that should, by d
 * **pyear_step**: step size between projection years
 * **pyear_end**: year in which to end projections
 * **baseyear**: zero point for sea level projections
+* **pipeline_file**: default pipeline file name (optional; defaults to 'pipeline.yml'). See *pipeline_file* under experiment step configuration.
 
 In addition, this section can specify:
 
 * **rcfg-name**: the name of the resource configuration file to be used. FACTS will look in the resources/ directory for file with name *resource_(rcfg_name).yml*. (If not specified, *resource.yml* will be used.)
+
+Global options can be overwritten when runFACTS.py is invokved from the command line by passing a dictionary along with the ``--global_options`` parameter; for example::
+
+    python3 runFACTS.py --global_options '{"rcfg-name": "localhost" }' experiments/dummy/
 
 
 Experiment step and module configuration
@@ -38,7 +43,7 @@ The following third-level entries are used under the module label:
 
 * **options**: Entries under this header are passed as options to the modules if they match options defined in the module pipeline.yml. These overwrite global options.
 
-* **options_allowoverwrite**: Entries under this header are passed as options to the modules if they match options defined in the module pipeline.yml. These can be overwriten by global options. Options that make use of magic variables should be specified here. A particularly useful example is the specification ```climate_data_file: "%CLIMATE_DATA_FILE%"```, which allows the identified of the climate data file generate in the climate stage to be passed onto sea level modules that use it as input.
+* **options_allowoverwrite**: Entries under this header are passed as options to the modules if they match options defined in the module pipeline.yml. These can be overwriten by global options. Options that make use of magic variables should be specified here. A particularly useful example is the specification ``climate_data_file: "%CLIMATE_DATA_FILE%"``, which allows the identified of the climate data file generate in the climate stage to be passed onto sea level modules that use it as input.
 
 * **input_data_file**: Identifies a data file to be uploaded into the sandbox from the input/ subdirectory of the experiment directory.
 
@@ -46,13 +51,17 @@ The following third-level entries are used under the module label:
 
 * **stages**: Specifies stages from the pipeline.yml file to be run. Defaults to 'preprocess', 'fit', 'project', 'postprocess'.
 
-* **pipeline_file**: Pipeline file name. Defaults to 'pipeline.yml'. Alternatives can be useful for special cases (e.g., using only Antarctic ice sheet output from a module that produces both Greenland and Antarctic ice sheet output.)
+* **pipeline_file**: Pipeline file name. Defaults to 'pipeline.yml'. Alternatives can be useful for special cases (e.g., using only Antarctic ice sheet output from a module that produces both Greenland and Antarctic ice sheet output.) Many modules include a 'pipeline.global.yml' file for running the module without producing localized output.
 
 * **include_in_workflow**: A list of all workflows the module output should be included in at the totaling steps.
 
 * **loop_over_workflows**: If defined, replicate the module for all workflows defined to date.
 
 * **loop_over_scales**: If defined, replicate the module for both global and local scale (e.g., for a totaling module).
+
+* **generates_climate_output**: Module generates climate output data. Globally set ```climate_output_data``` based on the module's pipeline configuration.
+
+* **climate_output_data**, **global_total_files**, **local_total_files**, **totaled_files**: See definitions in pipeline configuration file specification. Can be used together with the `facts/dummy` module and `input_data_file` to upload outputs produced by prior Experiment Steps and have them filed in an appropriate directory for subsequent modules to find. 
 
 
 Example experiment file
@@ -64,7 +73,7 @@ Example experiment file
         nsamps: 2000
         scenario: ssp585
         pyear_start: 2020
-        pyear_end: 2100
+        pyear_end: 2150
         pyear_step: 10
         baseyear: 2005
 
@@ -73,47 +82,64 @@ Example experiment file
             module_set: "fair"
             module: "temperature"
             generates_climate_output: true
-            input_data_file:
-                - "emissions.csv"
-            options:
-                rcmip_file: emissions.csv
+    #        input_data_file:
+    #              - "emissions.csv"
+    #        options:
+    #              rcmip_file: emissions.csv
 
     sealevel_step:
         GrIS1f:
             module_set: "FittedISMIP"
             module: "GrIS"
-            options_allowoverwrite:
-                climate_data_file: "%CLIMATE_DATA_FILE%"
             include_in_workflow:
                 - "wf1f"
                 - "wf2f"
+                - "wf3f"
+
+        deconto21:
+            module_set: "deconto21"
+            module: "AIS"
+            include_in_workflow:
+                - "wf3e"   
+                - "wf3f"
+
+        bamber19:
+            module_set: "bamber19"
+            module: "icesheets"
+            include_in_workflow:
+                - "wf4" 
 
         emuAIS:
             module_set: "emulandice"
             module: "AIS"
             include_in_workflow:
-                - "wf1e"
-                - "wf2e"
+                - "wf1e"      
+            options:
+                pyear_end: 2100
 
         emuGrIS:
             module_set: "emulandice"
             module: "GrIS"
             include_in_workflow:
-                - "wf1e"
-                - "wf2e"
+                - "wf1e"  
+                - "wf2e"  
+                - "wf3e"  
+            options:
+                pyear_end: 2100
 
         emuglaciers:
             module_set: "emulandice"
             module: "glaciers"
             include_in_workflow:
-                - "wf1e"
-                - "wf2e"
+                - "wf1e"   
+                - "wf2e"   
+                - "wf3e"
+            options:
+                pyear_end: 2100
 
         larmip:
             module_set: "larmip"
             module: "AIS"
-            options_allowoverwrite:
-            climate_data_file: "%CLIMATE_DATA_FILE%"
             include_in_workflow:
                 - "wf2e"
                 - "wf2f"
@@ -121,31 +147,32 @@ Example experiment file
         ar5glaciers:
             module_set: "ipccar5"
             module: "glaciers"
-            options_allowoverwrite:
-                climate_data_file: "%CLIMATE_DATA_FILE%"
+            options:
+                gmip: 2
             include_in_workflow:
                 - "wf1f"
                 - "wf2f"
+                - "wf3f"
+                - "wf4"
 
         ar5AIS:
             module_set: "ipccar5"
             module: "icesheets"
             pipeline_file: "pipeline.AIS.yml"
-            options_allowoverwrite:
-                climate_data_file: "%CLIMATE_DATA_FILE%"
             include_in_workflow:
                 - "wf1f"
 
         ocean:
             module_set: "tlm"
-            module: "oceandynamics"
-            options_allowoverwrite:
-                climate_data_file: "%CLIMATE_DATA_FILE%"
+            module: "sterodynamics"
             include_in_workflow:
                 - "wf1f"
                 - "wf1e"
                 - "wf2e"
                 - "wf2f"
+                - "wf3e"
+                - "wf3f"
+                - "wf4"
 
         k14vlm:
             module_set: "kopp14"
@@ -155,17 +182,24 @@ Example experiment file
                 - "wf1e"
                 - "wf2e"
                 - "wf2f"
+                - "wf3e"
+                - "wf3f"
+                - "wf4"
 
         lws:
             module_set: "ssp"
             module: "landwaterstorage"
             options:
                 scenario: "ssp5"
+                dcrate_lo: -0.4
             include_in_workflow:
                 - "wf1f"
                 - "wf1e"
                 - "wf2e"
                 - "wf2f"
+                - "wf3e"
+                - "wf3f"
+                - "wf4"
 
     totaling_step:
         total:
@@ -183,7 +217,8 @@ Example experiment file
             module: "pointsoverthreshold"
             options:
                 target_years: 2050,2100
-                total_localsl_file: "$SHARED/totaled/%EXPERIMENT_NAME%.total.workflow.%WORKFLOW_NAME%.local.nc".
+                total_localsl_file: "$SHARED/totaled/%EXPERIMENT_NAME%.total.workflow.%WORKFLOW_NAME%.local.nc" 
+
 
 
 Pipeline configuration

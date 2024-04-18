@@ -98,48 +98,44 @@ def TotalSamplesInWorkflows(directory, pyear_start, pyear_end, pyear_step, chunk
 	return(r)
 
 def TotalSamples(infiles, outfile, targyears, chunksize):
+	# Skip this file if it appears to be a total file already
+	# SBM: FWIW, this might not work as intended because path is appended to file names in funcs above.
+	target_infiles = [fl for fl in infiles if not re.search(r"^total", fl)]
 
-	# Is this the first file being parsed?
-	first_file = True
-
-	# Loop through these files
-	for infile in infiles:
-
-		# Skip this file if it appears to be a total file already
-		if(re.search(r"^total", infile)):
-			print("Skipped a total file - {}".format(infile))
-			continue
-
-		# Open this component file
-		with xr.open_dataset(infile, chunks={"locations":chunksize}) as nc:
-
-			# If this is the first successfully loaded file, initialize the total,
-			# otherwise, add to the total
-			if first_file:
-				total_sl = nc["sea_level_change"].sel(years=targyears)
-				site_lats = nc["lat"]
-				site_lons = nc["lon"]
-				site_ids = nc["locations"]
-				sample_val = nc["samples"]
-				first_file = False
-			else:
-				total_sl += nc["sea_level_change"].sel(years=targyears)
+    # Reads in multiple files (delayed) and tries combine along
+    # common dimensions and a new "file" dimension.
+	ds = xr.open_mfdataset(
+		target_infiles, 
+	    combine="nested", 
+	    concat_dim="file", 
+	    chunks={"locations":chunksize},
+	)
+	ds = ds.sel(years=targyears)
+	# Sums everything across the new "file" dimension.
+	total_out = ds[["sea_level_change"]].sum(dim="file")
+	# Add "lat" and "lon" as data variable in output, pulling values from the first file.
+	total_out["lat"] = ds["lat"].isel(file=0)
+	total_out["lon"] = ds["lon"].isel(file=0)
 
 	# Attributes for the total file
-	nc_attrs = {"description": "Total sea-level change for workflow",
-			"history": "Created " + time.ctime(time.time()),
-			"source": "FACTS: Post-processed total among available contributors: {}".format(",".join(infiles))}
+	total_out.attrs = {
+		"description": "Total sea-level change for workflow",
+		"history": "Created " + time.ctime(time.time()),
+		"source": "FACTS: Post-processed total among available contributors: {}".format(",".join(infiles)),
+	}
 
 	# Define the missing value for the netCDF files
-	nc_missing_value = np.iinfo(np.int16).min
+	nc_missing_value = np.nan #np.iinfo(np.int16).min
+	total_out["sea_level_change"].attrs = {
+		"units": "mm", 
+		"missing_value": nc_missing_value
+	}
 
-	# Write the total to an output file
-	total_out = xr.Dataset(data_vars={"sea_level_change": (("samples", "years", "locations"), total_sl.data, {"units":"mm", "missing_value":nc_missing_value}),
-							"lat": (("locations"), site_lats.data),
-							"lon": (("locations"), site_lons.data)},
-		coords={"years": targyears.data, "locations": site_ids.data, "samples": sample_val.data}, attrs=nc_attrs)
-
-	total_out.to_netcdf(outfile, encoding={"sea_level_change": {"dtype": "i2", "zlib": True, "complevel":4, "_FillValue": nc_missing_value}})
+	# Write the total to an output file.
+    # This actually carries out the delayed calculations and operations.
+    # SBM: FYI Double check the numbers to ensure everything is summing across dims correctly.
+    # SBM: FYI Also, check to see if output as something huge like float64.
+	total_out.to_netcdf(outfile, encoding={"sea_level_change": {"dtype": "f4", "zlib": True, "complevel":4, "_FillValue": nc_missing_value}})
 
 	return(outfile)
 

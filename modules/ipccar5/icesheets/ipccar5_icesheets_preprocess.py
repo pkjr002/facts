@@ -70,11 +70,12 @@ def ar5_preprocess_icesheets(scenario, startyr, tlm_flag, pipeline_id, climate_f
 	inttemp_mean = np.cumsum(temp_mean)
 	#inttemp_sd = np.sqrt(np.cumsum(temp_sd**2))  # Fix the bug
 	inttemp_sd = np.cumsum(temp_sd)  # Replicate the bug
+	inttemp_samples = np.cumsum(temp_samples, axis=1)
 		
 	# Store preprocessed data in pickles
 	output = {'temp_mean': temp_mean, 'temp_sd': temp_sd, 'inttemp_mean': inttemp_mean, \
 				'inttemp_sd': inttemp_sd, 'data_years': data_years, 'startyr': startyr, \
-				'scenario': scenario}
+				'scenario': scenario, 'temp_samples': temp_samples, 'inttemp_samples': inttemp_samples}
 	
 	# Write the configuration to a file
 	outdir = os.path.dirname(__file__)
@@ -100,7 +101,7 @@ if __name__ == '__main__':
 	parser.add_argument('--pipeline_id', help="Unique identifier for this instance of the module")
 	parser.add_argument('--baseyear', help="Year from which to start integrating temperature [default=2006]", type=int, default=2006)
 	parser.add_argument('--tlm_data', help="Use the two-layer model data [default=1, use 2lm data]", default=1, type=int)
-	parser.add_argument('--climate_data_file', help="NetCDF4/HDF5 file containing surface temperature data (default=twolayer_SSPs.h5)", type=str, default='twolayer_SSPs.h5')
+	parser.add_argument('--climate_data_file', help="NetCDF4/HDF5 file containing surface temperature data", type=str)
 	
 	# Parse the arguments
 	args = parser.parse_args()

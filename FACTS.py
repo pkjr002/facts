@@ -32,11 +32,10 @@ def GeneratePipeline(pcfg, ecfg, pipe_name, exp_dir, stage_names=None, workflow_
     ecfg['exp_dir'] = exp_dir
 
     # Append the input file to the list of options (if need be)
-    if "input_data_file" in ecfg.keys():
-        ecfg['options']['input_data_file'] = ecfg['input_data_file']
-
-    if "input_compressed_data_file" in ecfg.keys():
-        ecfg['options']['input_compressed_data_file'] = ecfg['input_compressed_data_file']
+    for tagtoappend in {'input_data_file','input_compressed_data_file','climate_output_data', \
+                        'global_total_files','local_total_files','totaled_files'}:
+        if tagtoappend in ecfg.keys():
+            ecfg['options'][tagtoappend] = ecfg[tagtoappend]
 
 
     # Append the pipeline id to the list of options
@@ -93,7 +92,11 @@ def GenerateTask(tcfg, ecfg, pipe_name, stage_name, task_name, workflow_name="",
 
     if 'climate_data_file' in ecfg['options'].keys():
         mvar_dict["CLIMATE_DATA_FILE"]=ecfg['options']['climate_data_file']
+
+    if 'climate_gsat_data_file' in ecfg['options'].keys():
         mvar_dict["CLIMATE_GSAT_FILE"]=ecfg['options']['climate_gsat_data_file']
+
+    if 'climate_ohc_data_file' in ecfg['options'].keys():
         mvar_dict["CLIMATE_OHC_FILE"]=ecfg['options']['climate_ohc_data_file']
 
     # Give this task object a name
@@ -103,10 +106,9 @@ def GenerateTask(tcfg, ecfg, pipe_name, stage_name, task_name, workflow_name="",
     t.upload_input_data = []
     copy_list = []
 
-    t.pre_exec = []     # Pre exec let you load modules, set environment before executing the workload
-    # t.pre_exec.append("pip install psutil memory_profiler") #THIS PRE INSTALLS PSUTILS AND THE MEMORY PROFILER
+    # Pre exec let you load modules, set environment before executing the workload
     t.pre_exec = ['. $RP_PILOT_SANDBOX/env/rp_named_env.rp.sh || true']
-
+    
     if not "upload_input_data" in tcfg.keys():
         tcfg['upload_input_data'] = []
 
@@ -114,7 +116,6 @@ def GenerateTask(tcfg, ecfg, pipe_name, stage_name, task_name, workflow_name="",
         tcfg['upload_and_extract_input_data'] = []
 
     # If there's a user-defined input file, add it to the upload list
-
     if "input_data_file" in ecfg['options'].keys():
          for x in ecfg['options']['input_data_file']:
             fp = os.path.join(ecfg['exp_dir'], "input", mvar_replace_dict(mvar_dict,x))
@@ -244,11 +245,39 @@ def GenerateTask(tcfg, ecfg, pipe_name, stage_name, task_name, workflow_name="",
                                 for x in tcfg['local_total_files']])
         download_list.extend(['{0} > {1}/{0}'.format(mvar_replace_dict(mvar_dict, x), outdir)
                              for x in tcfg['local_total_files']])
+
     if "totaled_files" in tcfg.keys():
         copy_output_list.extend(['{0} > $SHARED/totaled/{0}'.format(mvar_replace_dict(mvar_dict, x))
                                 for x in tcfg['totaled_files']])
         download_list.extend(['{0} > {1}/{0}'.format(mvar_replace_dict(mvar_dict, x), outdir)
                              for x in tcfg['totaled_files']])                                
+
+    # allow experiment config to specify file
+
+    if "climate_output_data" in ecfg['options'].keys():
+        copy_output_list.extend(['{0} > $SHARED/climate/{0}'.format(mvar_replace_dict(mvar_dict, x))
+                                for x in ecfg['options']['climate_output_data']])
+        download_list.extend(['{0} > {1}/{0}'.format(mvar_replace_dict(mvar_dict, x), outdir)
+                             for x in ecfg['options']['climate_output_data']])        
+
+
+    if "global_total_files" in ecfg['options'].keys():
+        copy_output_list.extend(['{0} > $SHARED/to_total/global/{0}'.format(mvar_replace_dict(mvar_dict, x))
+                                for x in ecfg['options']['global_total_files']])
+        download_list.extend(['{0} > {1}/{0}'.format(mvar_replace_dict(mvar_dict, x), outdir)
+                             for x in ecfg['options']['global_total_files']])
+
+    if "local_total_files" in ecfg['options'].keys():
+        copy_output_list.extend(['{0} > $SHARED/to_total/local/{0}'.format(mvar_replace_dict(mvar_dict, x))
+                                for x in ecfg['options']['local_total_files']])
+        download_list.extend(['{0} > {1}/{0}'.format(mvar_replace_dict(mvar_dict, x), outdir)
+                             for x in ecfg['options']['local_total_files']])
+
+    if "totaled_files" in ecfg['options'].keys():
+        copy_output_list.extend(['{0} > $SHARED/totaled/{0}'.format(mvar_replace_dict(mvar_dict, x))
+                                for x in ecfg['options']['totaled_files']])
+        download_list.extend(['{0} > {1}/{0}'.format(mvar_replace_dict(mvar_dict, x), outdir)
+                             for x in ecfg['options']['totaled_files']])
 
     # Append the "total" lists to the copy output list
     t.copy_output_data = list(set(copy_output_list))
@@ -279,9 +308,12 @@ def match_options(wopts, eopts):
 def ParsePipelineConfig(this_mod, modcfg, global_options={}, relabel_mod=''):
 
     # Load the pipeline configuration file for this module
-
     if not "pipeline_file" in modcfg.keys():
-        modcfg['pipeline_file'] = "pipeline.yml" 
+        # Checks if there is a global option called 'pipeline_name'
+        if not 'pipeline_file' in global_options.keys():
+            modcfg['pipeline_file'] = "pipeline.yml"
+        if 'pipeline_file' in global_options.keys():
+            modcfg['pipeline_file'] = global_options['pipeline_file']
 
     if 'module_set' in modcfg.keys():
         pcfg_file = os.path.join(os.path.dirname(__file__), "modules",
@@ -367,7 +399,7 @@ def IdentifyClimateOutputFiles(pcfg,pipe_name):
  
     return pd
 
-def ParseExperimentConfig(exp_dir):
+def ParseExperimentConfig(exp_dir, globalopts=None):
     # Initialize a list for experiment steps (each step being a set of pipelines)
     experimentsteps = {}
 
@@ -402,6 +434,10 @@ def ParseExperimentConfig(exp_dir):
     else:
         global_options['experiment_name'] = os.path.basename(exp_dir)
 
+    if globalopts:
+        for this_mod in globalopts.keys():
+            global_options[this_mod] = globalopts[this_mod]
+    
     # Initialize a list for pipelines
     pipelines = []
     workflows_to_include = {}
@@ -455,7 +491,12 @@ def ParseExperimentConfig(exp_dir):
                         workflows_to_include[this_wf][this_scale].extend(outfiles[this_scale])
 
             if "generates_climate_output" in ecfg[this_mod][this_mod_sub].keys():
-                climate_data_files = IdentifyClimateOutputFiles(parsed['pcfg'], parsed['pipe_name'])
+                pc = parsed['pcfg']
+                if "climate_output_data" in ecfg[this_mod][this_mod_sub].keys():
+                    pc['override'] = {}
+                    pc['override']['climate'] = {}
+                    pc['override']['climate']['climate_output_data']= ecfg[this_mod][this_mod_sub]['climate_output_data']
+                climate_data_files = IdentifyClimateOutputFiles(pc, parsed['pipe_name'])
                 global_options['climate_data_file'] = climate_data_files['climate']
                 global_options['climate_gsat_data_file'] = climate_data_files['gsat']
                 global_options['climate_ohc_data_file'] = climate_data_files['ohc']

@@ -134,8 +134,8 @@ def emulandice_project_glaciers(pipeline_id, icesource="Glaciers"):
 
 	# Generate samples for trends correlated among ice sources
 	# Note: Keep seed hard-coded and matched with AIS and GrIS module within emulandice module set
-	np.random.seed(8071)
-	trend_q = np.random.random_sample(nsamps)
+	rng = np.random.default_rng(8071)
+	trend_q = rng.random(nsamps)
 	glac_trend = norm.ppf(trend_q, trend_mean, trend_sd) * (targyears[syear_idx] - baseyear)
 
 	# Apply the trends for the baseline adjustment
@@ -186,7 +186,7 @@ def WriteNetCDF(slr, region, targyears, baseyear, scenario, nsamps, pipeline_id)
 	lon_var = rootgrp.createVariable("lon", "f4", ("locations",))
 
 	# Create a data variable
-	samps = rootgrp.createVariable("sea_level_change", "i2", ("samples", "years", "locations"), zlib=True, complevel=4)
+	samps = rootgrp.createVariable("sea_level_change", "f4", ("samples", "years", "locations"), zlib=True, complevel=4)
 
 	# Assign attributes
 	rootgrp.description = nc_description

@@ -1,14 +1,8 @@
-
-mongodb:
-    hostname: "mongodb.host"
-    port:     27017
-    username: "facts"
-    password: "password"
-
 resource-desc:
   resource: 'rutgers.amarel'
   walltime: 600
-  cpus: 16
+  cpus: 12
+  memory: 128000
   gpus: 0
   queue: 'main'
   project: ''

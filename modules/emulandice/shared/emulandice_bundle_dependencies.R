@@ -1,77 +1,32 @@
 # this script sets up the R environment from scratch 
 #
-# You will probabaly need to modify it for your local
-# environment. IF you want to install everything from CRAN,
-# you can replace packrat::install_local with install.packages
-# for everything except dummies, which should be installed
-# from the local archive because it's been removed from
+# You will probabaly want to modify it for your local
+# environment so you don't have to install everything
+# from CRAN if you have local copies. Under any circumstances, dummies
+# should be installed from the local archive because it's been removed from
 # CRAN.
 
 r = getOption("repos") 
 r["CRAN"] = "https://cloud.r-project.org"
 options(repos = r)
 
+# create local user library path (not present by default)
+dir.create(path = Sys.getenv("R_LIBS_USER"), showWarnings = FALSE, recursive = TRUE)
+
 install.packages('packrat')
 packrat::init(infer.dependencies=FALSE)
-packrat::set_opts(local.repos = c("/projects/community/R3.6_lib_workshop","."))
+packrat::set_opts(local.repos = c("."))
 packrat::install_local('dummies_1.5.6.tar.gz')
-packrat::install_local('cli')
-packrat::install_local('colorspace')
-packrat::install_local('ellipsis')
-packrat::install_local('magrittr')
-packrat::install_local('pillar')
-packrat::install_local('gtable')
-packrat::install_local('fansi')
-packrat::install_local('utf8')
-packrat::install_local('rlang')
-packrat::install_local('pkgconfig')
-packrat::install_local('tidyselect')
-packrat::install_local('tzdb')
-packrat::install_local('stringi')
-packrat::install_local('stringr')
-packrat::install_local('hms')
-packrat::install_local('glue')
-packrat::install_local('gridBase')
-packrat::install_local('gridExtra')
-packrat::install_local('gtable')
-packrat::install_local('isoband')
-install.packages('mgcv')
-install.packages('stats')
-packrat::install_local('vctrs')
-packrat::install_local('withr')
-packrat::install_local('rlang')
-packrat::install_local('scales')
-packrat::install_local('lifecycle')
-packrat::install_local('munsell')
-packrat::install_local('colorspace')
-packrat::install_local('ggplot2')
-packrat::install_local('dplyr')
-packrat::install_local('tidyr')
-packrat::install_local('readr')
-packrat::install_local('purrr')
-packrat::install_local('tibble')
-packrat::install_local('stringr')
-packrat::install_local('forcats')
-packrat::install_local('DiceKriging')
-packrat::install_local('MASS')
-packrat::install_local('Rcpp')
-packrat::install_local('RcppEigen')
-packrat::install_local('nloptr')
-packrat::install_local('R6')
-packrat::install_local('cpp11')
-packrat::install_local('progress')
-packrat::install_local('RColorBrewer')
-packrat::install_local('bit64')
-packrat::install_local('bit')
-packrat::install_local('clipr')
-packrat::install_local('crayon')
-packrat::install_local('digest')
-packrat::install_local('farver')
-packrat::install_local('generics')
-packrat::install_local('labeling')
-packrat::install_local('prettyunits')
-packrat::install_local('vroom')
-packrat::install_local('viridisLite')
-install.packages('RobustGaSP')
-install.packages('DiceEval')
+
+install.packages(c('cli','colorspace','ellipsis','magrittr',
+    'pillar','gtable','fansi','utf8','rlang','pkgconfig',
+    'tidyselect','tzdb','stringi','stringr','hms','glue',
+    'gtable','isoband','mgcv','vctrs','withr','rlang','scales',
+    'lifecycle','munsell','colorspace','ggplot2','dplyr','tidyr',
+    'readr','purrr','tibble','stringr','forcats','DiceKriging','MASS',
+    'Rcpp','RcppEigen','nloptr','R6','cpp11','progress','RColorBrewer','bit64',
+    'bit','clipr','crayon','digest','farver','generics','labeling','prettyunits',
+    'vroom','viridisLite','RobustGaSP','DiceEval'))
+
+packrat::install('emulandice')
 packrat::snapshot()
