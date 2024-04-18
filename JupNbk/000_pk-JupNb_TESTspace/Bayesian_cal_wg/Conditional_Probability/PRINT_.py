@@ -1,4 +1,4 @@
-FILE_NAME='CondProb_notebook_2_BayesianCal_WG_fig'
+FILE_NAME='CondProb_notebook_3_BayesianCal_WG_fig'
 #
 import nbformat
 from nbconvert import HTMLExporter

@@ -13,6 +13,8 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
 import matplotlib.gridspec as gridspec
 import matplotlib.transforms as transforms
+import seaborn as sns
+from sklearn.model_selection import GridSearchCV
 #
 from mpl_toolkits.basemap import Basemap
 from mpl_toolkits.mplot3d import Axes3D
@@ -442,20 +444,45 @@ def gilford(ax, xaxVAR, yaxVAR,kernel,bw_kde,kde_grid_int, val, xaxLAB,yaxLAB,ti
     #-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
     # Create 2D matrix.
     INdata = np.column_stack((xaxVAR, yaxVAR))
+    #
+    if bw_kde == 'auto':
+        data = INdata
+        #print("Data shape:", data.shape)
+        # Grid of bandwidth values to test
+        bandwidths = np.linspace(0.1, 10, 40)  
+        # Setup the grid search with cross-validation
+        grid = GridSearchCV(KernelDensity(kernel='gaussian'),
+                           {'bandwidth': bandwidths},
+                           cv=5)  # 5-fold cross-validation
+        # Fit grid search
+        grid.fit(data)
+        # Best bandwidth
+        best_bw = np.round(grid.best_params_['bandwidth'],2)
+        print("Optimal bandwidth:", best_bw)
+        bw_kde=best_bw
+    else:
+        bw_kde=bw_kde
+    #.............................................................................................................
     # KDE
     kde = KernelDensity(kernel=kernel, bandwidth=bw_kde).fit(INdata)
     #-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
     # Create a grid of test points
-    # simple.
-    # xgrid = np.linspace(INdata[:,0].min()-1, INdata[:,0].max()+1, kde_grid_int)  
-    # ygrid = np.linspace(INdata[:,1].min()-1, INdata[:,1].max()+1, kde_grid_int)  
+    if plotOPT['grid'] == 'data_MaxMin':
+        # simple.
+        xgrid = np.linspace(INdata[:,0].min()-1, INdata[:,0].max()+1, kde_grid_int)  
+        ygrid = np.linspace(INdata[:,1].min()-1, INdata[:,1].max()+1, kde_grid_int)   
+    #--> below not recomended as it can dilute the plot.
+    elif plotOPT['grid'] == 'Fixed':
+        xgrid = np.linspace(-20, 100, kde_grid_int)  
+        ygrid = np.linspace(-20, 100, kde_grid_int)  
+    #
     # %age
-    bandwidth_extension_factor = bw_kde * 4  #2 is eg
-    # Create a grid of test points, extended by a function of the bandwidth
-    xgrid = np.linspace(INdata[:,0].min() - bandwidth_extension_factor, 
-                    INdata[:,0].max() + bandwidth_extension_factor, kde_grid_int)
-    ygrid = np.linspace(INdata[:,1].min() - bandwidth_extension_factor, 
-                    INdata[:,1].max() + bandwidth_extension_factor, kde_grid_int)
+    # bandwidth_extension_factor = bw_kde * 4  #2 is eg
+    # # Create a grid of test points, extended by a function of the bandwidth
+    # xgrid = np.linspace(INdata[:,0].min() - bandwidth_extension_factor, 
+    #                 INdata[:,0].max() + bandwidth_extension_factor, kde_grid_int)
+    # ygrid = np.linspace(INdata[:,1].min() - bandwidth_extension_factor, 
+    #                 INdata[:,1].max() + bandwidth_extension_factor, kde_grid_int)
     #-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
     Xgrid, Ygrid  = np.meshgrid(xgrid, ygrid)
     grid_samples = np.vstack([Xgrid.ravel(), Ygrid.ravel()]).T
@@ -466,21 +493,35 @@ def gilford(ax, xaxVAR, yaxVAR,kernel,bw_kde,kde_grid_int, val, xaxLAB,yaxLAB,ti
     log_density_values = log_density_values.reshape(Xgrid.shape)
     #
     #-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
-    # make the max matrix value 0.
+    # make the max of the matrix value 0.
     adjusted_log_density_values = log_density_values - np.max(log_density_values)
     #calculate adjusted density.
-    adjusted_density_values = np.exp(adjusted_log_density_values)
-    # Normalize
-    normalized_density_values = adjusted_density_values / np.sum(adjusted_density_values, axis=0)
-    # Get the TRUE Density values back
+    # adjusted_density_values = np.exp(adjusted_log_density_values)
+
+    # How about not doing above, and using raw (i.e. donot subtract the max)
+    adjusted_density_values = np.exp(log_density_values)
+
+    #.............................................................................................................
+    # Normalize 
+    normalized_adjusted_density_values = adjusted_density_values / np.sum(adjusted_density_values, axis=0);
+    # is it as simple as :
+    normalized_density_values=normalized_adjusted_density_values
+    # or more complex as :
+    # normalized_density_values = normalized_adjusted_density_values + np.exp(np.max(log_density_values)) 
+    # Old scheme 
+    # normalized_density_values = adjusted_density_values / np.sum(adjusted_density_values, axis=0);
+    #.............................................................................................................
+    # == ?? CHECKGet the TRUE Density values back
     density_values = adjusted_density_values*np.exp(np.max(log_density_values))
-    #
+    #.............................................................................................................
+    
     # Normalize log_density_values. Do all of this in log scales (Log-Sum-Exp trick)
     exp_sum = np.sum(np.exp(adjusted_log_density_values), axis=0)
     # Readjust by adding back the adjustment factor
-    log_normalization_constant = np.log(exp_sum) + np.max(log_density_values)
+    log_normalization_constant = np.log(exp_sum) + np.max(log_density_values);
     # Normalize within the log space 
     normalized_log_density_values = log_density_values - log_normalization_constant
+
     #-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
     if val == 'log_density_values':
         PLOT_VAR=log_density_values
@@ -496,7 +537,7 @@ def gilford(ax, xaxVAR, yaxVAR,kernel,bw_kde,kde_grid_int, val, xaxLAB,yaxLAB,ti
     if val in ['density_values' , 'density_values_Normalized', 'log_density_values', 'log_density_values_Normalized']:
         if val in ['density_values' , 'density_values_Normalized']:
             if plotOPT is not None and 'c_bar_min' in plotOPT:
-                clevels=np.linspace(plotOPT['c_bar_min'],plotOPT['c_bar_max'],10)    
+                clevels=np.linspace(plotOPT['c_bar_min'],plotOPT['c_bar_max'],plotOPT['c_bar_int'])    
             else: clevels=np.linspace(1e-3,PLOT_VAR.max(),10)
         else: clevels=np.linspace(PLOT_VAR.min(),PLOT_VAR.max(),10)
         # PLOT:: contour
@@ -512,7 +553,14 @@ def gilford(ax, xaxVAR, yaxVAR,kernel,bw_kde,kde_grid_int, val, xaxLAB,yaxLAB,ti
             cbar.set_label(label=val, size=10, weight='bold', color='blue')
             cbar.set_ticklabels(clabels)
             cbar.ax.tick_params(labelsize=8)
-            # cbar.ax.set_xticklabels(cbar.ax.get_xticklabels(), rotation=45)        
+            # cbar.ax.set_xticklabels(cbar.ax.get_xticklabels(), rotation=45)    
+        ax.set_xlim(np.floor(np.min(INdata[:, 0])), np.ceil(np.max(INdata[:, 0])))
+        ax.set_ylim(np.floor(np.min(INdata[:, 1])), np.ceil(np.max(INdata[:, 1])))    
+    #-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+    # PLOT:: SNS Kde  
+    if plotOPT['sns_kde'] == 'YES':
+        sns.kdeplot(x=INdata[:, 0], y=INdata[:, 1], fill=True, thresh=0, levels=100, cmap="mako", ax=ax)
+
     #-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
     # PLOT:: RAW original data  
     if plt_og == 'YES':
@@ -522,15 +570,20 @@ def gilford(ax, xaxVAR, yaxVAR,kernel,bw_kde,kde_grid_int, val, xaxLAB,yaxLAB,ti
         color = 'tab:blue'
         ax.set_xlabel('')
         ax.set_ylabel('', color=color)
-        ax.plot(numbers,INdata[:, 0], 'o', linestyle='none', color=color)
+        ax.plot(numbers,INdata[:, 0], 'o', linestyle='none', color=color, label=xaxLAB)
         ax.tick_params(axis='y', labelcolor=color)
         #
         ax2 = ax.twinx()  
         color = 'tab:orange'
         ax2.set_ylabel('', color=color)
-        ax2.plot(numbers,INdata[:, 1], 'x', linestyle='none', color=color)
+        ax2.plot(numbers,INdata[:, 1], 'x', linestyle='none', color=color, label=yaxLAB)
         ax2.tick_params(axis='y', labelcolor=color)
         #
+        handles1, labels1 = ax.get_legend_handles_labels()
+        handles2, labels2 = ax2.get_legend_handles_labels()
+        ax.legend(handles1 + handles2, labels1 + labels2, loc='upper left') 
+        ax.legend(handles1 + handles2, labels1 + labels2, loc='upper left', bbox_to_anchor=(.275, 1.35), title='')
+
         if plotOPT['fix_ax_lim'] == 'NO':
             ax.set_xlim(x_min,x_max)
             ax.set_ylim(np.floor(np.min(INdata[:, 0])), np.ceil(np.max(INdata[:, 0])))
@@ -540,11 +593,16 @@ def gilford(ax, xaxVAR, yaxVAR,kernel,bw_kde,kde_grid_int, val, xaxLAB,yaxLAB,ti
             # ax2.set_ylim(np.floor(np.min(INdata[:, 1])), np.ceil(np.max(INdata[:, 1])))
             ax.set_ylim(-10, np.ceil(np.max(INdata[:, 1])))
             ax2.set_ylim(-10, np.ceil(np.max(INdata[:, 1])))
+        xaxLAB = 'samples'; ax.set_xlabel(xaxLAB)
+        yaxLAB = 'projected sl (cm) ';
+        if plotOPT['YaxLab_disp'] == 'YES':     ax.set_ylabel(yaxLAB)
+        title = 'raw data'
     #-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
     # PLOT:: SCATTER of the original data
     if plt_scatter == 'YES':
         ax.scatter(INdata[:, 0], INdata[:, 1], s=.5, facecolor='red')
-        # ax.set_xlim(x_min,x_max)
+        ax.set_xlim(np.floor(np.min(INdata[:, 0])), np.ceil(np.max(INdata[:, 0])))
+        ax.set_ylim(np.floor(np.min(INdata[:, 1])), np.ceil(np.max(INdata[:, 1])))
     #-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
     # PLOT:: voilin/boxWhisk
     if plotOPT is not None and plotOPT['plt_overlay'] in ['violin', 'box']:
