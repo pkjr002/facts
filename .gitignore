@@ -48,29 +48,6 @@ makefile
 
 # File for running runFACTS.py
 /resources/resource_amarel*.yml
-# Error Logs
-Q-err.txt
-Q-err.log/
-*.nc
-modules/emulandice/shared/.Rprofile
-Terminal_log/      #terminal log of exp
-Terminal_log/**
-#        
-T_test.sh
-T_cleandir.sh 
 
 .ipynb_checkpoints
 __pycache__
-T_cleandir.sh
-experiments-pkjr002/NZrerun/NZrerun1__230220_Backup
-experiments-pkjr002/NZrerun/000_TEST_NZInsarGPS/000_TEST_NZInsarGPS_230220_Backup
-experiments-pkjr002/NZrerun/999_OldrunConfig
-experiments-pkjr002/NZrerun/000_TEST_NZInsarGPS
-#
-# Data
-NZ_ReRun_2307.tgz
-nzOG.2309.tgz
-nzRE.2309.tgz
-
-# Jupyter Notebook (JupNbk), ISMIP data
-JupNbk/000_pk-JupNb_TESTspace/ISMIP6/003_newTFW/0_data
