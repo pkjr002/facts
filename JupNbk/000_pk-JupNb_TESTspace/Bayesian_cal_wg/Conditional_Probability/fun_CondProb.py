@@ -431,7 +431,6 @@ def plot_ConditionalProb(ax, var1, var2, t1, t2,var1_lab,var2_lab,plotOPT):
     gilford(ax, xaxVAR, yaxVAR, kernel, bw_kde, kde_grid_int, val, xaxLAB, yaxLAB, title, ssp, plt_og,plt_scatter, cmap, t1, plotOPT)
 
 
-
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++  
 # Plot contour that sums to 1 along columns.
 #.............................................................
@@ -603,6 +602,8 @@ def gilford(ax, xaxVAR, yaxVAR,kernel,bw_kde,kde_grid_int, val, xaxLAB,yaxLAB,ti
         ax.scatter(INdata[:, 0], INdata[:, 1], s=.5, facecolor='red')
         ax.set_xlim(np.floor(np.min(INdata[:, 0])), np.ceil(np.max(INdata[:, 0])))
         ax.set_ylim(np.floor(np.min(INdata[:, 1])), np.ceil(np.max(INdata[:, 1])))
+        #if plotOPT['mark_ptile'] == 'YES':
+
     #-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
     # PLOT:: voilin/boxWhisk
     if plotOPT is not None and plotOPT['plt_overlay'] in ['violin', 'box']:
@@ -637,21 +638,46 @@ def gilford(ax, xaxVAR, yaxVAR,kernel,bw_kde,kde_grid_int, val, xaxLAB,yaxLAB,ti
     #
     # ................................................................................................
     if plotOPT['mark_ax_ptile'] == 'YES':
-        qq=['5','50','95']
+        qq=['5','17','50','83','95']
         relativeY = transforms.blended_transform_factory(ax.transData, ax.transAxes)
         # ax.text(Xp50_, 0, '|', fontsize=7, ha='center', va='top', transform=relativeY)
-        for i,Xp in enumerate([Xp05_, Xp50_, Xp95_]):
+        for i,Xp in enumerate([Xp05_,Xp17_, Xp50_,Xp83_,Xp95_]):
             ax.text(Xp, 0, '|', fontsize=15, color='blue', ha='center', va='top', transform=relativeY)
-            ax.text(Xp, 0.05, f'p{qq[i]}' , fontsize=10, color='blue', ha='center', va='top', transform=relativeY)
+            if i not in [1,3]:
+                ax.text(Xp, 0.05, f'p{qq[i]}' , fontsize=10, color='blue', ha='center', va='top', transform=relativeY)
         #
         relativeX = transforms.blended_transform_factory(ax.transAxes, ax.transData)
         # ax.text(0, Yp50_,'-', fontsize=14, ha='right', va='center', transform=relativeX)  #'\u2014'
-        for i,Yp in enumerate([Yp05_, Yp50_, Yp95_]):
+        for i,Yp in enumerate([Yp05_,Yp17_, Yp50_,Yp83_,Yp95_]):
             ax.text(0.05, Yp, '--', fontsize=14, color='blue', ha='right', va='center', transform=relativeX)
-            ax.text(0.05, Yp, f'p{qq[i]}', fontsize=10, color='blue', ha='right', va='center', transform=relativeX)
+            if i not in [1,3]:  
+                ax.text(0.05, Yp, f'p{qq[i]}', fontsize=10, color='blue', ha='right', va='center', transform=relativeX)
     # ................................................................................................
     # Adjust tick settings to ensure correct display
     ax.tick_params(axis='y', which='both', labelleft=True, labelright=False)
     ax.tick_params(axis='x', which='both', top=False, bottom=True, labeltop=False)
+
+
+    if plotOPT['ptile_table'] == 'YES':
+        percentiles = ['5','17','50','83','95']
+
+        # Store results in a pandas DataFrame and then transpose it
+        table_data = pd.DataFrame({
+            f'{xaxLAB}':np.round([Xp05_,Xp17_, Xp50_,Xp83_,Xp95_],1),
+            f'{yaxLAB}': np.round([Yp05_,Yp17_, Yp50_,Yp83_,Yp95_],1)
+        }, index=[f'p{p}' for p in percentiles])
+
+
+
+        # Create table at bottom of each subplot
+        table = ax.table(cellText=table_data.values, 
+                         rowLabels=table_data.index, 
+                         colLabels=table_data.columns,
+                         cellLoc='center', 
+                         loc='bottom',
+                         bbox=[0, -0.5, 1, 0.3])  # Adjust bbox for table positioning within plot
+        ax.set_adjustable('datalim')
+        ax.autoscale()
+
 
 # ^^cx^
