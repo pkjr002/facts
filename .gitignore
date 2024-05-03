@@ -51,4 +51,4 @@ makefile
 
 Q-err.txt
 *.nc
-print_.py
+print_*
