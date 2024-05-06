@@ -492,40 +492,25 @@ def gilford(ax, xaxVAR, yaxVAR,kernel,bw_kde,kde_grid_int, val, xaxLAB,yaxLAB,ti
     log_density_values = log_density_values.reshape(Xgrid.shape)
     #
     #-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
-    # make the max of the matrix value 0.
-    adjusted_log_density_values = log_density_values - np.max(log_density_values)
-    #calculate adjusted density.
-    # adjusted_density_values = np.exp(adjusted_log_density_values)
-
-    # How about not doing above, and using raw (i.e. donot subtract the max)
-    adjusted_density_values = np.exp(log_density_values)
-
+    # Density values
+    density_values = np.exp(log_density_values)
     #.............................................................................................................
     # Normalize 
-    normalized_adjusted_density_values = adjusted_density_values / np.sum(adjusted_density_values, axis=0);
-    # is it as simple as :
-    normalized_density_values=normalized_adjusted_density_values
-    # or more complex as :
-    # normalized_density_values = normalized_adjusted_density_values + np.exp(np.max(log_density_values)) 
-    # Old scheme 
-    # normalized_density_values = adjusted_density_values / np.sum(adjusted_density_values, axis=0);
+    normalized_density_values = density_values / np.sum(density_values, axis=0);
     #.............................................................................................................
-    # == ?? CHECKGet the TRUE Density values back
-    density_values = adjusted_density_values*np.exp(np.max(log_density_values))
-    #.............................................................................................................
-    
-    # Normalize log_density_values. Do all of this in log scales (Log-Sum-Exp trick)
-    exp_sum = np.sum(np.exp(adjusted_log_density_values), axis=0)
-    # Readjust by adding back the adjustment factor
-    log_normalization_constant = np.log(exp_sum) + np.max(log_density_values);
-    # Normalize within the log space 
-    normalized_log_density_values = log_density_values - log_normalization_constant
+    ## Normalize log_density_values |.| Do all of this in log scales (Log-Sum-Exp trick)
+    #adjusted_log_density_values = log_density_values - np.max(log_density_values)
+    #exp_sum = np.sum(np.exp(adjusted_log_density_values), axis=0)
+    ## Readjust by adding back the adjustment factor
+    #log_normalization_constant = np.log(exp_sum) + np.max(log_density_values);
+    ## Normalize within the log space 
+    #normalized_log_density_values = log_density_values - log_normalization_constant
 
     #-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
     if val == 'log_density_values':
         PLOT_VAR=log_density_values
-    elif val == 'log_density_values_Normalized':
-        PLOT_VAR=normalized_log_density_values
+    #elif val == 'log_density_values_Normalized':
+    #    PLOT_VAR=normalized_log_density_values
     elif val == 'density_values':
         PLOT_VAR=density_values
     elif val == 'density_values_Normalized':
@@ -542,6 +527,19 @@ def gilford(ax, xaxVAR, yaxVAR,kernel,bw_kde,kde_grid_int, val, xaxLAB,yaxLAB,ti
         # PLOT:: contour
         clabels=np.round(clevels,decimals=3).astype('str')
         contour=ax.contourf(Xgrid, Ygrid, PLOT_VAR,levels=clevels,cmap=CMAP)
+        #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        # # Calculate the intervals
+        dx = np.diff(xgrid)  # Differences between consecutive x-values
+        dy = np.diff(ygrid)  # Differences between consecutive y-values
+        # Optional: check if the intervals are uniform (constant)
+        uniform_x = np.allclose(dx, dx[0])  # True if all differences in x are the same
+        uniform_y = np.allclose(dy, dy[0])  # True if all differences in y are the same
+        print("X-axis interval:", dx[0])
+        print("Is X-axis uniformly spaced?", uniform_x)
+        print("Y-axis interval:", dy[0])
+        print("Is Y-axis uniformly spaced?", uniform_y)
+        #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        
         # COLORBAR::
         if plotOPT['plotCBAR'] is not None:
             if plotOPT['plotCBAR'] == 'YES':
