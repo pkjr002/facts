@@ -527,19 +527,16 @@ def gilford(ax, xaxVAR, yaxVAR,kernel,bw_kde,kde_grid_int, val, xaxLAB,yaxLAB,ti
         # PLOT:: contour
         clabels=np.round(clevels,decimals=3).astype('str')
         contour=ax.contourf(Xgrid, Ygrid, PLOT_VAR,levels=clevels,cmap=CMAP)
+        # &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&    
+        # print(PLOT_VAR)
+        # &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
         #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        # # Calculate the intervals
-        dx = np.diff(xgrid)  # Differences between consecutive x-values
-        dy = np.diff(ygrid)  # Differences between consecutive y-values
-        # Optional: check if the intervals are uniform (constant)
-        uniform_x = np.allclose(dx, dx[0])  # True if all differences in x are the same
-        uniform_y = np.allclose(dy, dy[0])  # True if all differences in y are the same
-        print("X-axis interval:", dx[0])
-        print("Is X-axis uniformly spaced?", uniform_x)
-        print("Y-axis interval:", dy[0])
-        print("Is Y-axis uniformly spaced?", uniform_y)
+        # # PRINT<==
+        # # Calculate the intervals consecutive x/y values
+        #dx = np.diff(xgrid)  ; print("X-axis interval:", dx[0])
+        #dy = np.diff(ygrid)  ; print("Y-axis interval:", dy[0])
+        #print("----")
         #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        
         # COLORBAR::
         if plotOPT['plotCBAR'] is not None:
             if plotOPT['plotCBAR'] == 'YES':
