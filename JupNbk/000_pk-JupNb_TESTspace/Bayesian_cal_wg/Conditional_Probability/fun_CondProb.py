@@ -380,6 +380,7 @@ def df_samps_trend(ssps,data_,years_):
 # Fun: Conditional Probability Plotting.
 #.............................................................
 def plot_ConditionalProb_panel(all_ssp_data,plot_params,plotOPT):
+    PLOT_VAR=[]
     #
     panel_no=len(plot_params)
     if panel_no == 4:     fig, ax = plt.subplots(1, 4, figsize=(20, 4)); 
@@ -401,8 +402,11 @@ def plot_ConditionalProb_panel(all_ssp_data,plot_params,plotOPT):
             showCBAR = 1 if i == 4 or 5 else 0
             plotOPT['showCBAR'] = showCBAR
             plotOPT['cbar_ax'] = fig.add_axes([0.92, 0.15, 0.01, 0.7])  # controls the shape [left, bottom, width, height]
-            plot_ConditionalProb(ax[i], params['var1'], params['var2'], params['t1'], params['t2'],var1_lab,var2_lab,plotOPT)      
-    plt.show()        
+            plotvar=plot_ConditionalProb(ax[i], params['var1'], params['var2'], params['t1'], params['t2'],var1_lab,var2_lab,plotOPT)      
+            PLOT_VAR.append(plotvar)
+    PLOT_VAR = np.dstack(PLOT_VAR)
+    plt.show()      
+    return PLOT_VAR  
 #.............................................................
 def plot_ConditionalProb(ax, var1, var2, t1, t2,var1_lab,var2_lab,plotOPT):
     #-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
@@ -428,8 +432,8 @@ def plot_ConditionalProb(ax, var1, var2, t1, t2,var1_lab,var2_lab,plotOPT):
     title  = f'{t2} {var2_lab}  \n conditional upon \n {t1} {var1_lab} '
     #-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
     # PLOT Conditional Probability figure.
-    gilford(ax, xaxVAR, yaxVAR, kernel, bw_kde, kde_grid_int, val, xaxLAB, yaxLAB, title, ssp, plt_og,plt_scatter, cmap, t1, plotOPT)
-
+    plotvar = gilford(ax, xaxVAR, yaxVAR, kernel, bw_kde, kde_grid_int, val, xaxLAB, yaxLAB, title, ssp, plt_og,plt_scatter, cmap, t1, plotOPT)
+    return plotvar
 
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++  
 # Plot contour that sums to 1 along columns.
@@ -674,5 +678,5 @@ def gilford(ax, xaxVAR, yaxVAR,kernel,bw_kde,kde_grid_int, val, xaxLAB,yaxLAB,ti
         ax.set_adjustable('datalim')
         ax.autoscale()
 
-
+    return PLOT_VAR
 # ^^cx^
