@@ -51,3 +51,4 @@ makefile
 
 .ipynb_checkpoints
 __pycache__
+print_.p*
