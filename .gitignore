@@ -55,3 +55,4 @@ print_*
 
 *.tgz
 *.csv
+**/_scratch/
