@@ -79,6 +79,15 @@ def PLOTraw(data_list, datNME_list):
 
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+def calculate_percentiles(data, percentiles=[0.05, 0.17, 0.5, 0.83, 0.95]):
+
+    x_percentiles = np.percentile(data[:, 0], [p * 100 for p in percentiles])
+    y_percentiles = np.percentile(data[:, 1], [p * 100 for p in percentiles])
+    
+    return x_percentiles, y_percentiles
+
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 def PLOTscatter(data_list,datNME_list):
     # Determine the number of datasets to plot
     num_data = len(data_list)
@@ -93,9 +102,10 @@ def PLOTscatter(data_list,datNME_list):
         datNME1 = datNME_list[idx][0]
         datNME2 = datNME_list[idx][1]
         
-        quantile_data = getQuantiles(data)
-        x_percentiles = [q[1] for q in quantile_data if q[0] in [0.05, 0.17, 0.5, 0.83, 0.95]]
-        y_percentiles = [q[2] for q in quantile_data if q[0] in [0.05, 0.17, 0.5, 0.83, 0.95]]
+        #quantile_data = getQuantiles(data)
+        #x_percentiles = [q[1] for q in quantile_data if q[0] in [0.05, 0.17, 0.5, 0.83, 0.95]]
+        #y_percentiles = [q[2] for q in quantile_data if q[0] in [0.05, 0.17, 0.5, 0.83, 0.95]]
+        x_percentiles, y_percentiles = calculate_percentiles(data)
 
         # Scatter plot of the first column vs. the second column
         ax.scatter(data[:, 0], data[:, 1], s=.5, facecolor='red')
@@ -151,6 +161,28 @@ def automatic_bandwidth_range(INdata):
 
 
 
+def generate_grids_full_data(INdata, base_points=100):
+    # Get the min and max values of the x and y data
+    x_min, x_max = INdata[:, 0].min() - 1, INdata[:, 0].max() + 1
+    y_min, y_max = INdata[:, 1].min() - 1, INdata[:, 1].max() + 1
+
+    # Calculate the range for x and y
+    x_range = x_max - x_min
+    y_range = y_max - y_min
+
+    # Calculate the number of points based on the proportion of the ranges
+    total_range = x_range + y_range
+    x_points = int(base_points * (x_range / total_range))
+    y_points = base_points - x_points  # Ensure the total remains around base_points
+
+    # Generate the grids using linspace
+    xgrid = np.linspace(x_min, x_max, x_points)
+    ygrid = np.linspace(y_min, y_max, y_points)
+    
+    return xgrid, ygrid
+
+
+
 
 def COMPkde(INdata):
     #print("Data shape:", INdata.shape)
@@ -167,18 +199,21 @@ def COMPkde(INdata):
     
     # Fit grid search
     grid.fit(INdata)
-    
+
     # Best bandwidth
     best_bw = np.round(grid.best_params_['bandwidth'],2)
-    print("Optimal bandwidth:", best_bw, " || ", "num_values",num_values)
-    
     bw_kde=best_bw #-----BANDWIDTH
     
 
     kde = KernelDensity(kernel='gaussian', bandwidth=bw_kde).fit(INdata)
     
-    xgrid = np.linspace(INdata[:,0].min()-1, INdata[:,0].max()+1, 100)  
-    ygrid = np.linspace(INdata[:,1].min()-1, INdata[:,1].max()+1, 100)
+    # xgrid = np.linspace(INdata[:,0].min()-1, INdata[:,0].max()+1, 100)  
+    # ygrid = np.linspace(INdata[:,1].min()-1, INdata[:,1].max()+1, 100)
+    xgrid, ygrid = generate_grids_full_data(INdata, base_points=200)
+    
+    
+    print("Optimal bandwidth:", best_bw, " || ", "num_values",num_values, " || ",
+        "KDE eval ","xgrid:",len(xgrid)," :: ","ygrid:",len(ygrid))
     
     Xgrid, Ygrid  = np.meshgrid(xgrid, ygrid)
     grid_samples = np.vstack([Xgrid.ravel(), Ygrid.ravel()]).T
@@ -195,11 +230,14 @@ def COMPkde(INdata):
     # Normalize 
     normalized_density_values = density_values / np.sum(density_values, axis=0);
 
-    return normalized_density_values, density_values, xgrid, ygrid
+    # percentiles
+    xp, yp = calculate_percentiles(INdata)
+
+    return normalized_density_values, density_values, xgrid, ygrid,xp, yp
 
 
 
-def PLOTkde(density_values_list, xgrid_list, ygrid_list, datNME_list):
+def PLOTkde(density_values_list, xgrid_list, ygrid_list, xp, yp, datNME_list):
     # Determine the number of datasets to plot
     num_data = len(density_values_list)
     num_plots = min(num_data, 5)  # Limit to 5 plots for the 1x5 grid
@@ -219,7 +257,7 @@ def PLOTkde(density_values_list, xgrid_list, ygrid_list, datNME_list):
         ax = axs[idx]
 
         # Define contour levels and plot the normalized density
-        clevels = np.linspace(0.001, 0.2, 6)
+        clevels = np.linspace(0.001, 0.1, 6)
         contour = ax.contourf(Xgrid, Ygrid, normalized_density_values, levels=clevels, cmap='Reds')
 
         # ax.set_title(f'Dataset {idx + 1}')
@@ -229,11 +267,17 @@ def PLOTkde(density_values_list, xgrid_list, ygrid_list, datNME_list):
         ax.set_xlabel(datNME1)
         ax.set_ylabel(datNME2)
         
+        # Mark the percentiles on the scatter plot
+        mark_percentiles(ax, xp[idx], yp[idx])
+        
+        # Plot the table of percentile values
+        plot_table(ax, xp[idx], yp[idx], datNME1, datNME2)
+        
     # Hide any unused subplots
     for idx in range(num_plots, 4):
         axs[idx].set_visible(False)
 
-    plt.tight_layout()
+    # plt.tight_layout()
     plt.show()
 
 
