@@ -228,7 +228,8 @@ def COMPkde(INdata):
     density_values = np.exp(log_density_values)
     #.............................................................................................................
     # Normalize 
-    normalized_density_values = density_values / np.sum(density_values, axis=0);
+    # normalized_density_values = density_values / np.sum(density_values, axis=0);
+    normalized_density_values = density_values / (np.sum(density_values, axis=0) + 1e-12)
 
     # percentiles
     xp, yp = calculate_percentiles(INdata)
@@ -237,7 +238,7 @@ def COMPkde(INdata):
 
 
 
-def PLOTkde(density_values_list, xgrid_list, ygrid_list, xp, yp, datNME_list):
+def PLOTkde(density_values_list, xgrid_list, ygrid_list, xp, yp, datNME_list, table=None):
     # Determine the number of datasets to plot
     num_data = len(density_values_list)
     num_plots = min(num_data, 5)  # Limit to 5 plots for the 1x5 grid
@@ -271,7 +272,8 @@ def PLOTkde(density_values_list, xgrid_list, ygrid_list, xp, yp, datNME_list):
         mark_percentiles(ax, xp[idx], yp[idx])
         
         # Plot the table of percentile values
-        plot_table(ax, xp[idx], yp[idx], datNME1, datNME2)
+        if table == 1:
+            plot_table(ax, xp[idx], yp[idx], datNME1, datNME2) 
         
     # Hide any unused subplots
     for idx in range(num_plots, 4):
@@ -282,9 +284,71 @@ def PLOTkde(density_values_list, xgrid_list, ygrid_list, xp, yp, datNME_list):
 
 
 
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# def PLOTcondProb(density_values_list, xgrid_list, ygrid_list, x_values, y_limits=None):
+
+#     # Determine the number of datasets to plot
+#     num_data = len(density_values_list)
+#     num_plots = min(num_data, 5)  # Limit to 5 plots for the 1x5 grid
+
+#     fig, axs = plt.subplots(1, 5, figsize=(30, 6))
+
+#     # Iterate over the provided datasets and plot them
+#     for idx in range(num_plots):
+#         density_values = density_values_list[idx]
+#         xgrid = xgrid_list[idx]
+#         ygrid = ygrid_list[idx]
+
+#         start, stop, num_points = x_values[idx]
+#         x_value = np.linspace(start, stop, num_points)
+
+#         # Prepare an array to hold the conditional densities for each X value
+#         conditional_densities = np.zeros((len(ygrid), len(x_value)))
+
+#         # Loop through each chosen X value
+#         for i, chosen_x in enumerate(x_value):
+#             # Find the closest index for chosen_x in xgrid
+#             x_idx = np.abs(xgrid - chosen_x).argmin()
+
+#             # Extract the joint density values at this X value
+#             joint_density_at_x = density_values[:, x_idx]
+
+#             # Calculate the marginal density for this X value (sum over Y)
+#             marginal_density_x = np.sum(joint_density_at_x)
+
+#             # Compute the conditional density P(Y|X)
+#             conditional_density_y_given_x = joint_density_at_x / marginal_density_x
+
+#             # Store the conditional density for this X value
+#             conditional_densities[:, i] = conditional_density_y_given_x
+
+#         # Create a plot for the conditional densities
+#         X, Y = np.meshgrid(x_value, ygrid)
+#         ax = axs[idx]
+#         clevels = np.linspace(0.001, 0.1, 6)
+#         contour = ax.contourf(X, Y, conditional_densities, cmap='Reds', levels=clevels, alpha=0.8)
+               
+#         ax.set_title(f'Dataset {idx + 1}')
+#         ax.set_xlabel('X')
+#         ax.set_ylabel('Y')
+#         if y_limits is not None:
+#             ax.set_ylim(y_limits[idx])
+#         ax.grid(True)
+        
+#         # Add a color bar
+#         if idx == num_plots - 1:
+#             fig.colorbar(contour, ax=ax, label='Probability Density')
+
+#     # Hide any unused subplots
+#     for idx in range(num_plots, 5):
+#         axs[idx].set_visible(False)
+    
+#     plt.tight_layout()
+#     plt.show()
+
+
 
 def PLOTcondProb(density_values_list, xgrid_list, ygrid_list, x_values, y_limits=None):
-
     # Determine the number of datasets to plot
     num_data = len(density_values_list)
     num_plots = min(num_data, 5)  # Limit to 5 plots for the 1x5 grid
@@ -297,52 +361,69 @@ def PLOTcondProb(density_values_list, xgrid_list, ygrid_list, x_values, y_limits
         xgrid = xgrid_list[idx]
         ygrid = ygrid_list[idx]
 
+        # Unpack the x-range for this plot
         start, stop, num_points = x_values[idx]
-        x_value = np.linspace(start, stop, num_points)
+        x_range = np.linspace(start, stop, num_points)
 
-        # Prepare an array to hold the conditional densities for each X value
-        conditional_densities = np.zeros((len(ygrid), len(x_value)))
+        # Prepare an array to hold the conditional densities P(Y|X)
+        conditional_densities = np.zeros((len(ygrid), len(x_range)))
 
-        # Loop through each chosen X value
-        for i, chosen_x in enumerate(x_value):
-            # Find the closest index for chosen_x in xgrid
+        # Loop through each fixed X value
+        for i, chosen_x in enumerate(x_range):
+            # Find the closest index in xgrid to the chosen X value
             x_idx = np.abs(xgrid - chosen_x).argmin()
 
-            # Extract the joint density values at this X value
+            # Extract the joint density values at this X value (slice along y-axis)
             joint_density_at_x = density_values[:, x_idx]
 
-            # Calculate the marginal density for this X value (sum over Y)
+            # Calculate the marginal density P(X=x) (sum over Y)
             marginal_density_x = np.sum(joint_density_at_x)
 
-            # Compute the conditional density P(Y|X)
-            conditional_density_y_given_x = joint_density_at_x / marginal_density_x
+            # Compute conditional density P(Y|X=x)
+            if marginal_density_x > 0:
+                conditional_density_y_given_x = joint_density_at_x / marginal_density_x
+            else:
+                conditional_density_y_given_x = np.zeros_like(joint_density_at_x)  # Handle division by 0
 
-            # Store the conditional density for this X value
+            # Store the conditional density for the chosen X value
             conditional_densities[:, i] = conditional_density_y_given_x
 
         # Create a plot for the conditional densities
-        X, Y = np.meshgrid(x_value, ygrid)
+        X, Y = np.meshgrid(x_range, ygrid)
         ax = axs[idx]
-        clevels = np.linspace(0.001, 0.1, 6)
+        
+        # Define contour levels for visualization
+        clevels = np.linspace(0.001, np.max(conditional_densities), 6)
         contour = ax.contourf(X, Y, conditional_densities, cmap='Reds', levels=clevels, alpha=0.8)
-               
+
+        # Set plot title and labels
         ax.set_title(f'Dataset {idx + 1}')
         ax.set_xlabel('X')
         ax.set_ylabel('Y')
+
+        # Apply y-axis limits if provided
         if y_limits is not None:
             ax.set_ylim(y_limits[idx])
+
+        # Add a grid for better readability
         ax.grid(True)
-        
-        # Add a color bar
+
+        # Add a color bar to the last plot
         if idx == num_plots - 1:
-            fig.colorbar(contour, ax=ax, label='Probability Density')
+            fig.colorbar(contour, ax=ax, label='Conditional Probability Density')
 
     # Hide any unused subplots
     for idx in range(num_plots, 5):
         axs[idx].set_visible(False)
-    
+
+    # Adjust layout for better spacing
     plt.tight_layout()
     plt.show()
+
+
+
+
+
 
 
 def getQuantiles(INdata):
