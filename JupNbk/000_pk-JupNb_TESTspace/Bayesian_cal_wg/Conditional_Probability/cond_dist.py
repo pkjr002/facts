@@ -138,7 +138,7 @@ def automatic_bandwidth_range(INdata):
     iqr = np.subtract(*np.percentile(INdata, [95, 5]))
 
     # Use IQR to determine the number of bandwidth values to test
-    num_values = min(1000, max(10, int(iqr)))  # Ensures a number between 10 and 100
+    num_values = min(1000, max(10, int(iqr)))  # Ensures a number between 10 and 1000
     # <---
 
     # Find appropriate bandwidth array.
@@ -231,14 +231,28 @@ def COMPkde(INdata):
     # normalized_density_values = density_values / np.sum(density_values, axis=0);
     normalized_density_values = density_values / (np.sum(density_values, axis=0) + 1e-12)
 
-    # percentiles
+    # OG percentiles
     xp, yp = calculate_percentiles(INdata)
+
+
+    # KDE Percentiles
+    # Flatten the density values to compute CDF
+    flat_density = density_values.ravel()
+    sorted_indices = np.argsort(flat_density)
+    sorted_density = flat_density[sorted_indices]
+    # Compute cumulative density (CDF)
+    cdf = np.cumsum(sorted_density)
+    cdf /= cdf[-1]  # Normalize CDF to range [0, 1]
+    # Calculate percentiles
+    percentiles = [0.05, 0.17, 0.5, 0.83, 0.95]
+    percentile_values = np.interp(percentiles, cdf, sorted_density)
+
 
     return normalized_density_values, density_values, xgrid, ygrid,xp, yp
 
 
 
-def PLOTkde(density_values_list, xgrid_list, ygrid_list, xp, yp, datNME_list, table=None):
+def PLOTkde(density_values_list, xgrid_list, ygrid_list, xp, yp, datNME_list, clevels, table=None):
     # Determine the number of datasets to plot
     num_data = len(density_values_list)
     num_plots = min(num_data, 5)  # Limit to 5 plots for the 1x5 grid
@@ -258,7 +272,7 @@ def PLOTkde(density_values_list, xgrid_list, ygrid_list, xp, yp, datNME_list, ta
         ax = axs[idx]
 
         # Define contour levels and plot the normalized density
-        clevels = np.linspace(0.001, 0.1, 6)
+        clevels = clevels
         contour = ax.contourf(Xgrid, Ygrid, normalized_density_values, levels=clevels, cmap='Reds')
 
         # ax.set_title(f'Dataset {idx + 1}')
