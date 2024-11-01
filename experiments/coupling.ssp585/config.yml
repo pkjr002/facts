@@ -5,6 +5,7 @@ global-options:
     pyear_end: 2150
     pyear_step: 10
     baseyear: 2005
+    pipeline_file: 'pipeline.global.yml'
 
 climate_step:
     temperature:
@@ -138,11 +139,11 @@ totaling_step:
         stages:
             - workflow
 
-esl_step:
-    extremesealevel:
-        loop_over_workflows: true
-        module_set: "extremesealevel"
-        module: "pointsoverthreshold"
-        options:
-            target_years: 2050,2100
-            total_localsl_file: "$SHARED/totaled/%EXPERIMENT_NAME%.total.workflow.%WORKFLOW_NAME%.local.nc" 
+# esl_step:
+#     extremesealevel:
+#         loop_over_workflows: true
+#         module_set: "extremesealevel"
+#         module: "pointsoverthreshold"
+#         options:
+#             target_years: 2050,2100
+#             total_localsl_file: "$SHARED/totaled/%EXPERIMENT_NAME%.total.workflow.%WORKFLOW_NAME%.local.nc" 
