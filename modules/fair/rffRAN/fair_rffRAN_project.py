@@ -185,6 +185,7 @@ def fair_project_temperature(nsamps, seed, cyear_start, cyear_end, smooth_win, p
 	#----------------------------------------------------------------------------------------
 	# RFF SPs									|
 	#----------------------------------------------------------------------------------------
+	# How many climate parameter sets do we have?
 	nsims = len(pars["simulation"])
 
 	if nsamps == 10000:
@@ -196,10 +197,24 @@ def fair_project_temperature(nsamps, seed, cyear_start, cyear_end, smooth_win, p
 	
 
 	elif nsamps < 10000:
-		print('working on this ...')
+		print('nsamps < 10000')
+		
+		# Generate nsamps of simulation indices to sample
+		rng = np.random.default_rng(seed)
+		
+		if nsamps > nsims: 												# if nsamps = 9999, (nsamps > 2237)
+			run_idx = np.arange(nsims)									# run_idx = (0 to 2236)
+			sample_idx = rng.choice(nsims, nsamps, nsamps>nsims)		# sample_idx = Random Sampling and Replacement:
+		else:
+			run_idx = rng.choice(nsims, nsamps, nsamps>nsims)
+			sample_idx = np.arange(nsamps)
+
+		rff_sp 	= rng.integers(1, 10001, size=nsamps)
+
+	# sort `rff_sp` by 2100 cumulative emissions and subsample every nth entry
 
 	else: 		#nsamps > 10000:
-		print('working on this ...')
+		print('working later on this ...')
 
 		 
 	# Run_idx will controol the looping over pairidx. (randomsamp this var if over/under)
@@ -220,12 +235,12 @@ def fair_project_temperature(nsamps, seed, cyear_start, cyear_end, smooth_win, p
 	deeptemps = []
 	ohcs = []
 
-	for i in sample_idx:
-		print(f'--- i={i}, run_idx={run_idx[i].values}, simulation={sim[i]}, rffsp={rff_sp[i]}, ---')
-		this_pars = pars.isel(simulation=sim[i])
+	for i0,i in enumerate(sample_idx):
+		#print(f'--- i={i}, run_idx={run_idx[i0]}, simulation={sim[i]}, rffsp={rff_sp[i]}, ---')
+		this_pars = pars.isel(simulation=sample_idx[i])
 		
 		#print(f'simulation={sim[i]}')
-		rffemfull = prep_rff(emis, rffemissions, rff_sp[i],REFERENCE_YEAR=1750)
+		rffemfull = prep_rff(emis, rffemissions, rff_sp[i0],REFERENCE_YEAR=1750)
 		this_temp, this_deeptemp, this_ohc = my_run_fair(this_pars, rffemfull)
 		temps.append(this_temp)
 		deeptemps.append(this_deeptemp)
