@@ -182,7 +182,11 @@ def tlm_postprocess_oceandynamics(nsamps, rng_seed, chunksize, keep_temp, pipeli
 		# Write these samples to a temporary netcdf file
 		local_out.to_netcdf(temp_filename, encoding={"sea_level_change": {"dtype": "f4", "zlib": True, "complevel":4, "_FillValue": nc_missing_value}})
 
-	# Open the temporary data sets
+
+	'''
+	#---------->  
+	# |  # Open the temporary data sets
+
 	#combined = xr.open_mfdataset("{0}_tempsamps_*.nc".format(pipeline_id), concat_dim="locations", chunks={"locations":chunksize})
 	combined = xr.open_mfdataset("{0}_tempsamps_*.nc".format(pipeline_id), chunks={"locations":chunksize}, lock=False)
 
@@ -193,6 +197,31 @@ def tlm_postprocess_oceandynamics(nsamps, rng_seed, chunksize, keep_temp, pipeli
 	if keep_temp == 0:
 		for i in np.arange(0,nsites,chunksize):
 			os.remove("{0}_tempsamps_{1:05d}.nc".format(pipeline_id,int(i/chunksize)))
+	'''
+	
+	
+	#----> .@
+	final_filename = f"{pipeline_id}_localsl.nc"
+	datasets = []
+
+	for i in range(0, nsites, chunksize):
+		temp_filename = f"{pipeline_id}_tempsamps_{int(i/chunksize):05d}.nc"
+	
+		# Open each dataset individually and load into memory
+		with xr.open_dataset(temp_filename, chunks={"locations": chunksize}) as temp_ds:
+			datasets.append(temp_ds.load())  # Load fully into memory to avoid dependency on file
+		
+		# Optionally delete the temporary file if no longer needed
+		if keep_temp == 0:
+			os.remove(temp_filename)
+			print(f"Deleted temporary file {temp_filename}")
+
+	combined = xr.concat(datasets, dim="locations")
+
+	combined.to_netcdf(final_filename, encoding={"sea_level_change": {"dtype": "f4", "zlib": True, "complevel": 4, "_FillValue": nc_missing_value}})
+	print(f"Data successfully combined and saved to {final_filename}.")
+	# -----------<
+	
 
 	# Produce the intermediate data output netCDF file =========================
 
