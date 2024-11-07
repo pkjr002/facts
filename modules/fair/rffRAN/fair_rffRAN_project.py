@@ -202,6 +202,7 @@ def fair_project_temperature(nsamps, seed, cyear_start, cyear_end, smooth_win, p
 		# Generate nsamps of simulation indices to sample
 		rng = np.random.default_rng(seed)
 		
+		# ---> Randomly sample climate parameters
 		if nsamps > nsims: 												# if nsamps = 9999, (nsamps > 2237)
 			run_idx = np.arange(nsims)									# run_idx = (0 to 2236)
 			sample_idx = rng.choice(nsims, nsamps, nsamps>nsims)		# sample_idx = Random Sampling and Replacement:
@@ -209,6 +210,7 @@ def fair_project_temperature(nsamps, seed, cyear_start, cyear_end, smooth_win, p
 			run_idx = rng.choice(nsims, nsamps, nsamps>nsims)
 			sample_idx = np.arange(nsamps)
 
+		# ---> Randomly sample emissions
 		rff_sp 	= rng.integers(1, 10001, size=nsamps)
 
 	# sort `rff_sp` by 2100 cumulative emissions and subsample every nth entry
