@@ -10,6 +10,9 @@ from datetime import datetime
 
 from my_FAIR_forward import fair_scm as my_fair_scm
 
+import numpy as np
+print(np.__version__)
+
 
 # Function that generates a sample from the FAIR model with provided emissions
 def my_run_fair(args, emissions, reference_year=1750):
@@ -130,6 +133,11 @@ def prep_rff(baseem, rffemissions, rff_sp,REFERENCE_YEAR):
     # put the RFF-SP gases into the given background emissions 
     rffemfull = baseem
     for gas in rffemissions.gas.values:
+        print('---')
+        print(gas)        
+        print(rffemissions.gas.values)
+        print(idxdt[gas])
+
         rffemfull[styear-REFERENCE_YEAR:enyear-REFERENCE_YEAR+1,idxdt[gas]] = rffemissions.sel(gas=gas,rff_sp=rff_sp).emissions.values
 
     return rffemfull
@@ -226,22 +234,45 @@ def fair_project_temperature(nsamps, seed, cyear_start, cyear_end, smooth_win, p
 	temps = []
 	deeptemps = []
 	ohcs = []
+	
+	rffemfull_list = []
+	rff_sp_list =[]
 
 	for i0,i in enumerate(sample_idx):
 		#print(f'--- i={i}, run_idx={run_idx[i0]}, simulation={sim[i]}, rffsp={rff_sp[i]}, ---')
 		this_pars = pars.isel(simulation=sample_idx[i])
 		
 		#print(f'simulation={sim[i]}')
+		# Create the full emissions based on the Gas IDX selected.  
 		rffemfull = prep_rff(emis, rffemissions, rff_sp[i0],REFERENCE_YEAR=1750)
+		rffemfull_list.append(rffemfull)
+		rff_sp_list.append(rff_sp[i0])
+
 		this_temp, this_deeptemp, this_ohc = my_run_fair(this_pars, rffemfull)
 		temps.append(this_temp)
 		deeptemps.append(this_deeptemp)
 		ohcs.append(this_ohc)
 
+	
+	# Gas/clim Files
+	rffemfull_array = np.array(rffemfull_list)
+	rff_sp_array = np.array(rff_sp_list)
+
 	# Recast the output as numpy arrays
 	temps = np.array(temps)
 	deeptemps = np.array(deeptemps)
 	ohcs = np.array(ohcs)
+
+
+	data_to_save = {
+    "rffemfull_array": rffemfull_array, "rff_sp_array" : rff_sp_array,
+	"temps": temps, "deeptemps": deeptemps, "ohcs": ohcs}
+	# Save as a pickle file.
+	filename = f"project.pkl"
+	with open(filename, "wb") as f:
+		pickle.dump(data_to_save, f)
+
+
     #========================================================================================|
     
 	# Projection years
