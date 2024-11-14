@@ -133,10 +133,6 @@ def prep_rff(baseem, rffemissions, rff_sp,REFERENCE_YEAR):
     # put the RFF-SP gases into the given background emissions 
     rffemfull = baseem
     for gas in rffemissions.gas.values:
-        print('---')
-        print(gas)        
-        print(rffemissions.gas.values)
-        print(idxdt[gas])
 
         rffemfull[styear-REFERENCE_YEAR:enyear-REFERENCE_YEAR+1,idxdt[gas]] = rffemissions.sel(gas=gas,rff_sp=rff_sp).emissions.values
 
@@ -163,6 +159,7 @@ def fair_project_temperature(nsamps, seed, cyear_start, cyear_end, smooth_win, p
 
 	#-------------
 	# Load data  |
+	#-------------
 	#
 	# ==> Load the preprocessed data (Emissions data)
 	preprocess_file = "{}_preprocess.pkl".format(pipeline_id)
@@ -203,8 +200,8 @@ def fair_project_temperature(nsamps, seed, cyear_start, cyear_end, smooth_win, p
 		run_idx 	= pairds["runid"]
 		sample_idx 	= run_idx.values -1
 
-		sim 	= pairds["simulation"].values
-		rff_sp 	= pairds["rff_sp"].values
+		sim 		= pairds["simulation"].values
+		rff_sp 		= pairds["rff_sp"].values
 	
 	
 	# ===> RFF Random
@@ -228,9 +225,9 @@ def fair_project_temperature(nsamps, seed, cyear_start, cyear_end, smooth_win, p
 
 
 
-	#----------------------------------------------------------------------------------------
-	# Run the FAIR model																	|
-	#----------------------------------------------------------------------------------------
+	#----------------------
+	# Run the FAIR model   |
+	#----------------------
 	temps = []
 	deeptemps = []
 	ohcs = []
@@ -239,15 +236,15 @@ def fair_project_temperature(nsamps, seed, cyear_start, cyear_end, smooth_win, p
 	rff_sp_list =[]
 
 	for i0,i in enumerate(sample_idx):
-		#print(f'--- i={i}, run_idx={run_idx[i0]}, simulation={sim[i]}, rffsp={rff_sp[i]}, ---')
-		this_pars = pars.isel(simulation=sample_idx[i])
 		
-		#print(f'simulation={sim[i]}')
+		this_pars = pars.isel(simulation=sample_idx[i])
+
 		# Create the full emissions based on the Gas IDX selected.  
 		rffemfull = prep_rff(emis, rffemissions, rff_sp[i0],REFERENCE_YEAR=1750)
 		rffemfull_list.append(rffemfull)
 		rff_sp_list.append(rff_sp[i0])
-
+		
+		# ==> Run FaIR
 		this_temp, this_deeptemp, this_ohc = my_run_fair(this_pars, rffemfull)
 		temps.append(this_temp)
 		deeptemps.append(this_deeptemp)
