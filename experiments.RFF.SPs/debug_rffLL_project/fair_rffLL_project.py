@@ -149,7 +149,7 @@ def get_climpramIDX(nsamps,nsims,rng):
 	if nsamps > nsims:													        #| if, nsamps(9999)  >  nsims (2237)		
 		runIDX 	  = np.arange(nsims)									        #| arrange [0, 1, 2, ..., 2236]	
 		sampleIDX 	= rng.choice(nsims, nsamps, replace=True)			        #| 9999 Randomly select indices [23, 2236, 12,...]) wi replace.		
-			
+		# above sampleIDX does not ensure all indices are selected before repeating.	
 	
 
 	else:                                                                       #| elseif nsamps(1000)  <=  nsims (2237)                                                                
