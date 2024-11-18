@@ -131,7 +131,7 @@ def prep_rff(baseem, rffemissions, rff_sp,REFERENCE_YEAR):
     enyear = rffemissions.Year.values[-1]
 
     # put the RFF-SP gases into the given background emissions 
-    rffemfull = baseem
+    rffemfull = baseem.copy()
     for gas in rffemissions.gas.values:
 
         rffemfull[styear-REFERENCE_YEAR:enyear-REFERENCE_YEAR+1,idxdt[gas]] = rffemissions.sel(gas=gas,rff_sp=rff_sp).emissions.values
@@ -142,15 +142,21 @@ def prep_rff(baseem, rffemissions, rff_sp,REFERENCE_YEAR):
 
 
 def get_climpramIDX(nsamps,nsims,rng):
-	# Based on samples requested and clim param (2237)
-	if nsamps > nsims:													                            # if nsamps = 9999, (nsamps > 2237)		
-		run_idx 	= np.arange(nsims)									                            # run_idx = (0 to 2236)	
-		sample_idx 	= rng.choice(nsims, nsamps, nsamps>nsims)			                            # sample_idx = Random Sampling and Replacement:			
-	else:
-		run_idx 	= rng.choice(nsims, nsamps, nsamps>nsims)
-		sample_idx 	= np.arange(nsamps)
+	"""
+	Based on the number of user samples requested (nsamps), randomly sample climate parameters (nsims).
+	"""
+	
+	if nsamps > nsims:													        #| if, nsamps(9999)  >  nsims (2237)		
+		runIDX 	  = np.arange(nsims)									        #| arrange [0, 1, 2, ..., 2236]	
+		sampleIDX 	= rng.choice(nsims, nsamps, replace=True)			        #| 9999 Randomly select indices [23, 2236, 12,...]) wi replace.		
+			
+	
 
-	return run_idx, sample_idx
+	else:                                                                       #| elseif nsamps(1000)  <=  nsims (2237)                                                                
+		runIDX  	= rng.choice(nsims, nsamps, replace=False)                  #| Randomly selects 1000 idx (e.g.,[23,123, 989,...]) w/o replace.                         
+		sampleIDX  	= np.arange(nsamps)                                         #| Contains range [0, 1, 2, ..., 999]                                   
+                    
+	return runIDX, sampleIDX
 
 
 
