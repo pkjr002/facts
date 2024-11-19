@@ -283,6 +283,36 @@ def fair_project_temperature(nsamps, seed, cyear_start, cyear_end, smooth_win, p
 	ohcs = np.array(ohcs)
 
 
+
+
+
+
+	# for i0,i in enumerate(sample_idx):
+		
+	# 	this_pars = pars.isel(simulation=sample_idx[i])
+
+	# 	# Create the full emissions based on the Gas IDX selected.  
+	# 	rffemfull = prep_rff(emis, rffemissions, rff_sp[i0],REFERENCE_YEAR=1750)
+	# 	rffemfull_list.append(rffemfull)
+	# 	rff_sp_list.append(rff_sp[i0])
+		
+	# 	# ==> Run FaIR
+	# 	this_temp, this_deeptemp, this_ohc = my_run_fair(this_pars, rffemfull)
+	# 	temps.append(this_temp)
+	# 	deeptemps.append(this_deeptemp)
+	# 	ohcs.append(this_ohc)
+
+	
+	# # Gas/clim Files
+	# rffemfull_array = np.array(rffemfull_list)
+	# rff_sp_array = np.array(rff_sp_list)
+
+	# # Recast the output as numpy arrays
+	# temps = np.array(temps)
+	# deeptemps = np.array(deeptemps)
+	# ohcs = np.array(ohcs)
+
+
 	data_to_save = {
     "rffemfull_array": rffemfull_array, "rff_sp_array" : rff_sp_array,
 	"temps": temps, "deeptemps": deeptemps, "ohcs": ohcs}
