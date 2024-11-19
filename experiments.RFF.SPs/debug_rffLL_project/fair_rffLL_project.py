@@ -140,15 +140,20 @@ def prep_rff(baseem, rffemissions, rff_sp,REFERENCE_YEAR):
 
 
 def get_climpramNrffIDX(nsamps,nsims,nrffsp,rng):
+	'''
+	the +1 for rffspIDX is added as the nsamps starts at 0, but rfff starts at 1
+	alternative: 
+	rffspIDX = rng.choice(np.arange(1, 10001), nsamps, replace=True)
+	'''
 	
 	if nsamps > nrffsp:
 		sampleIDX 	= np.arange(nsamps)
-		rffspIDX  	= rng.choice(nrffsp, nsamps, replace=True)
+		rffspIDX  	= rng.choice(nrffsp, nsamps, replace=True) +1
 		clmprmIDX   = rng.choice(nsims, nsamps, replace=True)
 	
 	else:   #(nsamps <= nrffsp:)
 		sampleIDX 	= np.arange(nsamps)
-		rffspIDX  	= rng.choice(nrffsp, nsamps, replace=False)
+		rffspIDX  	= rng.choice(nrffsp, nsamps, replace=False) + 1
 
 		if nsamps > nsims:
 			clmprmIDX   = rng.choice(nsims, nsamps, replace=True)
@@ -232,7 +237,7 @@ def fair_project_temperature(nsamps, seed, cyear_start, cyear_end, smooth_win, p
 	
 	# ===> RFF Random
 	elif nsamps < 10000:
-		print('nsamps < 10000')
+		print('nsamps < 10000 \n')
 		
 		# ---> Randomly sample climate parameters
 		sample_idx, rffsp_idx, clmprm_idx = get_climpramNrffIDX(nsamps,nsims,nrffsp,rng)
@@ -253,7 +258,8 @@ def fair_project_temperature(nsamps, seed, cyear_start, cyear_end, smooth_win, p
 	
 	rffemfull_list = []
 	rff_sp_list =[]
-
+	
+	print(f" \n nsamps: {nsamps} |  nsims: { nsims} |  nrffsp: {nrffsp} | \n"  )
 
     # Run the FAIR model
 	for i in sample_idx:
@@ -262,15 +268,21 @@ def fair_project_temperature(nsamps, seed, cyear_start, cyear_end, smooth_win, p
 		this_pars = pars.isel(simulation=clmprm_idx[i])
 		
 		# prep the emissions
+		print(f" sample: {i} | rffsp_idx: {rffsp_idx[i]}")
+
 		rffemfull = prep_rff(emis, rffemissions, rffsp_idx[i],REFERENCE_YEAR=1750)
+		print('appendeded rff to emis...')
+		
 		rffemfull_list.append(rffemfull)
 		rff_sp_list.append(rffsp_idx[i])
         
 		# ==> Run FaIR
 		this_temp, this_deeptemp, this_ohc = my_run_fair(this_pars, rffemfull)
+		(print('Fair Ran ...'))
 		temps.append(this_temp)
 		deeptemps.append(this_deeptemp)
 		ohcs.append(this_ohc)
+		print(f'FaIR run cp{clmprm_idx[i]} || rff{rffsp_idx[i]}  <-- \n')
 
 	
 	# collect Gas/clim Files
@@ -372,7 +384,7 @@ if __name__ == "__main__":
 
 	# Define the command line arguments to be expected
 	parser.add_argument('--pipeline_id', help="Unique identifier for this instance of the module", required=True)
-	parser.add_argument('--nsamps', help="Number of samples to create (uses replacement if nsamps > n parameters) (default=10)", type=int, default=10)
+	parser.add_argument('--nsamps', help="Number of samples to create (uses replacement if nsamps > n parameters) (default=10)", type=int, default=3000)
 	parser.add_argument('--seed', help="Seed value for random number generator (default=1234)", type=int, default=1234)
 	parser.add_argument('--cyear_start', help="Start year of temporal range for centering (default=1850)", type=int, default=1850)
 	parser.add_argument('--cyear_end', help="End year of temporal range for centering (default=1900)", type=int, default=1900)
