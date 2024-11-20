@@ -7,6 +7,7 @@ import fair
 import argparse
 import pickle
 from datetime import datetime
+import copy
 
 from my_FAIR_forward import fair_scm as my_fair_scm
 
@@ -131,7 +132,7 @@ def prep_rff(baseem, rffemissions, rff_sp,REFERENCE_YEAR):
     enyear = rffemissions.Year.values[-1]
 
     # put the RFF-SP gases into the given background emissions 
-    rffemfull = baseem.copy()
+    rffemfull = copy.copy(baseem)
     for gas in rffemissions.gas.values:
 
         rffemfull[styear-REFERENCE_YEAR:enyear-REFERENCE_YEAR+1,idxdt[gas]] = rffemissions.sel(gas=gas,rff_sp=rff_sp).emissions.values
