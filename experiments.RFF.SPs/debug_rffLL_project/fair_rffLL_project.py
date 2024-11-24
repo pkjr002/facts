@@ -135,7 +135,9 @@ def prep_rff(baseem, rffemissions, rff_sp,REFERENCE_YEAR):
     rffemfull = copy.copy(baseem)
     for gas in rffemissions.gas.values:
 
-        rffemfull[styear-REFERENCE_YEAR:enyear-REFERENCE_YEAR+1,idxdt[gas]] = rffemissions.sel(gas=gas,rff_sp=rff_sp).emissions.values
+        # rffemfull[styear-REFERENCE_YEAR:enyear-REFERENCE_YEAR+1,idxdt[gas]] = rffemissions.sel(gas=gas,rff_sp=rff_sp).emissions.values
+        # rffemfull[styear-REFERENCE_YEAR:enyear-REFERENCE_YEAR+1,idxdt[gas]] = rffemissions.sel(gas=gas,rff_sp=9785).emissions.values
+        rffemfull[styear-REFERENCE_YEAR:enyear-REFERENCE_YEAR+1, idxdt[gas]] = 10
 
     return rffemfull
 
@@ -385,7 +387,7 @@ if __name__ == "__main__":
 
 	# Define the command line arguments to be expected
 	parser.add_argument('--pipeline_id', help="Unique identifier for this instance of the module", required=True)
-	parser.add_argument('--nsamps', help="Number of samples to create (uses replacement if nsamps > n parameters) (default=10)", type=int, default=3000)
+	parser.add_argument('--nsamps', help="Number of samples to create (uses replacement if nsamps > n parameters) (default=10)", type=int, default=10)
 	parser.add_argument('--seed', help="Seed value for random number generator (default=1234)", type=int, default=1234)
 	parser.add_argument('--cyear_start', help="Start year of temporal range for centering (default=1850)", type=int, default=1850)
 	parser.add_argument('--cyear_end', help="End year of temporal range for centering (default=1900)", type=int, default=1900)
