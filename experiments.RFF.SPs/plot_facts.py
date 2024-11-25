@@ -3,7 +3,6 @@ import pickle
 import numpy as np
 import xarray as xr
 from matplotlib import pyplot as plt
-import copy
 
 # ---------------------------------------------------------------------------------------------------------------------------------------------------
 """ Load Data """
@@ -106,13 +105,13 @@ def plot_grouped_dataset(emis, rffemissions, rffemfull_array, rff_sp_array, samp
     ''' ===========> PLOT rff sps (3gas)   <=========== '''
     ax1=axs[1]
     # C
-    ax1.plot(rffemissions['Year'],rffemissions['emissions'][rffemissionsGASIDX["C"],rffspIDX,:],'.b',label='C'); 
+    ax1.plot(rffemissions['Year'],rffemissions.sel(gas='C', rff_sp=rffspIDX).emissions.values,'.b',label='C'); 
     # CH4
     ax11 = ax1.twinx()
-    ax11.plot(rffemissions['Year'],rffemissions['emissions'][rffemissionsGASIDX["CH4"],rffspIDX,:],'.r',label='CH4'); 
+    ax11.plot(rffemissions['Year'],rffemissions.sel(gas='CH4', rff_sp=rffspIDX).emissions.values,'.r',label='CH4'); 
     ax11.tick_params(axis='y', labelcolor='r'); ax11.spines['right'].set_color('r')
     # N2
-    ax1.plot(rffemissions['Year'],rffemissions['emissions'][rffemissionsGASIDX["N2"],rffspIDX,:],'.g',label='N2'); 
+    ax1.plot(rffemissions['Year'],rffemissions.sel(gas='N2', rff_sp=rffspIDX).emissions.values,'.g',label='N2'); 
 
     '''dummy time: Done because RFFSps range 2020-2100 '''
     ax1.plot(emis[:,0],emis[:,0],'.w')
@@ -172,7 +171,7 @@ def plot_grouped_gas(emis, rffemissions, rffemfull_array, rff_sp_array, sample):
     ''' rffemissions '''
     #for idx in range(rffemissions['emissions'].shape[1]):  # Iterate over all rffspIDX
         #ax0.plot(rffemissions['Year'],rffemissions['emissions'][rffemissionsGASIDX["C"], idx, :], color='green', alpha=0.3,  lw=.1 )
-    ax0.plot(rffemissions['Year'],rffemissions['emissions'][rffemissionsGASIDX["C"],rffspIDX,:],'--b',label='C - rff', mfc='none', mew=.2, lw=3);
+    ax0.plot(rffemissions['Year'],rffemissions.sel(gas='C', rff_sp=rffspIDX).emissions.values,'--b',label='C - rff', mfc='none', mew=.2, lw=3);
 
     ''' rffemfull_array '''
     ax0.plot(rffemfull_array[sample,:,0],rffemfull_array[sample,:,emisGASIDX["C"]],'.k',label='C - rffemfull', mfc='none', mew=1, ms=1);
@@ -188,7 +187,7 @@ def plot_grouped_gas(emis, rffemissions, rffemfull_array, rff_sp_array, sample):
     ''' rffemissions '''
     #for idx in range(rffemissions['emissions'].shape[1]):  # Iterate over all rffspIDX
         #ax1.plot(rffemissions['Year'],rffemissions['emissions'][rffemissionsGASIDX["CH4"], idx, :], color='green', alpha=0.3,  lw=.1 )
-    ax1.plot(rffemissions['Year'],rffemissions['emissions'][rffemissionsGASIDX["CH4"],rffspIDX,:],'--b',label='CH4 - rff', mfc='none', mew=.2, lw=3);
+    ax1.plot(rffemissions['Year'],rffemissions.sel(gas='CH4', rff_sp=rffspIDX).emissions.values,'--b',label='CH4 - rff', mfc='none', mew=.2, lw=3);
     
     ''' rffemfull_array '''
     ax1.plot(rffemfull_array[sample,:,0],rffemfull_array[sample,:,emisGASIDX["CH4"]],'.k',label='CH4 - rffemfull', mfc='none', mew=1, ms=1);
@@ -205,7 +204,7 @@ def plot_grouped_gas(emis, rffemissions, rffemfull_array, rff_sp_array, sample):
     ''' rffemissions '''
     #for idx in range(rffemissions['emissions'].shape[1]):  # Iterate over all rffspIDX
         #ax2.plot(rffemissions['Year'],rffemissions['emissions'][rffemissionsGASIDX["N2"], idx, :], color='green', alpha=0.3,  lw=.1 )
-    ax2.plot(rffemissions['Year'],rffemissions['emissions'][rffemissionsGASIDX["N2"],rffspIDX,:],'--b',label='N2 - rff', mfc='none', mew=.2, lw=3);
+    ax2.plot(rffemissions['Year'],rffemissions.sel(gas='N2', rff_sp=rffspIDX).emissions.values,'--b',label='N2 - rff', mfc='none', mew=.2, lw=3);
 
     ''' rffemfull_array '''
     ax2.plot(rffemfull_array[sample,:,0],rffemfull_array[sample,:,emisGASIDX["N2"]],'.k',label='N2 - rffemfull', mfc='none', mew=1, ms=1);
@@ -220,64 +219,26 @@ def plot_grouped_gas(emis, rffemissions, rffemfull_array, rff_sp_array, sample):
 ''' Prep the RFF emissions '''
 
 def prep_rff(baseem, rffemissions, rff_sp,REFERENCE_YEAR):
-    # """
-    #     takes the raw RFF-SP emissions (rffemissions) and combines with background 
-    #     emissions from ssprcp (baseem) for a given rff_sp
-    # """    
-    # # maps GHG gas to index in emissions numpy array
-    # idxdt = {
-    #     "C": 1,
-    #     "CH4": 3,
-    #     "N2O": 4,
-    #     "N2": 4,
-    # }
-    # styear = rffemissions.Year.values[0]
-    # enyear = rffemissions.Year.values[-1]
-
-    # # put the RFF-SP gases into the given background emissions 
-    # rffemfull = baseem.copy()
-    # # for gas in rffemissions.gas.values:
-    # #     # rffemfull[styear-REFERENCE_YEAR:enyear-REFERENCE_YEAR+1,idxdt[gas]] = (rffemissions.sel(gas=gas,rff_sp=rff_sp).emissions.values)
-    # #     # rffemfull[styear-REFERENCE_YEAR:enyear-REFERENCE_YEAR+1,idxdt[gas]] = rffemissions.sel(gas=gas,rff_sp=9873).emissions.values
-    # #     # rffemfull[styear-REFERENCE_YEAR:enyear-REFERENCE_YEAR+1, idxdt[gas]] = 10
-    # #     rffemfull[styear - REFERENCE_YEAR : enyear - REFERENCE_YEAR + 1, idxdt[gas]] = (rffemissions.sel(gas=gas, rff_sp=rff_sp).emissions.values)
-    # for gas in rffemissions.gas.values:
-    #     #rffemfull[styear - REFERENCE_YEAR : enyear - REFERENCE_YEAR + 1, idxdt[gas]] = (
-    #     #    rffemissions.sel(gas=gas, rff_sp=rff_sp).emissions.values
-    #     #)
-    #     rffemfull[styear - REFERENCE_YEAR : enyear - REFERENCE_YEAR + 1, idxdt[gas]] = (
-    #         10
-    #     )
-
-    # return rffemfull
-
-
     """
-    takes the raw RFF-SP emissions (rffemissions) and combines with background
-    emissions from ssprcp (baseem) for a given rff_sp
-    """
-
+        takes the raw RFF-SP emissions (rffemissions) and combines with background 
+        emissions from ssprcp (baseem) for a given rff_sp
+    """    
     # maps GHG gas to index in emissions numpy array
     idxdt = {
         "C": 1,
         "CH4": 3,
-        "N2O": 4,  # g
-        "N2": 4,  # fair takes N2 units for N2O gas
+        "N2O": 4,
+        "N2": 4,
     }
     styear = rffemissions.Year.values[0]
     enyear = rffemissions.Year.values[-1]
 
-    val=[]
     # put the RFF-SP gases into the given background emissions 
-    rffemfull = copy.copy(baseem)
+    rffemfull = baseem.copy()
     for gas in rffemissions.gas.values:
-        rffemfull[styear - REFERENCE_YEAR : enyear - REFERENCE_YEAR + 1, idxdt[gas]] = (
-            rffemissions.sel(gas=gas, rff_sp=rff_sp).emissions.values
-        )
-        val.append(rffemissions.sel(gas=gas, rff_sp=rff_sp).emissions.values)
+        rffemfull[styear - REFERENCE_YEAR : enyear - REFERENCE_YEAR + 1, idxdt[gas]] = (rffemissions.sel(gas=gas, rff_sp=rff_sp).emissions.values)
 
-    return rffemfull, val
-
+    return rffemfull
 
 
 
@@ -292,7 +253,7 @@ def plot_grouped_gas_nbk(emis, rffemissions, rffemfull_array, rff_sp_array, REFE
     #print(f" \n rffspIDX = {rffspIDX} \n")
     
     ''' Compute the new emissions file'''
-    emis_rffsp_full1,val1 = prep_rff(emis, rffemissions, rffspIDX, REFERENCE_YEAR)
+    emis_rffsp_full1 = prep_rff(emis, rffemissions, rffspIDX, REFERENCE_YEAR)
 
     ''' PLOT the emissions'''    
     fig, ax = plt.subplots(1, 3, figsize=(35*.5, 4.75*.5))
@@ -300,39 +261,39 @@ def plot_grouped_gas_nbk(emis, rffemissions, rffemfull_array, rff_sp_array, REFE
 
     ax[0].plot(emis[:,0] , emis[:,1],'or',label='C- base', mfc='none', mew=.2, ms=5);
     ax[0].plot(emis_rffsp_full1[:,0] , emis_rffsp_full1[:,1], '.k')
-    ax[0].plot(rffemissions['Year'],rffemissions['emissions'][rffemissionsGASIDX["C"],rffspIDX,:],'--b',label='C - rff', mfc='none', mew=.2, lw=3);
+    ax[0].plot(rffemissions['Year'],rffemissions.sel(gas='C', rff_sp=rffspIDX).emissions.values,'--b',label='C - rff', mfc='none', mew=.2, lw=3);
     ax[0].grid(True)
 
     ax[1].plot(emis[:,0] , emis[:,3],'or',label='CH4- base', mfc='none', mew=.2, ms=5); 
     ax[1].plot(emis_rffsp_full1[:,0] , emis_rffsp_full1[:,3], '.k')
-    ax[1].plot(rffemissions['Year'],rffemissions['emissions'][rffemissionsGASIDX["CH4"],rffspIDX,:],'--b',label='CH4 - rff', mfc='none', mew=.2, lw=3);
+    ax[1].plot(rffemissions['Year'],rffemissions.sel(gas='CH4', rff_sp=rffspIDX).emissions.values,'--b',label='CH4 - rff', mfc='none', mew=.2, lw=3);
     ax[1].grid(True)
 
     ax[2].plot(emis[:,0] , emis[:,4],'or',label='N2- base', mfc='none', mew=.2, ms=5);
     ax[2].plot(emis_rffsp_full1[:,0] , emis_rffsp_full1[:,4], '.k')
-    ax[2].plot(rffemissions['Year'],rffemissions['emissions'][rffemissionsGASIDX["N2"],rffspIDX,:],'--b',label='N2 - rff', mfc='none', mew=.2, lw=3);
+    ax[2].plot(rffemissions['Year'],rffemissions.sel(gas='N2', rff_sp=rffspIDX).emissions.values,'--b',label='N2 - rff', mfc='none', mew=.2, lw=3);
     ax[2].grid(True)
     
 
 
-# def plot_3_gas(emis, rffemissions, rff_sp_array, sample):
-def plot_3_gas(emis, rffemissions, rffspIDX):
+def plot_3_gas(emis, rffemissions, rff_sp_array, sample):
 
     ''' Plot the 3gas emission for a particular draw '''
     
+    rffspIDX=rff_sp_array[sample]; 
 
     ''' PLOT the emissions'''    
     fig, ax = plt.subplots(1, 3, figsize=(35*.5, 4.75*.5))
     fig.subplots_adjust(wspace=0.5, hspace=0.5) 
 
     ax[0].plot(emis[:,0] , emis[:,1],'or',label='C- base', mfc='none', mew=.2, ms=5);
-    ax[0].plot(rffemissions['Year'],rffemissions['emissions'][rffemissionsGASIDX["C"],rffspIDX,:],'--b',label='C - rff', mfc='none', mew=.2, lw=3);
+    ax[0].plot(rffemissions['Year'],rffemissions.sel(gas='C', rff_sp=rffspIDX).emissions.values,'--b',label='C - rff', mfc='none', mew=.2, lw=3);
     ax[0].grid(True)
 
     ax[1].plot(emis[:,0] , emis[:,3],'or',label='CH4- base', mfc='none', mew=.2, ms=5);
-    ax[1].plot(rffemissions['Year'],rffemissions['emissions'][rffemissionsGASIDX["CH4"],rffspIDX,:],'--b',label='CH4 - rff', mfc='none', mew=.2, lw=3);
+    ax[1].plot(rffemissions['Year'],rffemissions.sel(gas='CH4', rff_sp=rffspIDX).emissions.values,'--b',label='CH4 - rff', mfc='none', mew=.2, lw=3);
     ax[1].grid(True)
 
     ax[2].plot(emis[:,0] , emis[:,4],'or',label='N2- base', mfc='none', mew=.2, ms=5);
-    ax[2].plot(rffemissions['Year'],rffemissions['emissions'][rffemissionsGASIDX["N2"],rffspIDX,:],'--b',label='N2 - rff', mfc='none', mew=.2, lw=3);
+    ax[2].plot(rffemissions['Year'],rffemissions.sel(gas='N2', rff_sp=rffspIDX).emissions.values,'--b',label='N2 - rff', mfc='none', mew=.2, lw=3);
     ax[2].grid(True)
