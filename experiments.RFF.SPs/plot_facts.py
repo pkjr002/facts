@@ -315,13 +315,10 @@ def plot_grouped_gas_nbk(emis, rffemissions, rffemfull_array, rff_sp_array, REFE
     
 
 
-def plot_3_gas(emis, rffemissions, rff_sp_array, sample):
+# def plot_3_gas(emis, rffemissions, rff_sp_array, sample):
+def plot_3_gas(emis, rffemissions, rffspIDX):
+
     ''' Plot the 3gas emission for a particular draw '''
-
-
-    ''' Get the randomized RFF sp draw. '''
-    rffspIDX=rff_sp_array[sample]; 
-    print(f" \n rffspIDX = {rffspIDX} \n")
     
 
     ''' PLOT the emissions'''    
