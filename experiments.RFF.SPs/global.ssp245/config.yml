@@ -1,0 +1,18 @@
+global-options:
+    nsamps: 9999
+    scenario: ssp245
+    pyear_start: 2020
+    pyear_end: 2150
+    pyear_step: 10
+    baseyear: 2005
+    pipeline_file: 'pipeline.global.yml'
+
+climate_step:
+    temperature:
+        module_set: "fair"
+        module: "temperature"
+        generates_climate_output: true
+#        input_data_file:
+#              - "emissions.csv"
+#        options:
+#              rcmip_file: emissions.csv
