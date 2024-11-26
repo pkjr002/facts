@@ -128,33 +128,74 @@ def prep_rff(baseem, rffemissions, rff_sp,REFERENCE_YEAR):
     enyear = rffemissions.Year.values[-1]
 
     # put the RFF-SP gases into the given background emissions 
-    rffemfull = baseem
+    rffemfull = baseem.copy()
     for gas in rffemissions.gas.values:
-        rffemfull[styear-REFERENCE_YEAR:enyear-REFERENCE_YEAR+1,idxdt[gas]] = rffemissions.sel(gas=gas,rff_sp=rff_sp).emissions.values
-
+        rffemfull[styear - REFERENCE_YEAR : enyear - REFERENCE_YEAR + 1, idxdt[gas]] = (rffemissions.sel(gas=gas, rff_sp=rff_sp).emissions.values)
     return rffemfull
 
 
+def get_climpramNrffIDX(nsamps,nsims,nrffsp,rng):
+	'''
+	the +1 for rffspIDX is added as the nsamps starts at 0, but rfff starts at 1
+	alternative: 
+	rffspIDX = rng.choice(np.arange(1, 10001), nsamps, replace=True)
+	'''
+	if nsamps > nrffsp:
+		sampleIDX 	= np.arange(nsamps)
+		rffspIDX  	= rng.choice(nrffsp, nsamps, replace=True) +1
+		clmprmIDX   = rng.choice(nsims, nsamps, replace=True)
+	
+	else:   #(nsamps <= nrffsp:)
+		sampleIDX 	= np.arange(nsamps)
+		rffspIDX  	= rng.choice(nrffsp, nsamps, replace=False) + 1
+
+		if nsamps > nsims:
+			clmprmIDX   = rng.choice(nsims, nsamps, replace=True)
+		
+		else: #(nsamps <= nsims:)
+			clmprmIDX   = rng.choice(nsims, nsamps, replace=False)
+
+	return sampleIDX, rffspIDX, clmprmIDX
 
 
 
+def get_climpramIDX(nsamps,nsims,rng):
+	"""
+	Based on the number of user samples requested (nsamps), 
+	randomly sample climate parameters (nsims).
+	"""
+	if nsamps > nsims:													        #| if, nsamps(9999)  >  nsims (2237)		
+		runIDX 	  = np.arange(nsims)									        #| arrange [0, 1, 2, ..., 2236]	
+		sampleIDX 	= rng.choice(nsims, nsamps, replace=True)			        #| 9999 Randomly select indices [23, 2236, 12,...]) wi replace.		
+		# sampleIDX doesnt ensure all indices are selected before repeating.	
+
+	else:                                                                       #| elseif nsamps(1000)  <=  nsims(2237)                                                                
+		runIDX  	= rng.choice(nsims, nsamps, replace=False)                  #| Randomly selects 1000 idx (e.g.,[23,123, 989,...]) w/o replace.                         
+		sampleIDX  	= np.arange(nsamps)                                         #| Contains range [0, 1, 2, ..., 999]                                   
+                    
+	return runIDX, sampleIDX
+
+
+
+# Run the FaIR model. 
 def fair_project_temperature(nsamps, seed, cyear_start, cyear_end, smooth_win, pipeline_id):
 
-	#----------------------------------------------------------------------------------------
-	# Load data                   															|
-	#----------------------------------------------------------------------------------------
-	
+	#-------------
+	# Load data  |
+	#-------------
+	#
 	# ==> Load the preprocessed data (Emissions data)
 	preprocess_file = "{}_preprocess.pkl".format(pipeline_id)
 	with open(preprocess_file, 'rb') as f:
 		preprocess_data = pickle.load(f)
 
-	emis = preprocess_data["emis"]
-	rffemissions = preprocess_data["rffemissions"]
-	pairds = preprocess_data["pairds"]
-	REFERENCE_YEAR = preprocess_data["REFERENCE_YEAR"]
-	scenario = preprocess_data["scenario"]
-	rcmip_file = preprocess_data["rcmip_file"]
+	emis 			= preprocess_data["emis"]
+	rffemissions 	= preprocess_data["rffemissions"]
+	nrffsp          = len(rffemissions.coords["rff_sp"])
+	pairds 			= preprocess_data["pairds"]
+	REFERENCE_YEAR 	= preprocess_data["REFERENCE_YEAR"]
+	scenario 		= preprocess_data["scenario"]
+	rcmip_file 		= preprocess_data["rcmip_file"]
 
 
 	# ==> Load the fit data (Climate parameter data) 
@@ -162,100 +203,100 @@ def fair_project_temperature(nsamps, seed, cyear_start, cyear_end, smooth_win, p
 	with open(fit_file, 'rb') as f:
 		fit_data = pickle.load(f)
 
-	pars = fit_data["pars"]
-	param_file = fit_data["param_file"]
+	pars 			= fit_data["pars"]
+	param_file 		= fit_data["param_file"]
+	nsims   		= len(pars["simulation"])
 
 
-	
-	# #----------------------------------------------------------------------------------------
-	# # Climate Parameter sampling (2237 ensemble members)									|
-	# #----------------------------------------------------------------------------------------
-	# # How many parameter sets do we have?
-	# nsims = len(pars["simulation"])
+	#---------------
+	# FaIR Indexes	|
+	#---------------
+	rng = np.random.default_rng(seed)
 
-	# # Generate nsamps of simulation indices to sample
-	# rng = np.random.default_rng(seed)
-	# if nsamps > nsims:
-	# 	run_idx = np.arange(nsims)
-	# 	sample_idx = rng.choice(nsims, nsamps, nsamps>nsims)
-	# else:
-	# 	run_idx = rng.choice(nsims, nsamps, nsamps>nsims)
-	# 	sample_idx = np.arange(nsamps)
 
-	#----------------------------------------------------------------------------------------
-	# RFF SPs									|
-	#----------------------------------------------------------------------------------------
-	# How many climate parameter sets do we have?
-	nsims = len(pars["simulation"])
+	# # ===> For single ssp get random clim param selection
+	# run_idx, sample_idx = get_climpramIDX(nsamps,nsims,rng)
 
+
+	# ===> RFF EPA
 	if nsamps == 10000:
 		run_idx 	= pairds["runid"]
 		sample_idx 	= run_idx.values -1
 
-		sim 	= pairds["simulation"].values
-		rff_sp 	= pairds["rff_sp"].values
+		sim 		= pairds["simulation"].values
+		rff_sp 		= pairds["rff_sp"].values
 	
-
+	
+	# ===> RFF Random
 	elif nsamps < 10000:
-		print('nsamps < 10000')
-		
-		# Generate nsamps of simulation indices to sample
-		rng = np.random.default_rng(seed)
+		print('nsamps < 10000 \n')
 		
 		# ---> Randomly sample climate parameters
-		if nsamps > nsims: 												# if nsamps = 9999, (nsamps > 2237)
-			run_idx = np.arange(nsims)									# run_idx = (0 to 2236)
-			sample_idx = rng.choice(nsims, nsamps, nsamps>nsims)		# sample_idx = Random Sampling and Replacement:
-		else:
-			run_idx = rng.choice(nsims, nsamps, nsamps>nsims)
-			sample_idx = np.arange(nsamps)
-
-		# ---> Randomly sample emissions
-		# rff_sp 	= rng.integers(1, 10001, size=nsamps)
-		#rff_sp = nsamps
+		sample_idx, rffsp_idx, clmprm_idx = get_climpramNrffIDX(nsamps,nsims,nrffsp,rng)
 		
-		# sort `rff_sp` by 2100 cumulative emissions and subsample every nth entry
-		# check the link https://stackoverflow.com/questions/25876640/subsampling-every-nth-entry-in-a-numpy-array
-	
-	
+		# ---> ADD code for LatinLine/interval selection
+
+
 	else: 		#nsamps > 10000:
 		print('working later on this ...')
 
-		 
-	# Run_idx will controol the looping over pairidx. (randomsamp this var if over/under)
-    # there will be a separate index for 
-	# - simulation of the fair run (0-2237)
-	# - Gass call (0-10k)
 
 
-	#Variables i have : nsamps,
-	#Variables to create : run_idx, sample_idx
-
-	#I have to select based on the parameter file 
-
-	#----------------------------------------------------------------------------------------
-	# Run the FAIR model																	|
-	#----------------------------------------------------------------------------------------
+	#----------------------
+	# Run the FAIR model   |
+	#----------------------
 	temps = []
 	deeptemps = []
 	ohcs = []
+	
+	rffemfull_list = []
+	rff_sp_list =[]
+	
+	#print(f" \n nsamps: {nsamps} |  nsims: { nsims} |  nrffsp: {nrffsp} | \n"  )
 
-	for i0,i in enumerate(sample_idx):
-		#print(f'--- i={i}, run_idx={run_idx[i0]}, simulation={sim[i]}, rffsp={rff_sp[i]}, ---')
-		this_pars = pars.isel(simulation=sample_idx[i])
+    # Run the FAIR model
+	for i in sample_idx:
 		
-		#print(f'simulation={sim[i]}')
-		# this is the full emis based on random RFF
-		rffemfull = prep_rff(emis, rffemissions, rff_sp[i0],REFERENCE_YEAR=1750)
+		# Select the simulation (climate parameter)
+		this_pars = pars.isel(simulation=clmprm_idx[i])
+		
+		# prep the emissions
+		# print(f" sample: {i} | rffsp_idx: {rffsp_idx[i]}")
+
+		rffemfull = prep_rff(emis, rffemissions, rffsp_idx[i],REFERENCE_YEAR=1750)
+		# print('appendeded rff to emis...')
+		
+		rffemfull_list.append(rffemfull)
+		rff_sp_list.append(rffsp_idx[i])
+        
+		# ==> Run FaIR
 		this_temp, this_deeptemp, this_ohc = my_run_fair(this_pars, rffemfull)
+		# (print('Fair Ran ...'))
 		temps.append(this_temp)
 		deeptemps.append(this_deeptemp)
 		ohcs.append(this_ohc)
+		# print(f'FaIR run cp{clmprm_idx[i]} || rff{rffsp_idx[i]}  <-- \n')
 
+	
+	# collect Gas/clim Files
+	rffemfull_array = np.array(rffemfull_list)
+	rff_sp_array = np.array(rff_sp_list)
+	
 	# Recast the output as numpy arrays
 	temps = np.array(temps)
 	deeptemps = np.array(deeptemps)
 	ohcs = np.array(ohcs)
+
+
+	data_to_save = {
+    "rffemfull_array": rffemfull_array, "rff_sp_array" : rff_sp_array,
+	"temps": temps, "deeptemps": deeptemps, "ohcs": ohcs}
+	# Save as a pickle file.
+	filename = f"project.pkl"
+	with open(filename, "wb") as f:
+		pickle.dump(data_to_save, f)
+
+
     #========================================================================================|
     
 	# Projection years
