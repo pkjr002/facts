@@ -7,7 +7,13 @@ wf1e:
   - global/rff.LL.emuglaciers.emulandice.glaciers_globalsl.nc
   - global/rff.LL.ocean.tlm.sterodynamics_globalsl.nc
   - global/rff.LL.lws.ssp.landwaterstorage_globalsl.nc
-  local: []
+  local:
+  - local/rff.LL.emuAIS.emulandice.AIS_localsl.nc
+  - local/rff.LL.emuGrIS.emulandice.GrIS_localsl.nc
+  - local/rff.LL.emuglaciers.emulandice.glaciers_localsl.nc
+  - local/rff.LL.ocean.tlm.sterodynamics_localsl.nc
+  - local/rff.LL.k14vlm.kopp14.verticallandmotion_localsl.nc
+  - local/rff.LL.lws.ssp.landwaterstorage_localsl.nc
   options:
     pyear_end: 2100
 wf1f:
@@ -18,8 +24,13 @@ wf1f:
   - global/rff.LL.ocean.tlm.sterodynamics_globalsl.nc
   - global/rff.LL.lws.ssp.landwaterstorage_globalsl.nc
   local:
+  - local/rff.LL.GrIS1f.FittedISMIP.GrIS_GIS_localsl.nc
+  - local/rff.LL.ar5glaciers.ipccar5.glaciers_localsl.nc
   - local/rff.LL.ar5AIS.ipccar5.icesheets_WAIS_localsl.nc
   - local/rff.LL.ar5AIS.ipccar5.icesheets_EAIS_localsl.nc
+  - local/rff.LL.ocean.tlm.sterodynamics_localsl.nc
+  - local/rff.LL.k14vlm.kopp14.verticallandmotion_localsl.nc
+  - local/rff.LL.lws.ssp.landwaterstorage_localsl.nc
   options:
     pyear_end: 2150
 wf2e:
@@ -29,7 +40,13 @@ wf2e:
   - global/rff.LL.larmip.larmip.AIS_globalsl.nc
   - global/rff.LL.ocean.tlm.sterodynamics_globalsl.nc
   - global/rff.LL.lws.ssp.landwaterstorage_globalsl.nc
-  local: []
+  local:
+  - local/rff.LL.emuGrIS.emulandice.GrIS_localsl.nc
+  - local/rff.LL.emuglaciers.emulandice.glaciers_localsl.nc
+  - local/rff.LL.larmip.larmip.AIS_localsl.nc
+  - local/rff.LL.ocean.tlm.sterodynamics_localsl.nc
+  - local/rff.LL.k14vlm.kopp14.verticallandmotion_localsl.nc
+  - local/rff.LL.lws.ssp.landwaterstorage_localsl.nc
   options:
     pyear_end: 2100
 wf2f:
@@ -39,7 +56,13 @@ wf2f:
   - global/rff.LL.ar5glaciers.ipccar5.glaciers_globalsl.nc
   - global/rff.LL.ocean.tlm.sterodynamics_globalsl.nc
   - global/rff.LL.lws.ssp.landwaterstorage_globalsl.nc
-  local: []
+  local:
+  - local/rff.LL.GrIS1f.FittedISMIP.GrIS_GIS_localsl.nc
+  - local/rff.LL.larmip.larmip.AIS_localsl.nc
+  - local/rff.LL.ar5glaciers.ipccar5.glaciers_localsl.nc
+  - local/rff.LL.ocean.tlm.sterodynamics_localsl.nc
+  - local/rff.LL.k14vlm.kopp14.verticallandmotion_localsl.nc
+  - local/rff.LL.lws.ssp.landwaterstorage_localsl.nc
   options:
     pyear_end: 2150
 wf3e:
@@ -49,7 +72,13 @@ wf3e:
   - global/rff.LL.emuglaciers.emulandice.glaciers_globalsl.nc
   - global/rff.LL.ocean.tlm.sterodynamics_globalsl.nc
   - global/rff.LL.lws.ssp.landwaterstorage_globalsl.nc
-  local: []
+  local:
+  - local/rff.LL.deconto21.deconto21.AIS_AIS_localsl.nc
+  - local/rff.LL.emuGrIS.emulandice.GrIS_localsl.nc
+  - local/rff.LL.emuglaciers.emulandice.glaciers_localsl.nc
+  - local/rff.LL.ocean.tlm.sterodynamics_localsl.nc
+  - local/rff.LL.k14vlm.kopp14.verticallandmotion_localsl.nc
+  - local/rff.LL.lws.ssp.landwaterstorage_localsl.nc
   options:
     pyear_end: 2100
 wf3f:
@@ -59,7 +88,13 @@ wf3f:
   - global/rff.LL.ar5glaciers.ipccar5.glaciers_globalsl.nc
   - global/rff.LL.ocean.tlm.sterodynamics_globalsl.nc
   - global/rff.LL.lws.ssp.landwaterstorage_globalsl.nc
-  local: []
+  local:
+  - local/rff.LL.GrIS1f.FittedISMIP.GrIS_GIS_localsl.nc
+  - local/rff.LL.deconto21.deconto21.AIS_AIS_localsl.nc
+  - local/rff.LL.ar5glaciers.ipccar5.glaciers_localsl.nc
+  - local/rff.LL.ocean.tlm.sterodynamics_localsl.nc
+  - local/rff.LL.k14vlm.kopp14.verticallandmotion_localsl.nc
+  - local/rff.LL.lws.ssp.landwaterstorage_localsl.nc
   options:
     pyear_end: 2150
 wf4:
@@ -69,6 +104,12 @@ wf4:
   - global/rff.LL.ar5glaciers.ipccar5.glaciers_globalsl.nc
   - global/rff.LL.ocean.tlm.sterodynamics_globalsl.nc
   - global/rff.LL.lws.ssp.landwaterstorage_globalsl.nc
-  local: []
+  local:
+  - local/rff.LL.bamber19.bamber19.icesheets_GIS_localsl.nc
+  - local/rff.LL.bamber19.bamber19.icesheets_AIS_localsl.nc
+  - local/rff.LL.ar5glaciers.ipccar5.glaciers_localsl.nc
+  - local/rff.LL.ocean.tlm.sterodynamics_localsl.nc
+  - local/rff.LL.k14vlm.kopp14.verticallandmotion_localsl.nc
+  - local/rff.LL.lws.ssp.landwaterstorage_localsl.nc
   options:
     pyear_end: 2150
