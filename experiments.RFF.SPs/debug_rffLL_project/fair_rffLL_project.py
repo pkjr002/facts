@@ -10,9 +10,6 @@ from datetime import datetime
 
 from my_FAIR_forward import fair_scm as my_fair_scm
 
-import numpy as np
-print(np.__version__)
-
 
 # Function that generates a sample from the FAIR model with provided emissions
 def my_run_fair(args, emissions, reference_year=1750):
@@ -113,7 +110,6 @@ def Smooth(x, w=5):
 	return(y)
 
 
-
 # Prep the RFF emissions
 def prep_rff(baseem, rffemissions, rff_sp,REFERENCE_YEAR):
     """
@@ -134,9 +130,7 @@ def prep_rff(baseem, rffemissions, rff_sp,REFERENCE_YEAR):
     rffemfull = baseem.copy()
     for gas in rffemissions.gas.values:
         rffemfull[styear - REFERENCE_YEAR : enyear - REFERENCE_YEAR + 1, idxdt[gas]] = (rffemissions.sel(gas=gas, rff_sp=rff_sp).emissions.values)
-
     return rffemfull
-
 
 
 def get_climpramNrffIDX(nsamps,nsims,nrffsp,rng):
@@ -145,7 +139,6 @@ def get_climpramNrffIDX(nsamps,nsims,nrffsp,rng):
 	alternative: 
 	rffspIDX = rng.choice(np.arange(1, 10001), nsamps, replace=True)
 	'''
-	
 	if nsamps > nrffsp:
 		sampleIDX 	= np.arange(nsamps)
 		rffspIDX  	= rng.choice(nrffsp, nsamps, replace=True) +1
@@ -167,16 +160,15 @@ def get_climpramNrffIDX(nsamps,nsims,nrffsp,rng):
 
 def get_climpramIDX(nsamps,nsims,rng):
 	"""
-	Based on the number of user samples requested (nsamps), randomly sample climate parameters (nsims).
+	Based on the number of user samples requested (nsamps), 
+	randomly sample climate parameters (nsims).
 	"""
-	
 	if nsamps > nsims:													        #| if, nsamps(9999)  >  nsims (2237)		
 		runIDX 	  = np.arange(nsims)									        #| arrange [0, 1, 2, ..., 2236]	
 		sampleIDX 	= rng.choice(nsims, nsamps, replace=True)			        #| 9999 Randomly select indices [23, 2236, 12,...]) wi replace.		
-		# above sampleIDX does not ensure all indices are selected before repeating.	
-	
+		# sampleIDX doesnt ensure all indices are selected before repeating.	
 
-	else:                                                                       #| elseif nsamps(1000)  <=  nsims (2237)                                                                
+	else:                                                                       #| elseif nsamps(1000)  <=  nsims(2237)                                                                
 		runIDX  	= rng.choice(nsims, nsamps, replace=False)                  #| Randomly selects 1000 idx (e.g.,[23,123, 989,...]) w/o replace.                         
 		sampleIDX  	= np.arange(nsamps)                                         #| Contains range [0, 1, 2, ..., 999]                                   
                     
@@ -214,15 +206,14 @@ def fair_project_temperature(nsamps, seed, cyear_start, cyear_end, smooth_win, p
 	param_file 		= fit_data["param_file"]
 	nsims   		= len(pars["simulation"])
 
+
 	#---------------
 	# FaIR Indexes	|
 	#---------------
-	
-	# set a rng
 	rng = np.random.default_rng(seed)
 
 
-	# # For single ssp get random clim param selection
+	# # ===> For single ssp get random clim param selection
 	# run_idx, sample_idx = get_climpramIDX(nsamps,nsims,rng)
 
 
@@ -242,6 +233,7 @@ def fair_project_temperature(nsamps, seed, cyear_start, cyear_end, smooth_win, p
 		# ---> Randomly sample climate parameters
 		sample_idx, rffsp_idx, clmprm_idx = get_climpramNrffIDX(nsamps,nsims,nrffsp,rng)
 		
+		# ---> ADD code for LatinLine/interval selection
 
 
 	else: 		#nsamps > 10000:
@@ -259,7 +251,7 @@ def fair_project_temperature(nsamps, seed, cyear_start, cyear_end, smooth_win, p
 	rffemfull_list = []
 	rff_sp_list =[]
 	
-	print(f" \n nsamps: {nsamps} |  nsims: { nsims} |  nrffsp: {nrffsp} | \n"  )
+	#print(f" \n nsamps: {nsamps} |  nsims: { nsims} |  nrffsp: {nrffsp} | \n"  )
 
     # Run the FAIR model
 	for i in sample_idx:
@@ -268,21 +260,21 @@ def fair_project_temperature(nsamps, seed, cyear_start, cyear_end, smooth_win, p
 		this_pars = pars.isel(simulation=clmprm_idx[i])
 		
 		# prep the emissions
-		print(f" sample: {i} | rffsp_idx: {rffsp_idx[i]}")
+		# print(f" sample: {i} | rffsp_idx: {rffsp_idx[i]}")
 
 		rffemfull = prep_rff(emis, rffemissions, rffsp_idx[i],REFERENCE_YEAR=1750)
-		print('appendeded rff to emis...')
+		# print('appendeded rff to emis...')
 		
 		rffemfull_list.append(rffemfull)
 		rff_sp_list.append(rffsp_idx[i])
         
 		# ==> Run FaIR
 		this_temp, this_deeptemp, this_ohc = my_run_fair(this_pars, rffemfull)
-		(print('Fair Ran ...'))
+		# (print('Fair Ran ...'))
 		temps.append(this_temp)
 		deeptemps.append(this_deeptemp)
 		ohcs.append(this_ohc)
-		print(f'FaIR run cp{clmprm_idx[i]} || rff{rffsp_idx[i]}  <-- \n')
+		# print(f'FaIR run cp{clmprm_idx[i]} || rff{rffsp_idx[i]}  <-- \n')
 
 	
 	# collect Gas/clim Files
