@@ -6,6 +6,7 @@ global-options:
     pyear_step: 10
     baseyear: 2005
     rcfg-name: "amarel"
+    pipeline_file: 'pipeline.global.yml'
 
 climate_step:
     temperature:
@@ -18,26 +19,11 @@ climate_step:
 #              rcmip_file: emissions.csv
 
 sealevel_step:
-    GrIS1f:
-        module_set: "FittedISMIP"
-        module: "GrIS"
-        include_in_workflow:
-            - "wf1f"
-            - "wf2f"
-            - "wf3f"
-
     deconto21:
         module_set: "deconto21"
         module: "AIS"
         include_in_workflow:
             - "wf3e"   
-            - "wf3f"
-
-    bamber19:
-        module_set: "bamber19"
-        module: "icesheets"
-        include_in_workflow:
-            - "wf4" 
 
     emuAIS:
         module_set: "emulandice"
@@ -72,49 +58,22 @@ sealevel_step:
         module: "AIS"
         include_in_workflow:
             - "wf2e"
-            - "wf2f"
-
-    ar5glaciers:
-        module_set: "ipccar5"
-        module: "glaciers"
-        options:
-            gmip: 2
-        include_in_workflow:
-            - "wf1f"
-            - "wf2f"
-            - "wf3f"
-            - "wf4"
-
-    ar5AIS:
-        module_set: "ipccar5"
-        module: "icesheets"
-        pipeline_file: "pipeline.AIS.yml"
-        include_in_workflow:
-            - "wf1f"
 
     ocean:
         module_set: "tlm"
         module: "sterodynamics"
         include_in_workflow:
-            - "wf1f"
             - "wf1e"
             - "wf2e"
-            - "wf2f"
             - "wf3e"
-            - "wf3f"
-            - "wf4"
 
     k14vlm:
         module_set: "kopp14"
         module: "verticallandmotion"
         include_in_workflow:
-            - "wf1f"
             - "wf1e"
             - "wf2e"
-            - "wf2f"
             - "wf3e"
-            - "wf3f"
-            - "wf4"
 
     lws:
         module_set: "ssp"
@@ -123,13 +82,9 @@ sealevel_step:
             scenario: "ssp5"
             dcrate_lo: -0.4
         include_in_workflow:
-            - "wf1f"
             - "wf1e"
             - "wf2e"
-            - "wf2f"
             - "wf3e"
-            - "wf3f"
-            - "wf4"
 
 totaling_step:
     total:
