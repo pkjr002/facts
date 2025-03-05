@@ -1,0 +1,51 @@
+# InSAR Vertical Land Motion Pipeline
+
+preprocess:
+  task1:
+    executable: "python3"
+    python_dependencies: "numpy scipy netCDF4 pyyaml"
+    script: "InSAR_verticallandmotion_preprocess.py"
+    options:
+      - "pipeline_id"
+      - "inputtype"
+    upload_and_extract_input_data:
+      - "InSAR_verticallandmotion_preprocess_data.tgz"
+
+
+fit:
+  task1:
+    executable: "python3"
+    script: "InSAR_verticallandmotion_fit.py"
+    options:
+      - "pipeline_id"
+
+project:
+  task1:
+    executable: "python3"
+    script: "InSAR_verticallandmotion_project.py"
+    options:
+      - "pipeline_id"
+
+postprocess:
+  task1:
+    executable: "python3"
+    script: "InSAR_verticallandmotion_postprocess.py"
+    options:
+      - "nsamps"
+      - "seed"
+      - "baseyear"
+      - "pyear_start"
+      - "pyear_end"
+      - "pyear_step"
+      - "locationfile"
+      - "pipeline_id"
+    upload_input_data:
+      - 'read_locationfile.py'
+    copy_shared_data:
+      - '$SHARED/location.lst'
+    copy_input_data:
+      preprocess:
+        task1:
+          - "%PIPELINE_ID%_data.pkl"
+    local_total_files:
+      - "%PIPELINE_ID%_localsl.nc"
