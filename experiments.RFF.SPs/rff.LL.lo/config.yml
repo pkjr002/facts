@@ -2,10 +2,9 @@ global-options:
     nsamps: 9999
     scenario: ssp245
     pyear_start: 2020
-    pyear_end: 2300
+    pyear_end: 2150
     pyear_step: 10
     baseyear: 2005
-    pipeline_file: 'pipeline.global.yml'
 
 climate_step:
     temperature:
@@ -23,7 +22,6 @@ sealevel_step:
         module: "GrIS"
         include_in_workflow:
             - "wf1f"
-            - "wf2f"
             - "wf3f"
 
     deconto21:
@@ -72,7 +70,6 @@ sealevel_step:
         module: "AIS"
         include_in_workflow:
             - "wf2e"
-            - "wf2f"
 
     ar5glaciers:
         module_set: "ipccar5"
@@ -81,14 +78,13 @@ sealevel_step:
             gmip: 2
         include_in_workflow:
             - "wf1f"
-            - "wf2f"
             - "wf3f"
             - "wf4"
 
     ar5AIS:
         module_set: "ipccar5"
         module: "icesheets"
-        pipeline_file: "pipeline.AIS.global.yml"
+        pipeline_file: "pipeline.AIS.yml"
         include_in_workflow:
             - "wf1f"
 
@@ -99,7 +95,6 @@ sealevel_step:
             - "wf1f"
             - "wf1e"
             - "wf2e"
-            - "wf2f"
             - "wf3e"
             - "wf3f"
             - "wf4"
@@ -111,7 +106,6 @@ sealevel_step:
             - "wf1f"
             - "wf1e"
             - "wf2e"
-            - "wf2f"
             - "wf3e"
             - "wf3f"
             - "wf4"
@@ -125,7 +119,6 @@ sealevel_step:
             - "wf1f"
             - "wf1e"
             - "wf2e"
-            - "wf2f"
             - "wf3e"
             - "wf3f"
             - "wf4"
