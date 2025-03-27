@@ -70,7 +70,7 @@ sealevel_step:
             - "wf3f"
             - "wf4"
 
-    griddedVLM:
+    vlm:
         module_set: "griddedVLM"
         module: "verticallandmotion"
         include_in_workflow:
