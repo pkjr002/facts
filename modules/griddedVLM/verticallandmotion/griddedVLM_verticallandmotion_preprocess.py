@@ -70,7 +70,9 @@ def griddedVLM_preprocess_verticallandmotion(pipeline_id):
 	#type2file = {"grid_insar": "VLM-grid_insar.dat", "grid_gps": "VLM-grid_gps.dat", "hires": "coast_ins.dat"}
 	#if inputtype not in type2file.keys():
 	#	raise Exception("Input type not recognized: {}".format(inputtype))
-	inputfile = os.path.join(os.path.dirname(__file__), "InSAR_rate_File.txt")
+	#inputfile = os.path.join(os.path.dirname(__file__), "InSAR_rate_File.txt")
+	input_dir = os.path.dirname(__file__)
+	inputfile = next((os.path.join(input_dir, f) for f in os.listdir(input_dir) if f.endswith(".txt")), None)
 
 	# Read input file
 	(lats, lons, vlm_rates, sigmas) = ReadVLM(inputfile)

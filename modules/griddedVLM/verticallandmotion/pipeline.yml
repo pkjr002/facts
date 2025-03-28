@@ -8,8 +8,8 @@ preprocess:
     options:
       - "pipeline_id"
       - "inputtype"
-    upload_and_extract_input_data:
-      - "griddedVLM_verticallandmotion_preprocess_data.tgz"
+    #upload_and_extract_input_data:
+    #  - "griddedVLM_verticallandmotion_preprocess_data.tgz"
 
 
 fit:

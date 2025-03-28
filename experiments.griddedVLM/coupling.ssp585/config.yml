@@ -73,6 +73,8 @@ sealevel_step:
     vlm:
         module_set: "griddedVLM"
         module: "verticallandmotion"
+        input_data_file:
+            - "java_rate_File1.txt"
         include_in_workflow:
             - "wf1f"
             - "wf2f"
