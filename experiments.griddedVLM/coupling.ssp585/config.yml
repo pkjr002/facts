@@ -29,6 +29,7 @@ sealevel_step:
         module_set: "deconto21"
         module: "AIS"
         include_in_workflow:
+            - "wf3e"   
             - "wf3f"
 
     bamber19:
@@ -37,10 +38,39 @@ sealevel_step:
         include_in_workflow:
             - "wf4" 
 
+    emuAIS:
+        module_set: "emulandice"
+        module: "AIS"
+        include_in_workflow:
+            - "wf1e"      
+        options:
+            pyear_end: 2100
+
+    emuGrIS:
+        module_set: "emulandice"
+        module: "GrIS"
+        include_in_workflow:
+            - "wf1e"  
+            - "wf2e"  
+            - "wf3e"  
+        options:
+            pyear_end: 2100
+
+    emuglaciers:
+        module_set: "emulandice"
+        module: "glaciers"
+        include_in_workflow:
+            - "wf1e"   
+            - "wf2e"   
+            - "wf3e"
+        options:
+            pyear_end: 2100
+
     larmip:
         module_set: "larmip"
         module: "AIS"
         include_in_workflow:
+            - "wf2e"
             - "wf2f"
 
     ar5glaciers:
@@ -66,7 +96,10 @@ sealevel_step:
         module: "sterodynamics"
         include_in_workflow:
             - "wf1f"
+            - "wf1e"
+            - "wf2e"
             - "wf2f"
+            - "wf3e"
             - "wf3f"
             - "wf4"
 
@@ -77,7 +110,10 @@ sealevel_step:
             - "java_rate_File1.txt"
         include_in_workflow:
             - "wf1f"
+            - "wf1e"
+            - "wf2e"
             - "wf2f"
+            - "wf3e"
             - "wf3f"
             - "wf4"
 
@@ -89,7 +125,10 @@ sealevel_step:
             dcrate_lo: -0.4
         include_in_workflow:
             - "wf1f"
+            - "wf1e"
+            - "wf2e"
             - "wf2f"
+            - "wf3e"
             - "wf3f"
             - "wf4"
 
