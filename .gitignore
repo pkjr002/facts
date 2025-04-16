@@ -49,5 +49,7 @@ makefile
 # File for running runFACTS.py
 /resources/resource_amarel.yml
 
-Q-err.txt
+# User files
 *.nc
+_scratch
+.Rprofile
