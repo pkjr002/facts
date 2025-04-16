@@ -53,3 +53,4 @@ makefile
 *.nc
 _scratch
 .Rprofile
+*.csv
