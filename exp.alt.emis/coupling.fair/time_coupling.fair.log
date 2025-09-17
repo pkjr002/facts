@@ -1,0 +1,44 @@
+===== START: 2025-09-17 13:52:16 =====
+[94mEnTK session: re.session.8606601d-93cd-11f0-bd39-c22f21961ca9
+[39m[0m[94mCreating AppManager
+[39m[0m[94mSetting up ZMQ queues[39m[0m[92m                                                         ok
+[39m[0m[94mAppManager initialized[39m[0m[92m                                                        ok
+[39m[0m[94mValidating and assigning resource manager[39m[0m[92m                                     ok
+[39m[0m[94mSetting up ZMQ queues[39m[0m[92m                                                        n/a
+[39m[0m****** STEP: climate_step ******
+[92mAll components created
+[39m[0m[92mUpdate: [39m[0m[94mcoupling.fair.temperature.fair.temperature state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mcoupling.fair.temperature.fair.temperature.preprocess state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mcoupling.fair.temperature.fair.temperature.preprocess.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mcoupling.fair.temperature.fair.temperature.preprocess.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mcoupling.fair.temperature.fair.temperature.preprocess state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mcoupling.fair.temperature.fair.temperature.preprocess.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mcoupling.fair.temperature.fair.temperature.preprocess.task1 state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mcoupling.fair.temperature.fair.temperature.preprocess state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mcoupling.fair.temperature.fair.temperature.fit state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mcoupling.fair.temperature.fair.temperature.fit.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mcoupling.fair.temperature.fair.temperature.fit.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mcoupling.fair.temperature.fair.temperature.fit state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mcoupling.fair.temperature.fair.temperature.fit.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mcoupling.fair.temperature.fair.temperature.fit.task1 state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mcoupling.fair.temperature.fair.temperature.fit state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mcoupling.fair.temperature.fair.temperature.project state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mcoupling.fair.temperature.fair.temperature.project.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mcoupling.fair.temperature.fair.temperature.project.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mcoupling.fair.temperature.fair.temperature.project state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mcoupling.fair.temperature.fair.temperature.project.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mcoupling.fair.temperature.fair.temperature.project.task1 state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mcoupling.fair.temperature.fair.temperature.project.task1 state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mcoupling.fair.temperature.fair.temperature.project state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mcoupling.fair.temperature.fair.temperature.postprocess state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mcoupling.fair.temperature.fair.temperature.postprocess.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mcoupling.fair.temperature.fair.temperature.postprocess.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mcoupling.fair.temperature.fair.temperature.postprocess state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mcoupling.fair.temperature.fair.temperature.postprocess.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mcoupling.fair.temperature.fair.temperature.postprocess.task1 state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mcoupling.fair.temperature.fair.temperature.postprocess.task1 state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mcoupling.fair.temperature.fair.temperature.postprocess state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mcoupling.fair.temperature.fair.temperature state: DONE
+[39m[0m[94mAll components terminated
+[39m[0m===== END: 2025-09-17 13:56:53 =====
+DURATION: 00:04:36 (HH:MM:SS)
