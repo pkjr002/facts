@@ -77,14 +77,14 @@ def fair_preprocess_temperature(scenario, rcmip_file, pipeline_id):
 
 	# Load 3GAS RFF data, rename simulation to RFFSSP's	
 	rffemissions = xr.load_dataset("./rff-sp_emissions_all_gases.nc")
-	rffemissions = rffemissions.rename({"simulation": "rff_sp"})
+	# rffemissions = rffemissions.rename({"simulation": "rff_sp"})
 	
 	# Sequence file containing 3GAS RFFSSP's indexes that match simulation (see fit data) pairing
 	pairds = xr.load_dataset("./rffsp_fair_sequence.nc")
 
 
 	# Save the preprocessed data to a pickle
-	output = {"emis": emis, "rffemissions": rffemissions, "pairds":pairds, 
+	output = {"emis": emis, "rffemissions": rffemissions, "pairds":pairds,
 		   "REFERENCE_YEAR": REFERENCE_YEAR, "scenario": scenario, "rcmip_file": rcmip_file}
 	outfile = open(os.path.join(os.path.dirname(__file__), "{}_preprocess.pkl".format(pipeline_id)), 'wb')
 	pickle.dump(output, outfile, protocol=-1)

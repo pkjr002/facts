@@ -135,27 +135,64 @@ def Smooth(x, w=5):
 #     return rffemfull
 
 
-# Prep the RCO emissions
-def prep_rco(baseem, rcoemissions, rco_sp,REFERENCE_YEAR):
-    """
-        modified copy of def prep_rff
-    """    
+# # Prep the RCO emissions
+# def prep_rco(baseem, rcoemissions, rco_sp,REFERENCE_YEAR):
+#     """
+#         modified copy of def prep_rff
+#     """    
 	
-    # maps GHG gas to index in emissions numpy array
-    idxdt = {
-        "CO2_Fossil": 1,
-        "CH4": 3,
-        "N2O": 4,
-    }
-    styear = int(rcoemissions.year.values[0])
-    enyear = int(rcoemissions.year.values[-1])
+#     # maps GHG gas to index in emissions numpy array
+#     idxdt = {
+#         "CO2_Fossil": 1,
+#         "CH4": 3,
+#         "N2O": 4,
+#     }
+#     styear = int(rcoemissions.year.values[0])
+#     enyear = int(rcoemissions.year.values[-1])
 
-    # put the RCO gases into the given background emissions 
-    rcoemfull = baseem.copy()
-    for gas in ['CO2_Fossil', 'CH4', 'N2O']:
-        # rcoemfull[styear - REFERENCE_YEAR : enyear - REFERENCE_YEAR + 1, idxdt[gas]] = (rcoemissions.sel(gas=gas, rco_sp=rco_sp).emissions.values)
-        rcoemfull[styear - REFERENCE_YEAR : enyear - REFERENCE_YEAR + 1, idxdt[gas]] = (rcoemissions.sel(gas=gas).isel(rco_sp=rco_sp).emissions.values)
-    return rcoemfull
+#     # put the RCO gases into the given background emissions 
+#     rcoemfull = baseem.copy()
+#     for gas in ['CO2_Fossil', 'CH4', 'N2O']:
+#         # rcoemfull[styear - REFERENCE_YEAR : enyear - REFERENCE_YEAR + 1, idxdt[gas]] = (rcoemissions.sel(gas=gas, rco_sp=rco_sp).emissions.values)
+#         rcoemfull[styear - REFERENCE_YEAR : enyear - REFERENCE_YEAR + 1, idxdt[gas]] = (rcoemissions.sel(gas=gas).isel(rco_sp=rco_sp).emissions.values)
+#     return rcoemfull
+
+
+# Prep the alt-emis emissions
+def prep_alt_emis(baseem, alt_emisNAME, alt_emis, alt_emis_sp,REFERENCE_YEAR):
+	
+    ''' Sample a single track of gas[CO2,CH4,N2O] from the probabilistic emissions (rff/RCO)  
+        and put put those values into the background emissions (baseem)
+	baseem Shape (751, 40).  column_0=time, colcolumn_1:end = gas'''
+    
+    # Create a copy of the background emissions.
+    alt_emisFULL = baseem.copy()          
+	
+
+    # Time bins for the alt_emis data
+    styear = int(alt_emis.year.values[0])
+    enyear = int(alt_emis.year.values[-1])
+    
+    
+    ''' Below ...
+    baseem_idx is hard coded [1, 3, 4] to refer to the column index of gas in baseem pkl file. 
+    N2 Should be N2O: nitrous oxide. Consider changing in rff-sp_emissions_all_gases.nc
+    '''
+
+    if alt_emisNAME == RFF:		
+        for gas, baseem_idx in zip(["C", "CH4", "N2"], [1, 3, 4]):         
+            # alt_emisFULL[styear - REFERENCE_YEAR : enyear - REFERENCE_YEAR + 1, baseem_idx] = alt_emis.sel(gas=gas, simulation=alt_emis_sp).emissions.values
+            alt_emisFULL[styear - REFERENCE_YEAR : enyear - REFERENCE_YEAR + 1, baseem_idx] = alt_emis.sel(gas=gas).isel(simulation=alt_emis_sp).emissions.values
+        return alt_emisFULL
+
+
+    if alt_emisNAME == RCO:
+        for gas, baseem_idx in zip(['CO2_Fossil', 'CH4', 'N2O'], [1, 3, 4]):
+            alt_emisFULL[styear - REFERENCE_YEAR : enyear - REFERENCE_YEAR + 1, baseem_idx] = alt_emis.sel(gas=gas).isel(Sample=alt_emis_sp).emissions.values
+        return alt_emisFULL
+
+
+
 
 
 """  Get the Climate parameters _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_""" 
@@ -206,7 +243,7 @@ def prep_rco(baseem, rcoemissions, rco_sp,REFERENCE_YEAR):
 def get_climpramNrcoIDX(nsamps,nsims,nrcosp,rng):
 	'''
 	This is a copy of get_climpramNrffIDX
-	Keep the 0 based indexing, so remoce +1
+	Keep the 0 based indexing, so remoce +1 (isel )
 	'''
 	if nsamps > nrcosp:
 		print('nsamps > nrcosp')
@@ -273,8 +310,8 @@ def fair_project_temperature(nsamps, seed, cyear_start, cyear_end, smooth_win, p
 	# rcoemissions = rcoemissions.sel(scenario='country_bau_emissions') 
 	rcoemissions = rcoemissions.sel(scenario='fair_nz_emissions')  
 	rcoemissions = rcoemissions.load()  
-	rcoemissions = rcoemissions.rename({"Sample": "rco_sp"})
-	nrcosp       = len(rcoemissions.coords["rco_sp"])
+	# rcoemissions = rcoemissions.rename({"Sample": "rco_sp"})
+	nrcosp       = len(rcoemissions.coords["Sample"])
 	
 
 
@@ -364,19 +401,19 @@ def fair_project_temperature(nsamps, seed, cyear_start, cyear_end, smooth_win, p
 		# this_temp, this_deeptemp, this_ohc = my_run_fair(this_pars, rffemfull)
 		
 		"""RCO Emissions"""
-		rcoemfull = prep_rco(emis, rcoemissions, rcosp_idx[i],REFERENCE_YEAR=1750)
-		rcoemfull_list.append(rcoemfull)
-		rco_sp_list.append(rcosp_idx[i])
-		# ==> Run FaIR
-		this_temp, this_deeptemp, this_ohc = my_run_fair(this_pars, rcoemfull)
-
+		# rcoemfull = prep_rco(emis, rcoemissions, rcosp_idx[i],REFERENCE_YEAR=1750)
+		# rcoemfull_list.append(rcoemfull)
+		# rco_sp_list.append(rcosp_idx[i])
+		# # ==> Run FaIR
+		# this_temp, this_deeptemp, this_ohc = my_run_fair(this_pars, rcoemfull)
 
 
 		# Combined function
+		alt_emisNAME=RCO
 		alt_emis=rcoemissions
 		alt_emis_idx=rcosp_idx
-
-		alt_emisfull = prep_alt_emis(emis, alt_emis, alt_emis_idx[i],REFERENCE_YEAR=1750)
+		# 
+		alt_emisfull = prep_alt_emis(emis, alt_emisNAME, alt_emis, alt_emis_idx[i],REFERENCE_YEAR=1750) 
 		alt_emisfull_list.append(alt_emisfull)
 		alt_emis_sp_list.append(alt_emis_idx[i])
 		# ==> Run FaIR
