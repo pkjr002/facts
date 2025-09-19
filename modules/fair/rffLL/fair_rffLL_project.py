@@ -179,17 +179,15 @@ def prep_alt_emis(baseem, alt_emisNAME, alt_emis, alt_emis_sp,REFERENCE_YEAR):
     N2 Should be N2O: nitrous oxide. Consider changing in rff-sp_emissions_all_gases.nc
     '''
 
-    if alt_emisNAME == RFF:		
-        for gas, baseem_idx in zip(["C", "CH4", "N2"], [1, 3, 4]):         
-            # alt_emisFULL[styear - REFERENCE_YEAR : enyear - REFERENCE_YEAR + 1, baseem_idx] = alt_emis.sel(gas=gas, simulation=alt_emis_sp).emissions.values
-            alt_emisFULL[styear - REFERENCE_YEAR : enyear - REFERENCE_YEAR + 1, baseem_idx] = alt_emis.sel(gas=gas).isel(simulation=alt_emis_sp).emissions.values
-        return alt_emisFULL
-
-
-    if alt_emisNAME == RCO:
-        for gas, baseem_idx in zip(['CO2_Fossil', 'CH4', 'N2O'], [1, 3, 4]):
-            alt_emisFULL[styear - REFERENCE_YEAR : enyear - REFERENCE_YEAR + 1, baseem_idx] = alt_emis.sel(gas=gas).isel(Sample=alt_emis_sp).emissions.values
-        return alt_emisFULL
+    gasDICT = {
+    "RFF":  (["C", "CH4", "N2"],    		[1, 3, 4], 	"simulation"),
+    "RCO":  (["CO2_Fossil", "CH4", "N2O"], 	[1, 3, 4], 	"Sample"),}
+	
+    gases, baseem_idx, dim  = gasDICT[alt_emisNAME]
+    
+    alt_emisFULL[styear - REFERENCE_YEAR : enyear - REFERENCE_YEAR + 1, baseem_idx] = alt_emis.sel(gas=gases).isel({dim: alt_emis_sp}).emissions.values
+    
+    return alt_emisFULL
 
 
 
