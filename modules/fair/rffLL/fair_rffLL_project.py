@@ -110,55 +110,8 @@ def Smooth(x, w=5):
 	return(y)
 
 
-""" Prep the emissions _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_"""
+""" Prep alt- emissions _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_"""
 
-# # Prep the RFF emissions
-# def prep_rff(baseem, rffemissions, rff_sp,REFERENCE_YEAR):
-#     """
-#         takes the raw RFF-SP emissions (rffemissions) and combines with background 
-#         emissions from ssprcp (baseem) for a given rff_sp
-#     """    
-#     # maps GHG gas to index in emissions numpy array
-#     idxdt = {
-#         "C": 1,
-#         "CH4": 3,
-#         "N2O": 4,
-#         "N2": 4,
-#     }
-#     styear = rffemissions.Year.values[0]
-#     enyear = rffemissions.Year.values[-1]
-
-#     # put the RFF-SP gases into the given background emissions 
-#     rffemfull = baseem.copy()
-#     for gas in rffemissions.gas.values:
-#         rffemfull[styear - REFERENCE_YEAR : enyear - REFERENCE_YEAR + 1, idxdt[gas]] = (rffemissions.sel(gas=gas, rff_sp=rff_sp).emissions.values)
-#     return rffemfull
-
-
-# # Prep the RCO emissions
-# def prep_rco(baseem, rcoemissions, rco_sp,REFERENCE_YEAR):
-#     """
-#         modified copy of def prep_rff
-#     """    
-	
-#     # maps GHG gas to index in emissions numpy array
-#     idxdt = {
-#         "CO2_Fossil": 1,
-#         "CH4": 3,
-#         "N2O": 4,
-#     }
-#     styear = int(rcoemissions.year.values[0])
-#     enyear = int(rcoemissions.year.values[-1])
-
-#     # put the RCO gases into the given background emissions 
-#     rcoemfull = baseem.copy()
-#     for gas in ['CO2_Fossil', 'CH4', 'N2O']:
-#         # rcoemfull[styear - REFERENCE_YEAR : enyear - REFERENCE_YEAR + 1, idxdt[gas]] = (rcoemissions.sel(gas=gas, rco_sp=rco_sp).emissions.values)
-#         rcoemfull[styear - REFERENCE_YEAR : enyear - REFERENCE_YEAR + 1, idxdt[gas]] = (rcoemissions.sel(gas=gas).isel(rco_sp=rco_sp).emissions.values)
-#     return rcoemfull
-
-
-# Prep the alt-emis emissions
 def prep_alt_emis(baseem, alt_emisNAME, alt_emis, alt_emis_sp,REFERENCE_YEAR):
 	
     ''' Sample a single track of gas[CO2,CH4,N2O] from the probabilistic emissions (rff/RCO)  
@@ -278,24 +231,15 @@ def fair_project_temperature(nsamps, seed, cyear_start, cyear_end, smooth_win, p
 	with open(preprocess_file, 'rb') as f:
 		preprocess_data = pickle.load(f)
 
-
 	emis 			= preprocess_data["emis"]
 	REFERENCE_YEAR 	= preprocess_data["REFERENCE_YEAR"]
 	scenario 		= preprocess_data["scenario"]
 	rcmip_file 		= preprocess_data["rcmip_file"]
-
 	
-	## ==> Load the fit data (Climate parameter data) 
-	#fit_file = "{}_fit.pkl".format(pipeline_id)
-	#with open(fit_file, 'rb') as f:
-	#	fit_data = pickle.load(f)
-
 	## ==> Load raw Climate parameter data
 	param_file 	= "./fair_ar6_climate_params_v4.0.nc"
 	pars 		= xr.load_dataset(param_file)
 	nsims   	= len(pars["simulation"])
-
-
 
 	""" ==> Load RFF emissions data """
 	# rffemissions 	= preprocess_data["rffemissions"]
@@ -364,10 +308,6 @@ def fair_project_temperature(nsamps, seed, cyear_start, cyear_end, smooth_win, p
 	deeptemps = []
 	ohcs = []
 	
-	# rffemfull_list = []
-	# rff_sp_list =[]
-	# rcoemfull_list = []
-	# rco_sp_list = []
 	alt_emisfull_list = []
 	alt_emis_sp_list = []
 	
@@ -390,23 +330,7 @@ def fair_project_temperature(nsamps, seed, cyear_start, cyear_end, smooth_win, p
 		print(f"Memory before FAIR run {i}: {memory_before:.1f} MB")
 		#================
 
-
-		"""RFF Emissions"""
-		# rffemfull = prep_rff(emis, rffemissions, rffsp_idx[i],REFERENCE_YEAR=1750)
-		# rffemfull_list.append(rffemfull)
-		# rff_sp_list.append(rffsp_idx[i])
-		# # ==> Run FaIR
-		# this_temp, this_deeptemp, this_ohc = my_run_fair(this_pars, rffemfull)
-		
-		"""RCO Emissions"""
-		# rcoemfull = prep_rco(emis, rcoemissions, rcosp_idx[i],REFERENCE_YEAR=1750)
-		# rcoemfull_list.append(rcoemfull)
-		# rco_sp_list.append(rcosp_idx[i])
-		# # ==> Run FaIR
-		# this_temp, this_deeptemp, this_ohc = my_run_fair(this_pars, rcoemfull)
-
-
-		# Combined function
+		# SSP/RFF/RCO FAIR run
 		alt_emisNAME=RCO
 		alt_emis=rcoemissions
 		alt_emis_idx=rcosp_idx
@@ -459,12 +383,10 @@ def fair_project_temperature(nsamps, seed, cyear_start, cyear_end, smooth_win, p
 		print(f"Memory after cleanup {i}: {memory_after_cleanup:.1f} MB (diff: {memory_after_cleanup-memory_after_append:.1f})")
 		#================
 
+	
 	(print('collect Gas/clim Files'))
-	# collect Gas/clim Files
-	# rffemfull_array = np.array(rffemfull_list)
-	# rff_sp_array = np.array(rff_sp_list)
-	rcoemfull_array = np.array(rcoemfull_list)
-	rco_sp_array = np.array(rco_sp_list)
+	alt_emisfull_array = np.array(alt_emisfull_list)
+	alt_emis_sp_array = np.array(alt_emis_sp_list)
 	
 	(print('Recast the output as numpy arrays'))
 	# Recast the output as numpy arrays
@@ -473,34 +395,15 @@ def fair_project_temperature(nsamps, seed, cyear_start, cyear_end, smooth_win, p
 	ohcs = np.array(ohcs)
 
 
-	# data_to_save = {
-    # "rffemfull_array": rffemfull_array, "rff_sp_array" : rff_sp_array,
-	# "temps": temps, "deeptemps": deeptemps, "ohcs": ohcs}
-	# # Save as a pickle file.
-	# filename = f"project.pkl"
-	# with open(filename, "wb") as f:
-	# 	pickle.dump(data_to_save, f)
-
-
-
-
-	""" I get memory error when using like this. Runs fair only 8817 times"""
-	# data_to_save = {
-    # "rcoemfull_array": rcoemfull_array, "rco_sp_array" : rco_sp_array,
-	# "temps": temps, "deeptemps": deeptemps, "ohcs": ohcs}
-	# # Save as a pickle file.
-	# filename = f"project.pkl"
-	# with open(filename, "wb") as f:
-	# 	pickle.dump(data_to_save, f)
-
-	# Save rcoemfull_array and rco_sp_array only
-	rco_data_to_save = {
-		"rcoemfull_array": rcoemfull_array,
-		"rco_sp_array": rco_sp_array
+	# Save alt_emisfull_array and alt_emis_sp_array only
+	"""There is a memory difference between the ro"""
+	alt_emis_data_to_save = {
+		"alt_emisfull_array": alt_emisfull_array,
+		"alt_emis_sp_array": alt_emis_sp_array
 	}
-	filename_rco = f"project_rco_data.pkl"
+	filename_rco = f"project_alt_emis_data.pkl"
 	with open(filename_rco, "wb") as f:
-		pickle.dump(rco_data_to_save, f)
+		pickle.dump(alt_emis_data_to_save, f)
 
 	# Save temperature and content results
 	data_to_save = {
