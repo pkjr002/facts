@@ -110,6 +110,25 @@ def Smooth(x, w=5):
 	return(y)
 
 
+""" Memory Diagnostic _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_"""
+import psutil
+
+process_ = psutil.Process()
+
+def memory_check_start(label=""):
+    mem = process_.memory_info().rss / 1024 / 1024
+    print(f"Memory before {label}: {mem:.1f} MB")
+    return mem
+
+def memory_check_end(start_mem, label=""):
+    end_mem = process_.memory_info().rss / 1024 / 1024
+    diff = end_mem - start_mem
+    print(f"Memory after {label}: {end_mem:.1f} MB (diff: {diff:.1f})")
+    return end_mem
+
+
+
+
 """ Prep alt- emissions _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_"""
 
 def prep_alt_emis(baseem, alt_emisNAME, alt_emis, alt_emis_sp,REFERENCE_YEAR):
@@ -143,8 +162,6 @@ def prep_alt_emis(baseem, alt_emisNAME, alt_emis, alt_emis_sp,REFERENCE_YEAR):
 
 
 
-
-
 """  Pick the Climate parameters and Emission track _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_""" 
 
 def get_climpramIDX(nsamps,nsims,rng):
@@ -165,46 +182,18 @@ def get_climpramIDX(nsamps,nsims,rng):
 
 
 
-def get_climpramNrffIDX(nsamps,nsims,nrffsp,rng):
-	'''
-	the +1 for rffspIDX is added as the nsamps starts at 0, but rfff starts at 1
-	alternative: 
-	rffspIDX = rng.choice(np.arange(1, 10001), nsamps, replace=True)
-	'''
-	if nsamps > nrffsp:
-		sampleIDX 	= np.arange(nsamps)
-		rffspIDX  	= rng.choice(nrffsp, nsamps, replace=True) +1
-		clmprmIDX   = rng.choice(nsims, nsamps, replace=True)
-	
-	else:   #(nsamps <= nrffsp:)
-		sampleIDX 	= np.arange(nsamps)
-		rffspIDX  	= rng.choice(nrffsp, nsamps, replace=False) + 1
+def get_climpramNaltemisIDX(nsamps,nsims,naltemissp,rng):
 
-		if nsamps > nsims:
-			clmprmIDX   = rng.choice(nsims, nsamps, replace=True)
-		
-		else: #(nsamps <= nsims:)
-			clmprmIDX   = rng.choice(nsims, nsamps, replace=False)
-
-	return sampleIDX, rffspIDX, clmprmIDX
-
-
-
-def get_climpramNrcoIDX(nsamps,nsims,nrcosp,rng):
-	'''
-	This is a copy of get_climpramNrffIDX
-	Keep the 0 based indexing, so remoce +1 (isel )
-	'''
-	if nsamps > nrcosp:
-		print('nsamps > nrcosp')
-		sampleIDX 	= np.arange(nsamps)
-		rcospIDX  	= rng.choice(nrcosp, nsamps, replace=True)
-		clmprmIDX   = rng.choice(nsims, nsamps, replace=True)
+	if nsamps > naltemissp:
+		print('nsamps > naltemissp')
+		sampleIDX 	   = np.arange(nsamps)
+		naltemisspIDX  = rng.choice(naltemissp, nsamps, replace=True)
+		clmprmIDX      = rng.choice(nsims, nsamps, replace=True)
 	
 	else:   
-		print('nsamps <= nrcosp')
+		print('nsamps <= naltemissp')
 		sampleIDX 	= np.arange(nsamps)
-		rcospIDX  	= rng.choice(nrcosp, nsamps, replace=False)
+		naltemisspIDX  	= rng.choice(naltemissp, nsamps, replace=False)
 
 		if nsamps > nsims:
 			clmprmIDX   = rng.choice(nsims, nsamps, replace=True)
@@ -212,7 +201,7 @@ def get_climpramNrcoIDX(nsamps,nsims,nrcosp,rng):
 		else: #(nsamps <= nsims:)
 			clmprmIDX   = rng.choice(nsims, nsamps, replace=False)
 
-	return sampleIDX, rcospIDX, clmprmIDX
+	return sampleIDX, naltemisspIDX, clmprmIDX
 
 
 
@@ -221,9 +210,9 @@ def get_climpramNrcoIDX(nsamps,nsims,nrcosp,rng):
 #======================================================================================================
 def fair_project_temperature(nsamps, seed, cyear_start, cyear_end, smooth_win,alt_emisNAME, pipeline_id):
 
-	#-------------------------------
-	""" ==> Load data """
-	#-------------------------------
+	"""--------------------------------------------------------------
+	==> Load data
+	--------------------------------------------------------------""" 
 	#
 	# ==> Load the preprocessed data (Emissions data)
 	preprocess_file = "{}_preprocess.pkl".format(pipeline_id)
@@ -240,275 +229,211 @@ def fair_project_temperature(nsamps, seed, cyear_start, cyear_end, smooth_win,al
 	pars 		= xr.load_dataset(param_file)
 	nsims   	= len(pars["simulation"])
 
-	## ==> Load Emissions data
+	
+	"""--------------------------------------------------------------
+	==> Choose Emissions Pathway
+	--------------------------------------------------------------"""   
+	
+	rng = np.random.default_rng(seed)
+	
 	if alt_emisNAME == "RFF":
 		print('Run RFF emissions data')
-		rffemissions 	= preprocess_data["rffemissions"]
-		nrffsp          = len(rffemissions.coords["simulation"])
-		pairds 			= preprocess_data["pairds"]
+		altemissions  	= preprocess_data["rffemissions"]
+		nrffsp          = len(altemissions.coords["simulation"])
+		sample_idx, altemis_idx, clmprm_idx = get_climpramNaltemisIDX(nsamps,nsims,nrffsp,rng)
 
 	elif alt_emisNAME == "RFF_EPA":
 		print('Run RFF EPA emissions data')
-		rffemissions 	= preprocess_data["rffemissions"]
-		nrffsp          = len(rffemissions.coords["simulation"])
+		if nsamps != 10000:
+			raise ValueError(f"For the RFF EPA case, nsamps must be exactly 10,000, but got {nsamps}")    
+		
+		altemissions    = preprocess_data["rffemissions"]
+		nrffsp          = len(altemissions.coords["simulation"])
 		pairds 			= preprocess_data["pairds"]
+		#
+		run_idx 	= pairds["runid"]
+		sample_idx 	= run_idx.values -1
+
+		sim 		= pairds["simulation"].values
+		rff_sp 		= pairds["rff_sp"].values
+		
 
 	elif alt_emisNAME == "RCO":
 		print('Run RCO emissions data')
 		fname = [f for f in os.listdir(".") if f.startswith("rco2024_") and f.endswith(".nc")][0]
 		rcoemissions = xr.open_dataset(fname)
-		# rcoemissions = rcoemissions.sel(scenario='country_bau_emissions') 
-		# rcoemissions = rcoemissions.sel(scenario='fair_nz_emissions')  
-		rcoemissions = rcoemissions.load()  
-		nrcosp       = len(rcoemissions.coords["Sample"])
+		rcoemissions = rcoemissions.sel(scenario='country_bau_emissions') #fair_nz_emissions
+		altemissions = rcoemissions.load()  
+		nrcosp       = len(altemissions.coords["Sample"])
+		sample_idx, altemis_idx, clmprm_idx = get_climpramNaltemisIDX(nsamps,nsims,nrcosp,rng)
 	
 	else:
 		print('Run a standarized SSP experiment')
+		# ===> For single ssp get random clim param selection
+		run_idx, sample_idx = get_climpramIDX(nsamps,nsims,rng)
 
+
+
+	#----------------------
+	# Run the FAIR model   |
+	#----------------------
+	temps = []
+	deeptemps = []
+	ohcs = []
 	
-	return(None)
-	
+	alt_emisfull_list = []
+	alt_emis_sp_list = []
 
 
-# 	#-------------------------------
-# 	""" ==> PICK FaIR Indexes """
-# 	#-------------------------------
-# 	rng = np.random.default_rng(seed)
-
-
-# 	# # ===> For single ssp get random clim param selection
-# 	# run_idx, sample_idx = get_climpramIDX(nsamps,nsims,rng)
-
-
-# 	# ===> RFF EPA
-# 	if nsamps == 10000:
-# 		run_idx 	= pairds["runid"]
-# 		sample_idx 	= run_idx.values -1
-
-# 		sim 		= pairds["simulation"].values
-# 		rff_sp 		= pairds["rff_sp"].values
-	
-	
-# 	# ===> RFF Random
-# 	elif nsamps < 10000:
-# 		print(f'nsamp={nsamps}, i.e. nsamps < 10000')
+    # Run the FAIR model
+	for i in sample_idx:
 		
-# 		# print(f'nsims={nsims}, nrffsp={nrffsp}, \n')
-# 		print(f'nsims={nsims}, nrcosp={nrcosp}, \n')
+		# Select the simulation (climate parameter)
+		this_pars = pars.isel(simulation=clmprm_idx[i])
 		
-# 		# ---> Randomly sample climate parameters 
-# 		""" RFF """
-# 		# sample_idx, rffsp_idx, clmprm_idx = get_climpramNrffIDX(nsamps,nsims,nrffsp,rng)
-		
-# 		""" RCO, rcosp_idx is a zero-based indexing"""
-# 		sample_idx, rcosp_idx, clmprm_idx = get_climpramNrcoIDX(nsamps,nsims,nrcosp,rng)
-
-# 		# ---> ADD code for LatinLine/interval selection
-
-
-# 	else: 		#nsamps > 10000:
-# 		# print('working later on this ...')
-# 		print('exicuting loop #nsamps > 10000')
-# 		""" RFF """
-# 		# sample_idx, rffsp_idx, clmprm_idx = get_climpramNrffIDX(nsamps,nsims,nrffsp,rng)
-
-
-
-# 	#----------------------
-# 	# Run the FAIR model   |
-# 	#----------------------
-# 	temps = []
-# 	deeptemps = []
-# 	ohcs = []
-	
-# 	alt_emisfull_list = []
-# 	alt_emis_sp_list = []
-	
-# 	#print(f" \n nsamps: {nsamps} |  nsims: { nsims} |  nrffsp: {nrffsp} | \n"  )
-
-#     # Run the FAIR model
-# 	for i in sample_idx:
-		
-# 		# Select the simulation (climate parameter)
-# 		this_pars = pars.isel(simulation=clmprm_idx[i])
-		
-# 		# prep the emissions
-# 		# print(f" sample: {i} | rffsp_idx: {rffsp_idx[i]}")
-
-# 		#================
-# 		import psutil
-# 		process = psutil.Process()
-# 		# Memory before FAIR run
-# 		memory_before = process.memory_info().rss / 1024 / 1024
-# 		print(f"Memory before FAIR run {i}: {memory_before:.1f} MB")
-# 		#================
-
-# 		# SSP/RFF/RCO FAIR run
-# 		# alt_emisNAME=RCO
-# 		alt_emis=rcoemissions
-# 		alt_emis_idx=rcosp_idx
-# 		# 
-# 		alt_emisfull = prep_alt_emis(emis, alt_emisNAME, alt_emis, alt_emis_idx[i],REFERENCE_YEAR=1750) 
-# 		alt_emisfull_list.append(alt_emisfull)
-# 		alt_emis_sp_list.append(alt_emis_idx[i])
-# 		# ==> Run FaIR
-# 		this_temp, this_deeptemp, this_ohc = my_run_fair(this_pars, alt_emisfull)
-
+		mem_before = memory_check_start(label=f"FAIR run {i}")
 		
 
-# 		#================
-# 		# Memory after FAIR run
-# 		memory_after_fair = process.memory_info().rss / 1024 / 1024
-# 		print(f"Memory after FAIR run {i}: {memory_after_fair:.1f} MB (diff:{memory_after_fair-memory_before:.1f})")
-# 		#================
+		# RFF/RCO FAIR run (need to edit for ssp/EPA)
+		# 
+		alt_emisfull = prep_alt_emis(emis, alt_emisNAME, altemissions, altemis_idx[i],REFERENCE_YEAR=1750) 
+		alt_emisfull_list.append(alt_emisfull)
+		alt_emis_sp_list.append(altemis_idx[i])
+		# ==> Run FaIR
+		this_temp, this_deeptemp, this_ohc = my_run_fair(this_pars, alt_emisfull)
+		
+		memory_after_fair = memory_check_end(mem_before, label=f"FAIR run {i}")
+
+		(print(f'Fair Ran  {i} with the following...'))
+		(print(f'altemis_idx={altemis_idx[i]} || Climate param simulation (clmprm_idx)= {clmprm_idx[i]}'))
 
 
-# 		(print(f'Fair Ran  {i} with the following...'))
-# 		# (print(f'rffsp_idx={rffsp_idx[i]} || Climate param simulation (clmprm_idx)= {clmprm_idx[i]}'))
-# 		(print(f'rcosp_idx={rcosp_idx[i]} || Climate param simulation (clmprm_idx)= {clmprm_idx[i]}'))
+		temps.append(this_temp)
+		deeptemps.append(this_deeptemp)
+		ohcs.append(this_ohc)
+		print('temp, deep, ohcs appended...')
 
-
-
-# 		temps.append(this_temp)
-# 		deeptemps.append(this_deeptemp)
-# 		ohcs.append(this_ohc)
-
-# 		#================
-# 		# Memory after appending
-# 		memory_after_append = process.memory_info().rss / 1024 / 1024
-# 		print(f"Memory after append {i}: {memory_after_append:.1f} MB (diff: {memory_after_append-memory_after_fair:.1f})")
-# 		#================
-
-
-
-# 		# print(f'FaIR run cp{clmprm_idx[i]} || rff{rffsp_idx[i]}  <-- \n')
-# 		print(f'FaIR run cp{clmprm_idx[i]} || rco{rcosp_idx[i]}  <-- \n')
-# 		print('temp, deep, ohcs appended...')
+		memory_after_append = memory_check_end(memory_after_fair, label=f"append {i}")
 		
 		
-# 		# Cleanup
-# 		import gc
-# 		# del this_temp, this_deeptemp, this_ohc, rffemfull
-# 		del this_temp, this_deeptemp, this_ohc, rcoemfull
-# 		gc.collect()
-# 		# Memory after cleanup
-# 		memory_after_cleanup = process.memory_info().rss / 1024 / 1024
-# 		print(f"Memory after cleanup {i}: {memory_after_cleanup:.1f} MB (diff: {memory_after_cleanup-memory_after_append:.1f})")
-# 		#================
+		# Cleanup
+		import gc
+		del this_temp, this_deeptemp, this_ohc, alt_emisfull
+		gc.collect()
+
+		memory_after_cleanup = memory_check_end(memory_after_append, label=f"cleanup {i}")
 
 	
-# 	(print('collect Gas/clim Files'))
-# 	alt_emisfull_array = np.array(alt_emisfull_list)
-# 	alt_emis_sp_array = np.array(alt_emis_sp_list)
+	(print('collect Gas/clim Files'))
+	alt_emisfull_array = np.array(alt_emisfull_list)
+	alt_emis_sp_array = np.array(alt_emis_sp_list)
 	
-# 	(print('Recast the output as numpy arrays'))
-# 	# Recast the output as numpy arrays
-# 	temps = np.array(temps)
-# 	deeptemps = np.array(deeptemps)
-# 	ohcs = np.array(ohcs)
+	(print('Recast the output as numpy arrays'))
+	temps = np.array(temps)
+	deeptemps = np.array(deeptemps)
+	ohcs = np.array(ohcs)
 
 
-# 	# Save alt_emisfull_array and alt_emis_sp_array only
-# 	"""There is a memory difference between the ro"""
-# 	alt_emis_data_to_save = {
-# 		"alt_emisfull_array": alt_emisfull_array,
-# 		"alt_emis_sp_array": alt_emis_sp_array
-# 	}
-# 	filename_rco = f"project_alt_emis_data.pkl"
-# 	with open(filename_rco, "wb") as f:
-# 		pickle.dump(alt_emis_data_to_save, f)
+	# Save alt_emisfull_array and alt_emis_sp_array only
+	alt_emis_data_to_save = {
+		"alt_emisfull_array": alt_emisfull_array,
+		"alt_emis_sp_array": alt_emis_sp_array
+	}
+	filename_rco = f"project_alt_emis_data.pkl"
+	with open(filename_rco, "wb") as f:
+		pickle.dump(alt_emis_data_to_save, f)
 
-# 	# Save temperature and content results
-# 	data_to_save = {
-# 		"temps": temps,
-# 		"deeptemps": deeptemps,
-# 		"ohcs": ohcs
-# 	}
-# 	filename_results = f"project_results.pkl"
-# 	with open(filename_results, "wb") as f:
-# 		pickle.dump(data_to_save, f)
-# # 
-# 	(print('Saved temperature and content results'))
+	# Save temperature and content results
+	data_to_save = {
+		"temps": temps,
+		"deeptemps": deeptemps,
+		"ohcs": ohcs
+	}
+	filename_results = f"project_results.pkl"
+	with open(filename_results, "wb") as f:
+		pickle.dump(data_to_save, f)
+# 
+	(print('Saved temperature and content results'))
 
-#     #========================================================================================|
+    #========================================================================================|
     
-# 	# Projection years
-# 	proj_years = np.arange(REFERENCE_YEAR, 2501)
+	# Projection years
+	proj_years = np.arange(REFERENCE_YEAR, 2501)
 
-# 	# What version of FAIR are we using?
-# 	fair_version = fair.__version__
+	# What version of FAIR are we using?
+	fair_version = fair.__version__
 
-# 	# Center and smooth the samples
-# 	temps = CenterSmooth(temps, proj_years, cyear_start=cyear_start, cyear_end=cyear_end, smooth_win=smooth_win)
-# 	deeptemps = CenterSmooth(deeptemps, proj_years, cyear_start=cyear_start, cyear_end=cyear_end, smooth_win=smooth_win)
-# 	ohcs = CenterSmooth(ohcs, proj_years, cyear_start=cyear_start, cyear_end=cyear_end, smooth_win=smooth_win)
+	# Center and smooth the samples
+	temps = CenterSmooth(temps, proj_years, cyear_start=cyear_start, cyear_end=cyear_end, smooth_win=smooth_win)
+	deeptemps = CenterSmooth(deeptemps, proj_years, cyear_start=cyear_start, cyear_end=cyear_end, smooth_win=smooth_win)
+	ohcs = CenterSmooth(ohcs, proj_years, cyear_start=cyear_start, cyear_end=cyear_end, smooth_win=smooth_win)
 
-# 	# Conform the output to shapes appropriate for output
-# 	temps = temps[sample_idx,:,np.newaxis]
-# 	deeptemps = deeptemps[sample_idx,:,np.newaxis]
-# 	ohcs = ohcs[sample_idx,:,np.newaxis]
+	# Conform the output to shapes appropriate for output
+	temps = temps[sample_idx,:,np.newaxis]
+	deeptemps = deeptemps[sample_idx,:,np.newaxis]
+	ohcs = ohcs[sample_idx,:,np.newaxis]
 
-# 	# Set up the global attributes for the output netcdf files
-# 	attrs = {"Source": "FACTS",
-# 			 "Date Created": str(datetime.now()),
-# 			 "Description": (
-# 				 f"Fair v={fair_version} scenario simulations with AR6-calibrated settings."
-# 			 " Simulations based on parameters developed here: https://github.com/chrisroadmap/ar6/tree/main/notebooks."
-# 			 " Parameters obtained from: https://zenodo.org/record/5513022#.YVW1HZpByUk."),
-# 			"Method": (
-# 				"Temperature and ocean heat content were returned from fair.foward.fair_scm() in emission-driven mode."),
-# 			"Scenario emissions file": rcmip_file,
-# 			"FAIR Parameters file": param_file,
-# 			"FaIR version": fair_version,
-# 			 "Scenario": scenario,
-# 			 "Centered": "{}-{} mean".format(cyear_start, cyear_end),
-# 			 "Smoothing window": "{} years".format(smooth_win),
-# 			 "Note": "Code provided by Kelly McCusker of Rhodium Group Climate Impact Lab and adapted for use in FACTS."
-# 			}
+	# Set up the global attributes for the output netcdf files
+	attrs = {"Source": "FACTS",
+			 "Date Created": str(datetime.now()),
+			 "Description": (
+				 f"Fair v={fair_version} scenario simulations with AR6-calibrated settings."
+			 " Simulations based on parameters developed here: https://github.com/chrisroadmap/ar6/tree/main/notebooks."
+			 " Parameters obtained from: https://zenodo.org/record/5513022#.YVW1HZpByUk."),
+			"Method": (
+				"Temperature and ocean heat content were returned from fair.foward.fair_scm() in emission-driven mode."),
+			"Scenario emissions file": rcmip_file,
+			"FAIR Parameters file": param_file,
+			"FaIR version": fair_version,
+			 "Scenario": scenario,
+			 "Centered": "{}-{} mean".format(cyear_start, cyear_end),
+			 "Smoothing window": "{} years".format(smooth_win),
+			 "Note": "Code provided by Kelly McCusker of Rhodium Group Climate Impact Lab and adapted for use in FACTS."
+			}
 
-# 	# Create the variable datasets
-# 	tempds = xr.Dataset({"surface_temperature": (("samples", "years", "locations"), temps, {"units":"degC"}),
-# 							"lat": (("locations"), [np.inf]),
-# 							"lon": (("locations"), [np.inf])},
-# 		coords={"years": proj_years, "locations": [-1], "samples": np.arange(nsamps)}, attrs=attrs)
+	# Create the variable datasets
+	tempds = xr.Dataset({"surface_temperature": (("samples", "years", "locations"), temps, {"units":"degC"}),
+							"lat": (("locations"), [np.inf]),
+							"lon": (("locations"), [np.inf])},
+		coords={"years": proj_years, "locations": [-1], "samples": np.arange(nsamps)}, attrs=attrs)
 
-# 	deeptempds = xr.Dataset({"deep_ocean_temperature": (("samples", "years", "locations"), deeptemps, {"units":"degC"}),
-# 							"lat": (("locations"), [np.inf]),
-# 							"lon": (("locations"), [np.inf])},
-# 		coords={"years": proj_years, "locations": [-1], "samples": np.arange(nsamps)}, attrs=attrs)
+	deeptempds = xr.Dataset({"deep_ocean_temperature": (("samples", "years", "locations"), deeptemps, {"units":"degC"}),
+							"lat": (("locations"), [np.inf]),
+							"lon": (("locations"), [np.inf])},
+		coords={"years": proj_years, "locations": [-1], "samples": np.arange(nsamps)}, attrs=attrs)
 
-# 	ohcds = xr.Dataset({"ocean_heat_content": (("samples", "years", "locations"), ohcs, {"units":"J"}),
-# 							"lat": (("locations"), [np.inf]),
-# 							"lon": (("locations"), [np.inf])},
-# 		coords={"years": proj_years, "locations": [-1], "samples": np.arange(nsamps)}, attrs=attrs)
+	ohcds = xr.Dataset({"ocean_heat_content": (("samples", "years", "locations"), ohcs, {"units":"J"}),
+							"lat": (("locations"), [np.inf]),
+							"lon": (("locations"), [np.inf])},
+		coords={"years": proj_years, "locations": [-1], "samples": np.arange(nsamps)}, attrs=attrs)
 
-# 	# Write the datasets to netCDF
-# 	tempds.to_netcdf("{}_gsat.nc".format(pipeline_id), encoding={"surface_temperature": {"dtype": "float32", "zlib": True, "complevel":4}})
-# 	deeptempds.to_netcdf("{}_oceantemp.nc".format(pipeline_id), encoding={"deep_ocean_temperature": {"dtype": "float32", "zlib": True, "complevel":4}})
-# 	ohcds.to_netcdf("{}_ohc.nc".format(pipeline_id), encoding={"ocean_heat_content": {"dtype": "float32", "zlib": True, "complevel":4}})
+	# Write the datasets to netCDF
+	tempds.to_netcdf("{}_gsat.nc".format(pipeline_id), encoding={"surface_temperature": {"dtype": "float32", "zlib": True, "complevel":4}})
+	deeptempds.to_netcdf("{}_oceantemp.nc".format(pipeline_id), encoding={"deep_ocean_temperature": {"dtype": "float32", "zlib": True, "complevel":4}})
+	ohcds.to_netcdf("{}_ohc.nc".format(pipeline_id), encoding={"ocean_heat_content": {"dtype": "float32", "zlib": True, "complevel":4}})
 
-# 	# create a single netCDF file that is compatible with modules expecting parameters organized in a certain fashion
-# 	pooledds = xr.Dataset({"surface_temperature": (("years","samples"), temps[::,::,0].transpose(), {"units":"degC"}),
-# 							"deep_ocean_temperature": (("years","samples"), deeptemps[::,::,0].transpose(), {"units":"degC"}),
-# 							"ocean_heat_content": (("years","samples"), ohcs[::,::,0].transpose(), {"units":"J"})},
-# 		coords={"years": proj_years, "samples": np.arange(nsamps)}, attrs=attrs)
-# 	pooledds.to_netcdf("{}_climate.nc".format(pipeline_id), group=scenario,encoding={"ocean_heat_content": {"dtype": "float32", "zlib": True, "complevel":4},
-# 		"surface_temperature": {"dtype": "float32", "zlib": True, "complevel":4},
-# 		"deep_ocean_temperature": {"dtype": "float32", "zlib": True, "complevel":4}})
-# 	yearsds = xr.Dataset({"year": proj_years})
-# 	yearsds.to_netcdf("{}_climate.nc".format(pipeline_id), mode='a')
+	# create a single netCDF file that is compatible with modules expecting parameters organized in a certain fashion
+	pooledds = xr.Dataset({"surface_temperature": (("years","samples"), temps[::,::,0].transpose(), {"units":"degC"}),
+							"deep_ocean_temperature": (("years","samples"), deeptemps[::,::,0].transpose(), {"units":"degC"}),
+							"ocean_heat_content": (("years","samples"), ohcs[::,::,0].transpose(), {"units":"J"})},
+		coords={"years": proj_years, "samples": np.arange(nsamps)}, attrs=attrs)
+	pooledds.to_netcdf("{}_climate.nc".format(pipeline_id), group=scenario,encoding={"ocean_heat_content": {"dtype": "float32", "zlib": True, "complevel":4},
+		"surface_temperature": {"dtype": "float32", "zlib": True, "complevel":4},
+		"deep_ocean_temperature": {"dtype": "float32", "zlib": True, "complevel":4}})
+	yearsds = xr.Dataset({"year": proj_years})
+	yearsds.to_netcdf("{}_climate.nc".format(pipeline_id), mode='a')
 
-# 	# Calculate and report final memory usage
-# 	final_memory = process.memory_info().rss / 1024 / 1024
-# 	estimated_min_ram = final_memory * 1.2  # 20% buffer
-# 	print(f"\n=== MEMORY USAGE SUMMARY ===")
-# 	print(f"Final memory usage: {final_memory:.1f} MB")
-# 	print(f"Estimated minimum RAM needed: {estimated_min_ram:.0f} MB ({estimated_min_ram/1024:.1f} GB)")
-# 	print(f"For {nsamps} samples: ~{final_memory/nsamps:.2f} MB per sample")
-# 	print(f"===========================\n")
+	# Calculate and report final memory usage
+	final_memory = process.memory_info().rss / 1024 / 1024
+	estimated_min_ram = final_memory * 1.2  # 20% buffer
+	print(f"\n=== MEMORY USAGE SUMMARY ===")
+	print(f"Final memory usage: {final_memory:.1f} MB")
+	print(f"Estimated minimum RAM needed: {estimated_min_ram:.0f} MB ({estimated_min_ram/1024:.1f} GB)")
+	print(f"For {nsamps} samples: ~{final_memory/nsamps:.2f} MB per sample")
+	print(f"===========================\n")
 
-	# # Done
-	# return(None)
+	# Done
+	return(None)
 
 
 if __name__ == "__main__":

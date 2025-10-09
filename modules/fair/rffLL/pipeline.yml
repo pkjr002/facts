@@ -9,7 +9,11 @@ preprocess:
       - "scenario"
       - "rcmip_file"
       - "pipeline_id"
-      - "inputtype"
+    upload_input_data:
+      - "%EXP_DIR%/input/rcmip/rcmip-concentrations-annual-means-v5-1-0.csv"
+      - "%EXP_DIR%/input/rcmip/rcmip-emissions-annual-means-v5-1-0.csv"
+      - "%EXP_DIR%/input/rff/rff-sp_emissions_all_gases.nc"
+      - "%EXP_DIR%/input/rff/rffsp_fair_sequence.nc" 
     #upload_and_extract_input_data:
     #  - "fair_rffLL_preprocess_data.tgz"
 
@@ -19,11 +23,7 @@ fit:
     executable: "python3"
     script: "fair_rffLL_fit.py"
     options:
-      - "param_file"
       - "pipeline_id"
-      - "inputtype"
-    #upload_and_extract_input_data:
-    #  - "fair_rffLL_fit_data.tgz"
 
 
 
@@ -38,15 +38,15 @@ project:
       - "cyear_start"
       - "cyear_end"
       - "smooth_win"
+      - "alt_emisNAME"
     upload_input_data:
       - "my_FAIR_forward.py"
+      - "%EXP_DIR%/input/parameters/fair_ar6_climate_params_v4.0.nc"
+      - "%EXP_DIR%/input/rco/rco2024_fair_emissions_inputs_allscenarios.nc"
     copy_input_data:
       preprocess:
         task1:
           - "%PIPELINE_ID%_preprocess.pkl"
-      fit:
-        task1:
-          - "%PIPELINE_ID%_fit.pkl"
     climate_output_data:
       - "%PIPELINE_ID%_oceantemp.nc"
       - "%PIPELINE_ID%_ohc.nc"
