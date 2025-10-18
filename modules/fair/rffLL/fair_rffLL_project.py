@@ -141,8 +141,9 @@ def prep_alt_emis(baseem, alt_emisNAME, alt_emis, alt_emis_sp,REFERENCE_YEAR):
     alt_emisFULL = baseem.copy()          
 
     # Time bins for the alt_emis data
-    styear = int(alt_emis.year.values[0])
-    enyear = int(alt_emis.year.values[-1])
+    year_column = next(col for col in alt_emis.coords if col.lower() == 'year')
+    styear = int(alt_emis[year_column].values[0])
+    enyear = int(alt_emis[year_column].values[-1])
     
     
     ''' Below ...
@@ -156,7 +157,7 @@ def prep_alt_emis(baseem, alt_emisNAME, alt_emis, alt_emis_sp,REFERENCE_YEAR):
 	
     gases, baseem_idx, dim  = gasDICT[alt_emisNAME]
     
-    alt_emisFULL[styear - REFERENCE_YEAR : enyear - REFERENCE_YEAR + 1, baseem_idx] = alt_emis.sel(gas=gases).isel({dim: alt_emis_sp}).emissions.values
+    alt_emisFULL[styear - REFERENCE_YEAR : enyear - REFERENCE_YEAR + 1, baseem_idx] = alt_emis.sel(gas=gases).isel({dim: alt_emis_sp}).emissions.transpose(..., "gas").values
     
     return alt_emisFULL
 
@@ -262,7 +263,7 @@ def fair_project_temperature(nsamps, seed, cyear_start, cyear_end, smooth_win,al
 		print('Run RCO emissions data')
 		fname = [f for f in os.listdir(".") if f.startswith("rco2024_") and f.endswith(".nc")][0]
 		rcoemissions = xr.open_dataset(fname)
-		rcoemissions = rcoemissions.sel(scenario='country_bau_emissions') #fair_nz_emissions
+		# rcoemissions = rcoemissions.sel(scenario='country_bau_emissions') #fair_nz_emissions
 		altemissions = rcoemissions.load()  
 		nrcosp       = len(altemissions.coords["Sample"])
 		sample_idx, altemis_idx, clmprm_idx = get_climpramNaltemisIDX(nsamps,nsims,nrcosp,rng)
@@ -424,7 +425,7 @@ def fair_project_temperature(nsamps, seed, cyear_start, cyear_end, smooth_win,al
 	yearsds.to_netcdf("{}_climate.nc".format(pipeline_id), mode='a')
 
 	# Calculate and report final memory usage
-	final_memory = process.memory_info().rss / 1024 / 1024
+	final_memory = process_.memory_info().rss / 1024 / 1024
 	estimated_min_ram = final_memory * 1.2  # 20% buffer
 	print(f"\n=== MEMORY USAGE SUMMARY ===")
 	print(f"Final memory usage: {final_memory:.1f} MB")
