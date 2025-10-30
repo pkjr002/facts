@@ -7,6 +7,22 @@ import shutil
 import yaml
 import xarray as xr
 import dask.array as da
+import psutil
+
+""" Memory Diagnostic _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_"""
+
+process_ = psutil.Process()
+
+def memory_check_start(label=""):
+    mem = process_.memory_info().rss / 1024 / 1024
+    print(f"Memory before {label}: {mem:.1f} MB")
+    return mem
+
+def memory_check_end(start_mem, label=""):
+    end_mem = process_.memory_info().rss / 1024 / 1024
+    diff = end_mem - start_mem
+    print(f"Memory after {label}: {end_mem:.1f} MB (diff: {diff:.1f})")
+    return end_mem
 
 
 def TotalSamplesInDirectory(directory, pyear_start, pyear_end, pyear_step, chunksize):
@@ -117,6 +133,12 @@ def TotalSamples(infiles, outfile, targyears, chunksize):
 	total_out["lat"] = ds["lat"].isel(file=0)
 	total_out["lon"] = ds["lon"].isel(file=0)
 
+	# Memory check before computation
+	process = psutil.Process()
+	pre_memory = process.memory_info().rss / 1024 / 1024
+	print(f"Memory before computation: {pre_memory:.1f} MB")
+	start_time = time.time()
+
 	# Attributes for the total file
 	total_out.attrs = {
 		"description": "Total sea-level change for workflow",
@@ -136,6 +158,26 @@ def TotalSamples(infiles, outfile, targyears, chunksize):
     # SBM: FYI Double check the numbers to ensure everything is summing across dims correctly.
     # SBM: FYI Also, check to see if output as something huge like float64.
 	total_out.to_netcdf(outfile, encoding={"sea_level_change": {"dtype": "f4", "zlib": True, "complevel":4, "_FillValue": nc_missing_value}})
+
+	# Calculate and report final memory usage
+	final_memory = process.memory_info().rss / 1024 / 1024
+	estimated_min_ram = final_memory * 1.2  # 20% buffer
+	# Calculate elapsed time - ADD THESE LINES
+	end_time = time.time()
+	elapsed_seconds = end_time - start_time
+	elapsed_minutes = elapsed_seconds / 60
+	elapsed_hours = elapsed_minutes / 60
+
+
+	print(f"\n=== PROCESSING SUMMARY ===")
+	print(f"Computation time: {elapsed_seconds:.1f} seconds ({elapsed_minutes:.1f} minutes)")
+	if elapsed_hours > 1:
+		print(f"                  {elapsed_hours:.1f} hours")
+	print(f"Final memory usage: {final_memory:.1f} MB")
+	print(f"Estimated minimum RAM needed: {estimated_min_ram:.0f} MB ({estimated_min_ram/1024:.1f}GB)")
+	print(f"Memory increase: {final_memory - pre_memory:.1f} MB")
+	print(f"Output file: {outfile}")
+	print(f"==========================\n")
 
 	return(outfile)
 
@@ -160,11 +202,28 @@ if __name__ == "__main__":
 	# Parse the arguments
 	args = parser.parse_args()
 
+	import time
+	from datetime import datetime
+	from zoneinfo import ZoneInfo
+	tz = ZoneInfo("America/New_York")
+	
+	start = datetime.now(tz)
+	print(f"\n[START] {start:%Y-%m-%d %H:%M:%S}")
+	t0 = time.time()
+
+
 	if args.workflows or (len(args.workflow)>0) or (len(args.scale)>0):
 		# Total up by workflow
 		TotalSamplesInWorkflows(args.directory,  args.pyear_start, args.pyear_end, args.pyear_step, args.chunksize, wfcfg_file= args.workflows, workflow=[args.workflow], scale=[args.scale], experiment_name = args.experiment_name)
 	else:
 		# Total up the workflow in the provided directory
 		TotalSamplesInDirectory(args.directory, args.pyear_start, args.pyear_end, args.pyear_step, args.chunksize)
+
+	end = datetime.now(tz)
+	elapsed = time.time() - t0
+	h, m, s = int(elapsed // 3600), int((elapsed % 3600) // 60), elapsed % 60
+	print(f"[END]   {end:%Y-%m-%d %H:%M:%S}")
+	print(f"[DURATION] {h}h {m}m {s:.2f}s\n")
+
 
 	exit()

@@ -165,6 +165,16 @@ if __name__ == '__main__':
 	# Parse the arguments
 	args = parser.parse_args()
 
+	import time
+	from datetime import datetime
+	from zoneinfo import ZoneInfo
+	tz = ZoneInfo("America/New_York")
+	
+	start = datetime.now(tz)
+	print(f"\n[START] {start:%Y-%m-%d %H:%M:%S}")
+	t0 = time.time()
+
+
 	# Make sure the base year and target years are within data limits for this module
 	if(args.baseyear < 2000):
 		raise Exception("Base year cannot be less than year 2000: baseyear = {}".format(args.baseyear))
@@ -182,5 +192,12 @@ if __name__ == '__main__':
 	# Run the postprocessing stage
 	kopp14_postprocess_verticallandmotion(args.nsamps, args.seed, args.baseyear, args.pyear_start, args.pyear_end, args.pyear_step, args.locationfile, args.chunksize, args.pipeline_id)
 
+	end = datetime.now(tz)
+	elapsed = time.time() - t0
+	h, m, s = int(elapsed // 3600), int((elapsed % 3600) // 60), elapsed % 60
+	print(f"[END]   {end:%Y-%m-%d %H:%M:%S}")
+	print(f"[DURATION] {h}h {m}m {s:.2f}s\n")
+
+	
 	# Done
 	exit()

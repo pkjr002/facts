@@ -30,7 +30,7 @@ pipeline_id = Unique identifier for the pipeline running this code
 def FindInputModels(tasdir, zosdir, scenario):
 
 	# Acceptable SSP scenarios
-	ssp_scenarios = ['ssp585', 'ssp370', 'ssp245', 'ssp126', 'ssp119']
+	ssp_scenarios = ['ssp585', 'ssp370', 'ssp245', 'ssp126', 'ssp119', 'ssp534-over']
 
 	# Initialize models and scenarios to include
 	include_models = []

@@ -95,7 +95,24 @@ if __name__ == '__main__':
 	# Parse the arguments
 	args = parser.parse_args()
 
+	import time
+	from datetime import datetime
+	from zoneinfo import ZoneInfo
+	tz = ZoneInfo("America/New_York")
+	
+	start = datetime.now(tz)
+	print(f"\n[START] {start:%Y-%m-%d %H:%M:%S}")
+	t0 = time.time()
+
+
 	# Run the projection process on the files specified from the command line argument
 	ssp_postprocess_landwaterstorage(args.locationfile, args.chunksize, args.pipeline_id)
+
+	end = datetime.now(tz)
+	elapsed = time.time() - t0
+	h, m, s = int(elapsed // 3600), int((elapsed % 3600) // 60), elapsed % 60
+	print(f"[END]   {end:%Y-%m-%d %H:%M:%S}")
+	print(f"[DURATION] {h}h {m}m {s:.2f}s\n")
+
 
 	exit()

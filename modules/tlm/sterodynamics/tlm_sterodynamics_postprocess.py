@@ -248,6 +248,15 @@ def tlm_postprocess_oceandynamics(nsamps, rng_seed, chunksize, keep_temp, pipeli
 
 if __name__ == '__main__':
 
+	import time
+	from datetime import datetime
+	from zoneinfo import ZoneInfo
+	tz = ZoneInfo("America/New_York")
+	
+	start = datetime.now(tz)
+	print(f"\n[START] {start:%Y-%m-%d %H:%M:%S}")
+	t0 = time.time()
+
 	# Initialize the command-line argument parser
 	parser = argparse.ArgumentParser(description="Run the post-processing stage for the TLM ocean dynamics workflow",\
 	epilog="Note: This is meant to be run as part of the Framework for the Assessment of Changes To Sea-level (FACTS)")
@@ -264,6 +273,13 @@ if __name__ == '__main__':
 
 	# Run the postprocessing stage
 	tlm_postprocess_oceandynamics(args.nsamps, args.seed, args.chunksize, args.keep_temp, args.pipeline_id)
+
+	end = datetime.now(tz)
+	elapsed = time.time() - t0
+	h, m, s = int(elapsed // 3600), int((elapsed % 3600) // 60), elapsed % 60
+	print(f"[END]   {end:%Y-%m-%d %H:%M:%S}")
+	print(f"[DURATION] {h}h {m}m {s:.2f}s\n")
+
 
 	# Done
 	exit()
