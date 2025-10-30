@@ -1,25 +1,42 @@
 #!/bin/bash
 
-EXPERIMENT="dummy"
+#---------------------------------------------------
+# SELECT Experiment 
+#
+# EXPERIMENT="dummy"
 # EXPERIMENT="coupling.fair"
 # EXPERIMENT="coupling.ssp585.wfF.global"
 # EXPERIMENT="coupling.ssp585.wfF"
 # EXPERIMENT="coupling.ssp585"
+# EXPERIMENT="coupling.ssp126"
+# EXPERIMENT="coupling.ssp245"
+# EXPERIMENT="coupling.ssp370"
+# EXPERIMENT="coupling.ssp534.over"
+# EXPERIMENT="rff.LL"
+EXPERIMENT="rco.LL.bau"
+# EXPERIMENT="rco.LL.nz"
+
+#---------------------------------------------------
+# Change the timezone
+TZVAR="America/New_York"
 
 
+#---------------------------------------------------
 EXPPATH="exp.alt.emis/$EXPERIMENT"
 LOGFILE="${EXPPATH}/time_${EXPERIMENT}_$(whoami).log"
 
+
+#---------------------------------------------------
 # Start timestamp
 {
-    echo "===== START: $(date '+%Y-%m-%d %H:%M:%S') ====="
+    echo "===== START: $(TZ="$TZVAR" date '+%Y-%m-%d %H:%M:%S') EST ====="
     
-    START_TIME=$(date +%s)
+    START_TIME=$(TZ="$TZVAR" date +%s)
 
     # Run FACTS
     python runFACTS.py "$EXPPATH"
 
-    END_TIME=$(date +%s)
+    END_TIME=$(TZ="$TZVAR" date +%s)
     DURATION=$((END_TIME - START_TIME))
 
     # Format duration as HH:MM:SS
@@ -28,12 +45,13 @@ LOGFILE="${EXPPATH}/time_${EXPERIMENT}_$(whoami).log"
     SECONDS=$((DURATION % 60))
     FORMATTED_DURATION=$(printf "%02d:%02d:%02d" $HOURS $MINUTES $SECONDS)
 
-    echo "===== END: $(date '+%Y-%m-%d %H:%M:%S') ====="
+    echo "===== END: $(TZ="$TZVAR" date '+%Y-%m-%d %H:%M:%S') ====="
     echo "DURATION: $FORMATTED_DURATION (HH:MM:SS)"
 
 } 2>&1 | tee "$LOGFILE"
 
 
+#---------------------------------------------------
 # SCRATCH
 # { time python runFACTS.py "$EXPPATH" ; } 2> "$LOGFILE"
 # { time python runFACTS.py "$EXPPATH" ; } 2>&1 | tee "$LOGFILE"
