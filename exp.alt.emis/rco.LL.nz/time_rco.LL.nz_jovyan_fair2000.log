@@ -1,0 +1,43 @@
+===== START: 2025-10-19 20:07:19 EST =====
+[94mEnTK session: re.session.bed73fa5-ad48-11f0-943e-62e4f30a515c
+[39m[0m[94mCreating AppManager
+[39m[0m[94mSetting up ZMQ queues[39m[0m[92m                                                         ok
+[39m[0m[94mAppManager initialized[39m[0m[92m                                                        ok
+[39m[0m[94mValidating and assigning resource manager[39m[0m[92m                                     ok
+[39m[0m[94mSetting up ZMQ queues[39m[0m[92m                                                        n/a
+[39m[0m****** STEP: climate_step ******
+[92mAll components created
+[39m[0m[92mUpdate: [39m[0m[94mrco.LL.nz.temperature.fair.rffLL state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mrco.LL.nz.temperature.fair.rffLL.preprocess state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mrco.LL.nz.temperature.fair.rffLL.preprocess.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mrco.LL.nz.temperature.fair.rffLL.preprocess.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mrco.LL.nz.temperature.fair.rffLL.preprocess state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mrco.LL.nz.temperature.fair.rffLL.preprocess.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mrco.LL.nz.temperature.fair.rffLL.preprocess.task1 state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mrco.LL.nz.temperature.fair.rffLL.preprocess state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mrco.LL.nz.temperature.fair.rffLL.fit state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mrco.LL.nz.temperature.fair.rffLL.fit.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mrco.LL.nz.temperature.fair.rffLL.fit.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mrco.LL.nz.temperature.fair.rffLL.fit state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mrco.LL.nz.temperature.fair.rffLL.fit.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mrco.LL.nz.temperature.fair.rffLL.fit.task1 state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mrco.LL.nz.temperature.fair.rffLL.fit state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mrco.LL.nz.temperature.fair.rffLL.project state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mrco.LL.nz.temperature.fair.rffLL.project.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mrco.LL.nz.temperature.fair.rffLL.project.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mrco.LL.nz.temperature.fair.rffLL.project state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mrco.LL.nz.temperature.fair.rffLL.project.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mrco.LL.nz.temperature.fair.rffLL.project.task1 state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mrco.LL.nz.temperature.fair.rffLL.project state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mrco.LL.nz.temperature.fair.rffLL.postprocess state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mrco.LL.nz.temperature.fair.rffLL.postprocess.task1 state: SCHEDULING
+[39m[0m[92mUpdate: [39m[0m[94mrco.LL.nz.temperature.fair.rffLL.postprocess.task1 state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mrco.LL.nz.temperature.fair.rffLL.postprocess state: SCHEDULED
+[39m[0m[92mUpdate: [39m[0m[94mrco.LL.nz.temperature.fair.rffLL.postprocess.task1 state: SUBMITTING
+[39m[0m[92mUpdate: [39m[0m[94mrco.LL.nz.temperature.fair.rffLL.postprocess.task1 state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mrco.LL.nz.temperature.fair.rffLL.postprocess.task1 state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mrco.LL.nz.temperature.fair.rffLL.postprocess state: DONE
+[39m[0m[92mUpdate: [39m[0m[94mrco.LL.nz.temperature.fair.rffLL state: DONE
+[39m[0m[94mAll components terminated
+[39m[0m===== END: 2025-10-19 20:12:31 =====
+DURATION: 00:05:12 (HH:MM:SS)
