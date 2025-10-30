@@ -12,8 +12,6 @@ preprocess:
     upload_input_data:
       - "%EXP_DIR%/input/rcmip/rcmip-concentrations-annual-means-v5-1-0.csv"
       - "%EXP_DIR%/input/rcmip/rcmip-emissions-annual-means-v5-1-0.csv"
-      - "%EXP_DIR%/input/rff/rff-sp_emissions_all_gases.nc"
-      - "%EXP_DIR%/input/rff/rffsp_fair_sequence.nc" 
     #upload_and_extract_input_data:
     #  - "fair_rffLL_preprocess_data.tgz"
 
@@ -42,7 +40,9 @@ project:
     upload_input_data:
       - "my_FAIR_forward.py"
       - "%EXP_DIR%/input/parameters/fair_ar6_climate_params_v4.0.nc"
-      - "%EXP_DIR%/input/rco/rco2024_fair_emissions_inputs_allscenarios.nc"
+      - "%EXP_DIR%/input/rff/rff-sp_emissions_all_gases.nc"
+      - "%EXP_DIR%/input/rff/rffsp_fair_sequence.nc" 
+      - "%EXP_DIR%/input/rco/rco2024_*.nc"
     copy_input_data:
       preprocess:
         task1:

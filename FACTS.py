@@ -3,6 +3,7 @@ import os
 import yaml
 import sys
 import re
+import glob 
 from radical.entk import Pipeline, Stage, Task
 
 
@@ -140,15 +141,32 @@ def GenerateTask(tcfg, ecfg, pipe_name, stage_name, task_name, workflow_name="",
         t.upload_input_data.append(this_file) 
 
     for this_file0 in tcfg['upload_input_data']:
-        this_file = mvar_replace_dict(mvar_dict,this_file0)
-        if this_file == os.path.basename(this_file):
-                this_file = os.path.join(module_path, this_file)
-        if not os.path.isfile(this_file):
-            # inelegant, but don't raise an exception if we are uploading workflows.yml, which will be
-            # created later
-            if not os.path.basename(this_file) == "workflows.yml":
-                raise(FileNotFoundError(pipe_name + "." + stage_name + ": upload_input_data: " + this_file + " not found!"))
+        this_file_pattern = mvar_replace_dict(mvar_dict,this_file0)
+
+        # If it's a relative file (no path), assume it's in module_path
+        if this_file_pattern == os.path.basename(this_file_pattern):
+            this_file_pattern = os.path.join(module_path, this_file_pattern)
+
+        # Determine whether to use glob or direct file check
+        if any(char in this_file_pattern for char in "*?[]"):
+            matched_files = glob.glob(this_file_pattern)
+        else:
+            matched_files = [this_file_pattern] if os.path.isfile(this_file_pattern) else []
+
+        # If no file found, handle 'workflows.yml' as a special case
+        if not matched_files:
+            if not os.path.basename(this_file_pattern) == "workflows.yml":
+                raise FileNotFoundError(
+                    f"{pipe_name}.{stage_name}: upload_input_data: {this_file_pattern} not found!"
+                )
+            else:
+                matched_files = [this_file_pattern]  # allow placeholder
+
+        # pick first match...if wildcard was used
+        this_file = matched_files[0]
+
         t.upload_input_data.append(this_file)
+
 
     # If there's a data file to upload and extract, add it to upload and
     # add the extraction command to pre-exec

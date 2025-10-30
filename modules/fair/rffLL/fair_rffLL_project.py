@@ -148,6 +148,7 @@ def prep_alt_emis(baseem, alt_emisNAME, alt_emis, alt_emis_sp,REFERENCE_YEAR):
     
     ''' Below ...
     baseem_idx is hard coded [1, 3, 4] to refer to the column index of gas in baseem pkl file. 
+	Note: 0th column is the time ==> species=['time','CO2|MAGICC Fossil and Industrial','CO2|MAGICC AFOLU','CH4','N2O',..]
     N2 Should be N2O: nitrous oxide. Consider changing in rff-sp_emissions_all_gases.nc
     '''
 
@@ -239,18 +240,21 @@ def fair_project_temperature(nsamps, seed, cyear_start, cyear_end, smooth_win,al
 	
 	if alt_emisNAME == "RFF":
 		print('Run RFF emissions data')
-		altemissions  	= preprocess_data["rffemissions"]
+		
+		# Load 3GAS RFF data, rename simulation to RFFSSP's	
+		altemissions 	= xr.load_dataset("./rff-sp_emissions_all_gases.nc")
 		nrffsp          = len(altemissions.coords["simulation"])
 		sample_idx, altemis_idx, clmprm_idx = get_climpramNaltemisIDX(nsamps,nsims,nrffsp,rng)
+		
 
 	elif alt_emisNAME == "RFF_EPA":
 		print('Run RFF EPA emissions data')
 		if nsamps != 10000:
 			raise ValueError(f"For the RFF EPA case, nsamps must be exactly 10,000, but got {nsamps}")    
 		
-		altemissions    = preprocess_data["rffemissions"]
+		altemissions 	= xr.load_dataset("./rff-sp_emissions_all_gases.nc")
 		nrffsp          = len(altemissions.coords["simulation"])
-		pairds 			= preprocess_data["pairds"]
+		pairds 			= xr.load_dataset("./rffsp_fair_sequence.nc")
 		#
 		run_idx 	= pairds["runid"]
 		sample_idx 	= run_idx.values -1
@@ -455,8 +459,24 @@ if __name__ == "__main__":
 	# Parse the arguments
 	args = parser.parse_args()
 
+	import time
+	from datetime import datetime
+	from zoneinfo import ZoneInfo
+	tz = ZoneInfo("America/New_York")
+	
+	start = datetime.now(tz)
+	print(f"\n[START] {start:%Y-%m-%d %H:%M:%S}")
+	t0 = time.time()
+
+
 	# Run the code
 	fair_project_temperature(nsamps=args.nsamps, seed=args.seed, cyear_start=args.cyear_start, cyear_end=args.cyear_end, smooth_win=args.smooth_win, alt_emisNAME=args.alt_emisNAME, pipeline_id=args.pipeline_id)
+
+	end = datetime.now(tz)
+	elapsed = time.time() - t0
+	h, m, s = int(elapsed // 3600), int((elapsed % 3600) // 60), elapsed % 60
+	print(f"[END]   {end:%Y-%m-%d %H:%M:%S}")
+	print(f"[DURATION] {h}h {m}m {s:.2f}s\n")
 
 
 	sys.exit()
