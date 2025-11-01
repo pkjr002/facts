@@ -8,6 +8,7 @@ import yaml
 import xarray as xr
 import dask.array as da
 import psutil
+import warnings
 
 """ Memory Diagnostic _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_"""
 
@@ -53,7 +54,7 @@ def TotalSamplesInDirectory(directory, pyear_start, pyear_end, pyear_step, chunk
 	return(r)
 
 
-def TotalSampleInWorkflow(wfcfg, directory, targyears, workflow, scale, chunksize=50, experiment_name=None):
+def TotalSampleInWorkflow(wfcfg, directory, targyears, workflow, scale, chunksize=500, experiment_name=None):
 		# Define the output file
 		outdir = os.path.dirname(__file__)
 		outfilename = "total.workflow." + workflow + "." + scale + ".nc"
@@ -124,7 +125,7 @@ def TotalSamples(infiles, outfile, targyears, chunksize):
 		target_infiles, 
 	    combine="nested", 
 	    concat_dim="file", 
-	    chunks={"locations":chunksize},
+	    chunks=None,
 	)
 	ds = ds.sel(years=targyears)
 	# Sums everything across the new "file" dimension.
@@ -157,7 +158,20 @@ def TotalSamples(infiles, outfile, targyears, chunksize):
     # This actually carries out the delayed calculations and operations.
     # SBM: FYI Double check the numbers to ensure everything is summing across dims correctly.
     # SBM: FYI Also, check to see if output as something huge like float64.
-	total_out.to_netcdf(outfile, encoding={"sea_level_change": {"dtype": "f4", "zlib": True, "complevel":4, "_FillValue": nc_missing_value}})
+	#total_out.to_netcdf(outfile, encoding={"sea_level_change": {"dtype": "f4", "zlib": True, "complevel":4, "_FillValue": nc_missing_value}})
+
+	# New .to_netcdf run mechanic that allows dask the ability to control the chunking and reduces runtime, also places a progress bar in the task.out section.
+	import dask.diagnostics
+	dask.config.set({"array.slicing.split_large_chunks": True})
+	warnings.filterwarnings("ignore", category=FutureWarning)
+
+	write_job = total_out.to_netcdf(outfile, encoding={"sea_level_change": {"dtype": "f4", "zlib": True, "complevel":4, "_FillValue": nc_missing_value}},compute=False)
+	with dask.diagnostics.ProgressBar():
+		print(f"			>> Writing to File...")
+		write_job.compute()
+	
+	return(outfile)
+
 
 	# Calculate and report final memory usage
 	final_memory = process.memory_info().rss / 1024 / 1024
@@ -197,7 +211,7 @@ if __name__ == "__main__":
 	parser.add_argument('--pyear_start', help="Year for which projections start [default=2020]", default=2020, type=int)
 	parser.add_argument('--pyear_end', help="Year for which projections end [default=2100]", default=2100, type=int)
 	parser.add_argument('--pyear_step', help="Step size in years between pyear_start and pyear_end at which projections are produced [default=10]", default=10, type=int)
-	parser.add_argument('--chunksize', help="Number of locations per chunk", default=50, type=int)
+	parser.add_argument('--chunksize', help="Number of locations per chunk", default=500, type=int)
 
 	# Parse the arguments
 	args = parser.parse_args()
