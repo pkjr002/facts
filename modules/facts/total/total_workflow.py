@@ -165,14 +165,25 @@ def TotalSamples(infiles, outfile, targyears, chunksize):
 	dask.config.set({"array.slicing.split_large_chunks": True})
 	warnings.filterwarnings("ignore", category=FutureWarning)
 
-	write_job = total_out.to_netcdf(outfile, encoding={"sea_level_change": {"dtype": "f4", "zlib": True, "complevel":4, "_FillValue": nc_missing_value}},compute=False)
-	with dask.diagnostics.ProgressBar():
-		print(f"			>> Writing to File...")
-		write_job.compute()
+	write_job = total_out.to_netcdf(
+		outfile,
+		encoding={
+			"sea_level_change": {
+				"dtype": "f4",
+				"zlib": True,
+				"complevel": 4,
+				"_FillValue": nc_missing_value,
+			}
+		},
+		compute=False,
+	)
+
+	with dask.config.set(scheduler="single-threaded"):
+		with dask.diagnostics.ProgressBar():
+			print("            >> Writing to File...")
+			write_job.compute()
 	
-	return(outfile)
-
-
+	
 	# Calculate and report final memory usage
 	final_memory = process.memory_info().rss / 1024 / 1024
 	estimated_min_ram = final_memory * 1.2  # 20% buffer
