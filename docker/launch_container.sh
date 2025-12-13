@@ -8,8 +8,8 @@ set -euo pipefail
 IMAGE="${IMAGE:-facts_io}"
 IMAGE1="${IMAGE1:-}"   # optional; set to build jupyter target
 
-facts_folder="${facts_folder:-/Users/pk695/Desktop/facts_test/facts_IO}"
-facts_modules_data="${facts_modules_data:-/Users/pk695/werk.M2/FACTS_dev/2401_RFF.SPs/facts_development/facts/modules-data}"
+facts_folder="${facts_folder:-/path/to/desktop/facts_IO}"
+facts_modules_data="${facts_modules_data:-/path/to/desktop/facts_IO/facts/modules-data}"
 
 MODE="${MODE:-full}"   # full | run
 sandbox="${sandbox:-tmp}"  # tmp | docker_volume_sandbox
