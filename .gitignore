@@ -49,5 +49,5 @@ makefile
 # File for running runFACTS.py
 /resources/resource_amarel.yml
 
-Q-err.txt
+workflows.yml
 *.nc
