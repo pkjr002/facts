@@ -50,4 +50,8 @@ makefile
 /resources/resource_amarel.yml
 
 workflows.yml
-*.nc
+
+# Data outputs
+*.nc  
+*.csv  
+*.h5
