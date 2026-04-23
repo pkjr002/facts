@@ -1,33 +1,27 @@
 #!/bin/bash
 
-#---------------------------------------------------
-# SELECT Experiment FOLDER
-EXP="experiments"
-
-#---------------------------------------------------
-# SELECT Experiment 
+# ---------------------------------------------------
+# Usage
+#   source submit_docker_experiment.sh <experiment_name>
 #
-# EXPERIMENT="dummy"
-# EXPERIMENT="coupling.ssp126"
-# EXPERIMENT="coupling.ssp245"
-# EXPERIMENT="coupling.ssp585"
+# Example
+#   source submit_docker_experiment.sh coupling.ssp585
+# ---------------------------------------------------
 
-# EXPERIMENT="srcHL"
+# Experiment name passed as first argument
+EXPERIMENT="${1:-}"
 
-EXPERIMENT="src.H.ssp370"
-# EXPERIMENT="src.HL.ssp585"
-# EXPERIMENT="src.L.ssp245"
-# EXPERIMENT="src.LN.ssp245"
-
-# EXPERIMENT="src.M.ssp245"
-# EXPERIMENT="src.ML.ssp245"
-# EXPERIMENT="src.VL.ssp126"
+# Check that an experiment name was provided
+if [ -z "$EXPERIMENT" ]; then
+    echo "Usage: source submit_docker_experiment.sh <experiment_name>"
+    return 1 2>/dev/null || exit 1
+fi
 
 #---------------------------------------------------
 # Change the timezone
 TZVAR="America/New_York"
 #---------------------------------------------------
-EXPPATH="$EXP/$EXPERIMENT"
+EXPPATH="experiments/$EXPERIMENT"
 LOGFILE="${EXPPATH}/time_${EXPERIMENT}_$(whoami).log"
 #---------------------------------------------------
 # Start timestamp
