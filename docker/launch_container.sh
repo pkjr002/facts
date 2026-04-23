@@ -1,32 +1,59 @@
 #!/usr/bin/env bash
+
+# -Usage----------------------------------------------------------------
+# This script creates and/or launches a FACTS Docker image/container.
+#
+# Run:
+#   source launch_container.sh
+#
+# Before running, 
+# review and update the user configuration in STEP 0,
+# ==> especially:
+#   IMAGE , container_name, CPU, memory, facts_folder, 
+#   facts_modules_data, sandbox_path
+# -------------------------------------------------------------------
+
 set -euo pipefail
 
 
 #-STEP 0-------------------------------------------------------------
-#         Config.
+#         User configuration.
 #--------------------------------------------------------------------
+
+# Main Docker image name
 IMAGE="${IMAGE:-src}"
 IMAGE1="${IMAGE1:-}"   # optional; set to build jupyter target
 
+# Container name & details
 container_name="${container_name:-src0406}"
 CPU="${CPU:-12}"              # CPU (in terminal , linux: nproc    , mac:`sysctl hw.ncpu`)
 memory="${memory:-30g}"       # RAM (in terminal , linux: free -h  , mac:`system_profiler SPHardwareDataType | grep "Memory:"`)  
 shm_size="${shm_size:-2g}"
 
+# Path to FACTS working directory
 facts_folder="${facts_folder:-/scratch/usr/facts_Dev/202603_SRC}"
+
+# Path to FACTS modules-data directory
 facts_modules_data="${facts_modules_data:-/scratch4/modules-data}"
 
-# Use one or the other, not both
-MODE="${MODE:-full}"     # ==> USE for building an IMAGE and then launching a container. 
-# MODE="${MODE:-run}"    # ==> USE for launching a containers if you have built the image before.
+# Select one mode only:
+#   full = build the image, then launch the container
+#   run  = launch the container using an existing image
+MODE="${MODE:-full}"     
+# MODE="${MODE:-run}"    
 
+# Sandbox options
 sandbox="${sandbox:-sandbox_path}"   
 sandbox_path="${sandbox_path:-/scratch4/radical.pilot.sandbox}"
 # sandbox="${sandbox:-tmp}"  # tmp | docker_volume_sandbox
 
+#- End of user configuration-----------------------------------------
+#  X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X
+# -------------------------------------------------------------------
 
-# ----------------------------
-# Helpers
+
+#-Helpers---------------------
+# 
 # ----------------------------
 die() { echo "ERROR: $*" >&2; exit 1; }
 
