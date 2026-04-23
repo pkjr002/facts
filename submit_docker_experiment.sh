@@ -2,7 +2,7 @@
 
 #---------------------------------------------------
 # SELECT Experiment FOLDER
-EXP="exp.src"
+EXP="experiments"
 
 #---------------------------------------------------
 # SELECT Experiment 
