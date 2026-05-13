@@ -19,4 +19,14 @@ packrat::init(infer.dependencies=FALSE)
 install.packages(c('mvtnorm','RcppEigen','RobustGaSP','nloptr','ncdf4'))
 
 packrat::install('emulandice2')
-packrat::snapshot()
+
+
+tryCatch(
+  packrat::snapshot(),
+  error = function(e) message("packrat snapshot failed, continuing: ", conditionMessage(e))
+)
+
+# without the above, i get 
+#     Error: Unable to retrieve package records for the following packages:
+#          - 'emulandice2'
+# Packrat could install the local emulandice2 source package, but when it tried to snapshot, it couldn’t find normal repository metadata for emulandice2 (possibly because emulandice2 is local submodule directory, not CRAN).
