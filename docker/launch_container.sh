@@ -25,13 +25,13 @@ IMAGE="${IMAGE:-src}"
 IMAGE1="${IMAGE1:-}"   # optional; set to build jupyter target
 
 # Container name & details
-container_name="${container_name:-src0406}"
-CPU="${CPU:-12}"              # CPU (in terminal , linux: nproc    , mac:`sysctl hw.ncpu`)
-memory="${memory:-30g}"       # RAM (in terminal , linux: free -h  , mac:`system_profiler SPHardwareDataType | grep "Memory:"`)  
+container_name="${container_name:-src0930}"
+CPU="${CPU:-50}"              # CPU (in terminal , linux: nproc    , mac:`sysctl hw.ncpu`)
+memory="${memory:-300g}"       # RAM (in terminal , linux: free -h  , mac:`system_profiler SPHardwareDataType | grep "Memory:"`)  
 shm_size="${shm_size:-2g}"
 
 # Path to FACTS working directory
-facts_folder="${facts_folder:-/scratch/usr/facts_Dev/202603_SRC}"
+facts_folder="${facts_folder:-/scratch/<UNAME>/facts_Dev/202603_SRC}"
 
 # Path to FACTS modules-data directory
 facts_modules_data="${facts_modules_data:-/scratch4/modules-data}"
@@ -39,8 +39,8 @@ facts_modules_data="${facts_modules_data:-/scratch4/modules-data}"
 # Select one mode only:
 #   full = build the image, then launch the container
 #   run  = launch the container using an existing image
-MODE="${MODE:-full}"     
-# MODE="${MODE:-run}"    
+# MODE="${MODE:-full}"     
+MODE="${MODE:-run}"    
 
 # Sandbox options
 sandbox="${sandbox:-sandbox_path}"   
