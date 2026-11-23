@@ -14,6 +14,8 @@ y = Smoothed vector
 '''
 
 def Smooth(x, w=5):
+	if len(x) < w:
+		return x
 	out0 = np.convolve(x, np.ones(w,dtype='double'), 'valid')/w
 	r = np.arange(1,w-1,2, dtype="double")
 	start = np.cumsum(x[:w-1])[::2]/r

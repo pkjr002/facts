@@ -36,6 +36,21 @@ def tlm_fit_oceandynamics(pipeline_id):
 	no_correlation = my_config["no_correlation"]
 	maxDOF = my_config["maxDOF"]
 
+	# Load the TAS file
+	tasfile = "{}_TAS.pkl".format(pipeline_id)
+	try:
+		f = open(tasfile, 'rb')
+	except:
+		print("Cannot open TAS file\n")
+
+	# Extract the TAS variables
+	my_tas = pickle.load(f)
+	f.close()
+
+	sTAS = my_tas["sTAS"]
+	sTAS_full = np.copy(sTAS)
+	tas_modellist = my_tas['tas_modellist']
+
 	# Load the ZOSTOGA file
 	zostogafile = "{}_ZOSTOGA.pkl".format(pipeline_id)
 	try:
@@ -48,6 +63,7 @@ def tlm_fit_oceandynamics(pipeline_id):
 	f.close()
 
 	sZOSTOGA = my_zostoga["sZOSTOGA"]
+	sZOSTOGA_full = np.copy(sZOSTOGA)
 	zostoga_modellist = my_zostoga['zostoga_modellist']
 
 	# Load the ZOS file
@@ -63,6 +79,10 @@ def tlm_fit_oceandynamics(pipeline_id):
 
 	sZOS = my_zos["sZOS"]
 	sZOSTOGAadj = my_zos["sZOSTOGAadj"]
+	sTASadj = my_zos["sTASadj"]
+	sZOS_full = np.copy(sZOS)
+	sZOSTOGAadj_full = np.copy(sZOSTOGAadj)
+	sTASadj_full = np.copy(sTASadj)
 	focus_site_lats = my_zos["focus_site_lats"]
 	focus_site_ids = my_zos["focus_site_ids"]
 	comb_modellist = my_zos["comb_modellist"]
@@ -171,6 +191,7 @@ def tlm_fit_oceandynamics(pipeline_id):
 		model_idx = extremeness < 10   # Wrapped in np.errstate call to surpress warning of 'nan' in less-than test
 	nan_mask = np.where(np.logical_or(model_idx, extremeness_model_check), 1.0, np.nan)
 	sZOS = sZOS * nan_mask
+	sZOS_full = sZOS_full * nan_mask
 
 	# For points that have enough pre-extremeness check models, calculate and
 	# remove "extremeness" as models that in year 2099 have values (less the
@@ -183,6 +204,7 @@ def tlm_fit_oceandynamics(pipeline_id):
 		model_idx = extremeness < 3   # Wrapped in np.errstate call to surpress warning of 'nan' in greater-than test
 	nan_mask = np.where(np.logical_or(model_idx, np.logical_or(extremeness_model_check,std_limit)), 1.0, np.nan)
 	sZOS = sZOS * nan_mask
+	sZOS_full = sZOS_full * nan_mask
 
 	# Calculate the OD mean, std, and N
 	OceanDynMean = np.nanmean(sZOS, axis=1) * 1000.0
@@ -196,11 +218,21 @@ def tlm_fit_oceandynamics(pipeline_id):
 
 	# Trim sZOSTOGAadj to same year range as sZOS
 	sZOSTOGAadj = sZOSTOGAadj[year_idx,:]
+	sZOSTOGA = sZOSTOGA[year_idx,:]
 
+	# Trim sTASadj to same year range as sZOS
+	sTASadj = sTASadj[year_idx,:]
+	sTAS = sTAS[year_idx,:]
+
+	
+	# Initialize OceanDynTECorr as an array
+	OceanDynTECorr = np.zeros((len(datayears[year_idx]), len(focus_site_ids)))
+	
 	# Calculate the correlation of ZOS with thermal expansion if needed
 	# Note: Correlation returns 'np.nan' if 'corr_denom' == 0
 	if no_correlation:
-		OceanDynTECorr = 0.0
+		OceanDynTECorr.fill(0.0)
+		#OceanDynTECorr = 0.0
 	else:
 		zos_demean = sZOS - np.nanmean(sZOS, axis=1)[:,np.newaxis,:]
 		zostoga_demean = sZOSTOGAadj - np.nanmean(sZOSTOGAadj, axis=1)[:,np.newaxis]
@@ -249,6 +281,16 @@ def tlm_fit_oceandynamics(pipeline_id):
 		'OceanDynYears': OceanDynYears,	'OceanDynN': OceanDynN, 'OceanDynTECorr': OceanDynTECorr}
 	outfile = open(os.path.join(os.path.dirname(__file__), "{}_oceandynamics_fit.pkl".format(pipeline_id)), 'wb')
 	pickle.dump(output, outfile,protocol=4)
+	outfile.close()
+	
+	# Write processed ZOS and ZOSTOGA variables to a file
+	output = {'sZOS': sZOS_full, 'zos_modellist': zos_modellist, 'zos_scenariolist': my_zos['zos_scenariolist'], 'zosyears': datayears, \
+		  'focus_site_ids': focus_site_ids, 'focus_site_lats': focus_site_lats, 'focus_site_lons': my_zos["focus_site_lons"], \
+		  'sZOSTOGAadj': sZOSTOGAadj_full, 'sTASadj': sTASadj_full, 'comb_modellist': comb_modellist, 'sZOSTOGA': sZOSTOGA_full, 'zostoga_modellist': zostoga_modellist, \
+		  'zostoga_scenariolist': my_zostoga['zostoga_scenariolist'], 'zostogayears': datayears, 'sTAS': sTAS_full, 'tas_modellist': tas_modellist, \
+		  'tas_scenariolist': my_tas['tas_scenariolist'], 'tasyears': datayears}
+	outfile = open(os.path.join(os.path.dirname(__file__), "{}_zos_fit_combined.pkl".format(pipeline_id)), 'wb')
+	pickle.dump(output, outfile, protocol=4)
 	outfile.close()
 
 if __name__ == '__main__':

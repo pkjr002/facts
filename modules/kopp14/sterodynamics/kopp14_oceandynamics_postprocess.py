@@ -8,6 +8,7 @@ import re
 from scipy.stats import norm
 from scipy.stats import t
 from netCDF4 import Dataset
+import xarray as xr
 
 ''' kopp14_postprocess_oceandynamics.py
 
@@ -43,6 +44,8 @@ def kopp14_postprocess_oceandynamics(nsamps, rng_seed, pipeline_id):
 	rcp_scenario = my_data['rcp_scenario']
 	GCMprobscale = my_data['GCMprobscale']
 	maxDOF = my_data['maxDOF']
+	mergeZOSZOSTOGA = my_data["mergeZOSZOSTOGA"]
+	no_correlation = my_data["no_correlation"]
 
 	# Read in the ZOS data file ------------------------------------
 	infile = "{}_ZOS.pkl".format(pipeline_id)
@@ -58,6 +61,7 @@ def kopp14_postprocess_oceandynamics(nsamps, rng_seed, pipeline_id):
 	focus_site_ids = my_data['focus_site_ids']
 	focus_site_lats = my_data['focus_site_lats']
 	focus_site_lons = my_data['focus_site_lons']
+	modellist = my_data['comb_modellist']
 
 	# Read in the TE fit data file --------------------------------
 	infile = "{}_thermalexp_fit.pkl".format(pipeline_id)
@@ -140,35 +144,42 @@ def kopp14_postprocess_oceandynamics(nsamps, rng_seed, pipeline_id):
 			te_year_ind = np.argmin(np.abs(ThermExpYears - targyear))
 
 			# Calculate the conditional mean and sd
-			condmean = OceanDynMean[od_year_ind,this_site_ind] +  OceanDynStd[od_year_ind,this_site_ind] * OceanDynTECorr[od_year_ind,this_site_ind] * (tesamps[:,j]-ThermExpMean[te_year_ind])/ThermExpStd[te_year_ind]
-			condstd = (ThermExpScale * OceanDynStd[od_year_ind,this_site_ind]) * np.sqrt(1 - OceanDynTECorr[od_year_ind,this_site_ind]**2)
+			if no_correlation:
+				condmean = OceanDynMean[od_year_ind,this_site_ind]
+				condstd = (ThermExpScale * OceanDynStd[od_year_ind,this_site_ind])
+			else:
+				condmean = OceanDynMean[od_year_ind,this_site_ind] +  OceanDynStd[od_year_ind,this_site_ind] * OceanDynTECorr[od_year_ind,this_site_ind] * (tesamps[:,j]-ThermExpMean[te_year_ind])/ThermExpStd[te_year_ind]
+				condstd = (ThermExpScale * OceanDynStd[od_year_ind,this_site_ind]) * np.sqrt(1 - OceanDynTECorr[od_year_ind,this_site_ind]**2)
 
 			# Make the projection
 			local_sl[:,j,i] = t.ppf(norm.cdf(norm_inv_perm),OceanDynDOF[od_year_ind,this_site_ind]) * condstd + condmean
+			
+			if not (mergeZOSZOSTOGA):
+				local_sl[:,j,i] += tesamps[:,j]
 
 
 	# Write the localized projections to a netcdf file
-	rootgrp = Dataset(os.path.join(os.path.dirname(__file__), "{}_localsl.nc".format(pipeline_id)), "w", format="NETCDF4")
-
+	dset = Dataset(os.path.join(os.path.dirname(__file__), "{}_localsl.nc".format(pipeline_id)), "w", format="NETCDF4")
+	
 	# Define Dimensions
-	year_dim = rootgrp.createDimension("years", ntimes)
-	samp_dim = rootgrp.createDimension("samples", nsamps)
-	loc_dim  = rootgrp.createDimension("locations", nsites)
+	year_dim = dset.createDimension("years", ntimes)
+	samp_dim = dset.createDimension("samples", nsamps)
+	loc_dim  = dset.createDimension("locations", nsites)
 
 	# Populate dimension variables
-	year_var = rootgrp.createVariable("years", "i4", ("years",))
-	samp_var = rootgrp.createVariable("samples", "i8", ("samples",))
-	loc_var  = rootgrp.createVariable("locations", "i8", ("locations",))
-	lat_var  = rootgrp.createVariable("lat", "f4", ("locations",))
-	lon_var  = rootgrp.createVariable("lon", "f4", ("locations",))
+	year_var = dset.createVariable("years", "i4", ("years",))
+	samp_var = dset.createVariable("samples", "i8", ("samples",))
+	loc_var  = dset.createVariable("locations", "i8", ("locations",))
+	lat_var  = dset.createVariable("lat", "f4", ("locations",))
+	lon_var  = dset.createVariable("lon", "f4", ("locations",))
 
 	# Create a data variable
-	samps = rootgrp.createVariable("sea_level_change", "f4", ("samples", "years", "locations"), zlib=True, least_significant_digit=2)
+	samps = dset.createVariable("sea_level_change", "f4", ("samples", "years", "locations"), zlib=True, least_significant_digit=2)
 
 	# Assign attributes
-	rootgrp.description = "Local SLR contributions from ocean dynamics according to K14 workflow"
-	rootgrp.history = "Created " + time.ctime(time.time())
-	rootgrp.source = "FACTS: {0} - {1}. ".format(pipeline_id, rcp_scenario)
+	dset.description = "Local SLR contributions from ocean dynamics according to K14 workflow"
+	dset.history = "Created " + time.ctime(time.time())
+	dset.source = "FACTS: {0} - {1}. ".format(pipeline_id, rcp_scenario)
 	lat_var.units = "Degrees North"
 	lon_var.units = "Degrees East"
 	samps.units = "mm"
@@ -182,8 +193,88 @@ def kopp14_postprocess_oceandynamics(nsamps, rng_seed, pipeline_id):
 	samps[:,:,:] = local_sl
 
 	# Close the netcdf
+	dset.close()
+
+	# Produce the intermediate data output netCDF file =========================
+
+	# Produce the included model string
+	model_string_pieces = ["{0}-{1}".format(modellist[x], rcp_scenario) for x in np.arange(len(modellist))]
+	model_string = "Models and scenarios included: " + ", ".join(model_string_pieces)
+
+	# Write the localized projections to a netcdf file
+	rootgrp = Dataset(os.path.join(os.path.dirname(__file__), "{}_OceanDyn.nc".format(pipeline_id)), "w", format="NETCDF4")
+	
+	# Define Dimensions
+	site_dim = rootgrp.createDimension("nsites", nsites)
+	odyear_dim = rootgrp.createDimension("OceanDynYears", len(OceanDynYears))
+	
+	# Populate dimension variables
+	lat_var = rootgrp.createVariable("lat", "f4", ("nsites",))
+	lon_var = rootgrp.createVariable("lon", "f4", ("nsites",))
+	id_var = rootgrp.createVariable("id", "i4", ("nsites",))
+	odyear_var = rootgrp.createVariable("OceanDynYears", "i4", ("OceanDynYears",))
+	
+	# Create a data variable
+	oceandynmean = rootgrp.createVariable("OceanDynMean", "f4", ("nsites", "OceanDynYears"))
+	oceandynstd = rootgrp.createVariable("OceanDynStd", "f4", ("nsites", "OceanDynYears"))
+	oceandynn = rootgrp.createVariable("OceanDynN", "i4", ("nsites", "OceanDynYears"))
+	oceandyntecorr = rootgrp.createVariable("OceanDynTECorr", "f4", ("nsites", "OceanDynYears"))
+	oceandyndof = rootgrp.createVariable("OceanDynDOF", "i4", ("nsites", "OceanDynYears"))
+	
+	# Assign attributes
+	rootgrp.description = "Ocean Dynamics intermediate data for the K14 workflow"
+	rootgrp.history = "Created " + time.ctime(time.time())
+	rootgrp.source = "FACTS: {0} - {1}. ".format(pipeline_id, rcp_scenario) + model_string
+	lat_var.units = "Degrees North"
+	lon_var.units = "Degrees East"
+	
+	# Put the data into the netcdf variables
+	lat_var[:] = focus_site_lats
+	lon_var[:] = focus_site_lons
+	id_var[:] = focus_site_ids
+	odyear_var[:] = OceanDynYears
+	oceandynmean[:,:] = OceanDynMean.T
+	oceandynstd[:,:] = OceanDynStd.T
+	oceandynn[:,:] = OceanDynN.T
+	oceandyntecorr[:,:] = OceanDynTECorr.T
+	oceandyndof[:,:] = OceanDynDOF.T
+	
+	# Close the netcdf
 	rootgrp.close()
 
+	# Produce the intermediate zos/zostoga output netCDF file =========================
+
+	# Read interim ZOS and ZOSTOGA data file ------------------------------------
+	infile = "{}_zos_fit_combined.pkl".format(pipeline_id)
+	try:
+		f = open(infile, 'rb')
+	except:
+		print("Cannot open infile\n")
+		raise
+	# Extract the data from the file
+	interim_data = pickle.load(f)
+	f.close()
+	# ------------------------------------
+
+	# Save to xarray dataset
+	ds_out = xr.Dataset({'zos': (['year', 'model', 'location'], interim_data['sZOS']),
+			     'zostoga': (['year', 'model'], interim_data['sZOSTOGA'])},
+			    coords={'year': interim_data['datayears'],
+				    'model': interim_data['comb_modellist'],
+				    'location': interim_data['focus_site_ids'],
+				    'latitude': (('location'), interim_data['focus_site_lats']),
+				    'longitude': (('location'), interim_data['focus_site_lons'])})
+	
+	# Assign attributes
+	ds_out.attrs['description'] = "ZOS and ZOSTOGA intermediate dataset"
+	ds_out.attrs['history'] = "Created " + time.ctime(time.time())
+	ds_out.attrs['source'] = "FACTS: {0} - {1}. ".format(pipeline_id, rcp_scenario)
+	ds_out['latitude'].attrs['units'] = "Degrees North"
+	ds_out['longitude'].attrs['units'] = "Degrees East"
+	
+	# Write the dataset to a netCDF file
+	ds_out.to_netcdf("{}_CMIP.nc".format(pipeline_id), format="NETCDF4")
+	
 	return(None)
 
 

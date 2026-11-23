@@ -82,6 +82,11 @@ def kopp14_project_oceandynamics(nsamps, seed, pipeline_id):
 		# Generate the samples for this year
 		temp = t.ppf(norm.cdf(norm_inv_perm), ThermExpDOF[this_year_ind])
 		#temp = t.ppf(norm.cdf(norm_inv_perm), ThermExpN[i]-1)  # Replicates bug in K14 master code
+		
+		# Randomly sample indices
+		#temp_idx = rng.choice(np.arange(len(temp)), nsamps)
+		#temp = temp[temp_idx]
+		
 		thermsamps[:,i] = (ThermExpScale * temp * ThermExpStd[this_year_ind]) + ThermExpMean[this_year_ind]
 
 	# Save the global thermal expansion projections to a pickle

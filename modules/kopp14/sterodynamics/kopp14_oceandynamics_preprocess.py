@@ -21,19 +21,23 @@ rcp_scenario = RCP scenario of interest (default = "rcp85")
 zostoga_modeldir = Directory that contains the ZOSTOGA model data
 zos_modeldir = Directory that contains the ZOS model data (in *.mat format)
 driftcorr = Apply the drift correction?
+no_correlation = Flag to not apply correlation between DSL and GMTSL
+merge_zos_zostoga = Flag to merge ZOS and ZOSTOGA
+exclude_cmip_models = Comma-separated list of models to exclude in preprocessing
 locationfilename = File that contains points for localization
 pipeline_id = Unique identifier for the pipeline running this code
 
 
 '''
 
-def kopp14_preprocess_oceandynamics(rcp_scenario, zostoga_modeldir, zos_modeldir, driftcorr, baseyear, pyear_start, pyear_end, pyear_step, locationfilename, pipeline_id):
+def kopp14_preprocess_oceandynamics(rcp_scenario, zostoga_modeldir, zos_modeldir, driftcorr, no_correlation, merge_zos_zostoga, exclude_cmip_models, baseyear, pyear_start, pyear_end, pyear_step, locationfilename, pipeline_id):
 
 	# Define variables
 	datayears = np.arange(1861,2300)
 	targyears = np.arange(pyear_start, pyear_end+1, pyear_step)
 	targyears = np.union1d(targyears, baseyear)
-	mergeZOSZOSTOGA = True
+	#mergeZOSZOSTOGA = True
+	mergeZOSZOSTOGA = merge_zos_zostoga
 	smoothwin = 19
 	GCMprobscale = 0.833
 	maxDOF = np.iinfo(np.int32).max
@@ -42,6 +46,10 @@ def kopp14_preprocess_oceandynamics(rcp_scenario, zostoga_modeldir, zos_modeldir
 	# Read in the ZOSTOGA data
 	zostoga_modeldir = os.path.join(zostoga_modeldir, rcp_scenario)
 	(zostoga_modellist, ZOSTOGA) = IncludeModels(zostoga_modeldir, ("ZOSTOGA", "ZOSGA"), datayears)
+
+	# Extract list of models that should be excluded
+	exclude_models = exclude_cmip_models.split(',')
+	### WIP: Need to figure out how to make sure that models are excluded in a consistent way
 
 	# Center, suture, and smooth ZOSTOGA
 	sZOSTOGA = np.nan * ZOSTOGA
@@ -61,7 +69,7 @@ def kopp14_preprocess_oceandynamics(rcp_scenario, zostoga_modeldir, zos_modeldir
 	output = {'rcp_scenario': rcp_scenario, 'datayears': datayears,\
 		'targyears': targyears,	'mergeZOSZOSTOGA': mergeZOSZOSTOGA,\
 		'smoothwin': smoothwin, 'driftcorr': driftcorr, 'baseyear': baseyear,\
-		'GCMprobscale': GCMprobscale, 'maxDOF': maxDOF}
+		'GCMprobscale': GCMprobscale, 'maxDOF': maxDOF, 'no_correlation': no_correlation}
 
 	# Write the configuration to a file
 	outdir = os.path.dirname(__file__)
@@ -152,7 +160,11 @@ if __name__ == '__main__':
 	parser.add_argument('--zos_model_dir', help="Directory containing ZOS GCM output",\
 	default=os.path.join(os.path.dirname(__file__), "zosfinal"))
 
-	parser.add_argument('--no_drift_corr', help="Do not apply the drift correction", action='store_true')
+	parser.add_argument('--no_drift_corr', help="Do not apply the drift correction", type=int, choices=[0,1], default=0)
+	
+	parser.add_argument('--no_correlation', help="Do not apply the correlation between ZOS and ZOSTOGA fields", type=int, choices=[0,1], default=0)
+	parser.add_argument('--merge_zos_zostoga', help="Merge ZOS and ZOSTOGA in preprocessing step", type=int, choices=[0,1], default=1)
+	parser.add_argument('--exclude_cmip_models', help="Comma-separated list of CMIP models to exclude", default="")
 
 	parser.add_argument('--baseyear', help="Base or reference year for projetions [default=2000]", default=2000, type=int)
 	parser.add_argument('--pyear_start', help="Year for which projections start [default=2000]", default=2000, type=int)
@@ -182,7 +194,7 @@ if __name__ == '__main__':
 
 
 	# Pass the model directory in via command line
-	kopp14_preprocess_oceandynamics(args.scenario, args.zostoga_model_dir, args.zos_model_dir, not args.no_drift_corr, args.baseyear, args.pyear_start, args.pyear_end, args.pyear_step, args.locationfile, args.pipeline_id)
+	kopp14_preprocess_oceandynamics(args.scenario, args.zostoga_model_dir, args.zos_model_dir, not args.no_drift_corr, args.no_correlation, args.merge_zos_zostoga, args.exclude_cmip_models, args.baseyear, args.pyear_start, args.pyear_end, args.pyear_step, args.locationfile, args.pipeline_id)
 
 	# Done
 	exit()

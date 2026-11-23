@@ -29,6 +29,8 @@ preprocess:
       - "model_dir"
       - "no_drift_corr"
       - "no_correlation"
+      - "subset_overlap"
+      - "exclude_cmip_models"
     upload_input_data:
       - "IncludeCMIP6Models.py"
       - "IncludeCMIP6ZOSModels.py"
@@ -61,6 +63,7 @@ fit:
           - "%PIPELINE_ID%_config.pkl"
           - "%PIPELINE_ID%_ZOSTOGA.pkl"
           - "%PIPELINE_ID%_ZOS.pkl"
+          - "%PIPELINE_ID%_TAS.pkl"
 
 project:
   task1:
@@ -105,8 +108,12 @@ postprocess:
         task2:
           - "%PIPELINE_ID%_thermalexp_fit.pkl"
           - "%PIPELINE_ID%_oceandynamics_fit.pkl"
+          - "%PIPELINE_ID%_zos_fit_combined.pkl"
       project:
         task1:
           - "%PIPELINE_ID%_projections.pkl"
     local_total_files:
       - "%PIPELINE_ID%_localsl.nc"
+    download_output_data:
+      - "%PIPELINE_ID%_OceanDyn.nc"
+      - "%PIPELINE_ID%_CMIP.nc"

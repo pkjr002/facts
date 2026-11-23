@@ -159,6 +159,7 @@ def kopp14_fit_oceandynamics(pipeline_id):
 	#-------------------- Begin Ocean Dynamics -------------------------------------------
 
 	# Pick out indices for year between 2000 and 2100 (consistent with K14) and trim data
+	sZOS_full = sZOS.copy()
 	sZOS = sZOS[year_idx,:,:]
 
 	# Determine which locations have enough models initially to warrant further
@@ -207,6 +208,7 @@ def kopp14_fit_oceandynamics(pipeline_id):
 	OceanDynMean[OceanDynN == 0] = np.nan
 
 	# Trim sZOSTOGAadj to same year range as sZOS
+	sZOSTOGAadj_full = sZOSTOGAadj.copy()
 	sZOSTOGAadj = sZOSTOGAadj[year_idx,:]
 
 	# Calculate the correlation of ZOS with thermal expansion
@@ -264,7 +266,13 @@ def kopp14_fit_oceandynamics(pipeline_id):
 	outfile = open(os.path.join(os.path.dirname(__file__), "{}_oceandynamics_fit.pkl".format(pipeline_id)), 'wb')
 	pickle.dump(output, outfile)
 	outfile.close()
-
+	
+	# Write processed ZOS and ZOSTOGA variables to a file
+	output = {'sZOS': sZOS_full, 'sZOSTOGA': sZOSTOGAadj_full, 'datayears': datayears, 'comb_modellist': comb_modellist, \
+		  'focus_site_ids': focus_site_ids, 'focus_site_lats': focus_site_lats, 'focus_site_lons': my_zos['focus_site_lons']}
+	outfile = open(os.path.join(os.path.dirname(__file__), "{}_zos_fit_combined.pkl".format(pipeline_id)), 'wb')
+	pickle.dump(output, outfile, protocol=4)
+	outfile.close()
 
 if __name__ == '__main__':
 

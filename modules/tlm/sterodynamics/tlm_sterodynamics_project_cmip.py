@@ -24,7 +24,8 @@ Note that the value of 'nsamps' and 'seed' are passed to both the projection sta
 post-processing stage when run within FACTS.
 '''
 
-def tlm_project_cmip(nsamps, seed, pipeline_id):
+def tlm_project_cmip(nsamps, seed, pipeline_id,scenario,pyear_start,pyear_end,pyear_step,baseyear):
+
 
 	# Load the configuration file
 	configfile = "{}_config.pkl".format(pipeline_id)
@@ -37,9 +38,9 @@ def tlm_project_cmip(nsamps, seed, pipeline_id):
 	my_config = pickle.load(f)
 	f.close()
 
-	scenario = my_config["scenario"]
+	#scenario = my_config["scenario"]
 	targyears = my_config["targyears"]
-	baseyear = my_config["baseyear"]
+	#baseyear = my_config["baseyear"]
 	GCMprobscale = my_config["GCMprobscale"]
 
 	# Load the ZOSTOGA file
@@ -97,6 +98,11 @@ def tlm_project_cmip(nsamps, seed, pipeline_id):
 		# Generate the samples for this year
 		temp = t.ppf(norm.cdf(norm_inv_perm), ThermExpDOF[this_year_ind])
 		#temp = t.ppf(norm.cdf(norm_inv_perm), ThermExpDOF[i])  # Replicates bug in K14 master code
+		
+		# Randomly sample indices (used when seed is not specified and ends up being the same as for DSL)
+		#temp_idx = rng.choice(np.arange(len(temp)), nsamps)
+		#temp = temp[temp_idx]
+		
 		thermsamps[:,i] = (ThermExpScale * temp * ThermExpStd[this_year_ind]) + ThermExpMean[this_year_ind]
 
 	# Save the global thermal expansion projections to a pickle
@@ -140,6 +146,7 @@ def tlm_project_cmip(nsamps, seed, pipeline_id):
 	rootgrp.source = "FACTS: {0}. ".format(pipeline_id) + model_string
 	rootgrp.baseyear = baseyear
 	rootgrp.scenario = scenario
+	rootgrp.seed = str(seed)
 	samps.units = "mm"
 
 	# Put the data into the netcdf variables
@@ -170,6 +177,12 @@ if __name__ == '__main__':
 	parser.add_argument('--nsamps', help="Number of samples to generate [default=20000]", default=20000, type=int)
 	parser.add_argument('--seed', help="Seed value for random number generator [default=4321]", default=4321, type=int)
 	parser.add_argument('--pipeline_id', help="Unique identifier for this instance of the module")
+	parser.add_argument('--scenario', help="SSP scenario (i.e ssp585) or temperature target (i.e. tlim2.0win0.25)",
+						default='ssp585')
+	parser.add_argument('--pyear_start', help="Year for which projections start [default=2000]", default=2020, type=int)
+	parser.add_argument('--pyear_end', help="Year for which projections end [default=2300]", default=2300, type=int)
+	parser.add_argument('--pyear_step', help="Step size in years between pyear_start and pyear_end at which projections are produced [default=10]", default=10, type=int)
+	parser.add_argument('--baseyear', help="Base year to which slr projections are centered", type=int, default=2000)
 
 	# Parse the arguments
 	args = parser.parse_args()
@@ -183,7 +196,7 @@ if __name__ == '__main__':
 		sys.exit()
 
 	# Run the project stage with the user defined scenario
-	tlm_project_cmip(args.nsamps, args.seed, args.pipeline_id)
+	tlm_project_cmip(args.nsamps, args.seed, args.pipeline_id, args.scenario, args.pyear_start, args.pyear_end, args.pyear_step, args.baseyear)
 
 	# Done
 	sys.exit()

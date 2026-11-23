@@ -11,6 +11,7 @@ from SmoothZOSTOGA import SmoothZOSTOGA
 #from DriftCorr import DriftCorr
 from read_locationfile import ReadLocationFile
 from Smooth import Smooth
+import scipy.stats as stats
 
 ''' tlm_preprocess_oceandynamics.py
 
@@ -164,7 +165,7 @@ def tas_limit_filter(tasdir, temp_target, temp_target_window=0.25, ref_syear=185
 
 
 
-def tlm_preprocess_oceandynamics(scenario, modeldir, driftcorr, no_correlation, pyear_start, pyear_end, pyear_step, locationfilename, baseyear, pipeline_id):
+def tlm_preprocess_oceandynamics(scenario, modeldir, driftcorr, no_correlation, subset_overlap, exclude_cmip_models, pyear_start, pyear_end, pyear_step, locationfilename, baseyear, pipeline_id):
 
 	# Define variables
 	datayears = np.arange(1861,2301)
@@ -178,6 +179,16 @@ def tlm_preprocess_oceandynamics(scenario, modeldir, driftcorr, no_correlation, 
 	zos_modeldir = os.path.join(modeldir, "zos")
 	zostoga_modeldir = os.path.join(modeldir, "zostoga")
 	(include_models, include_scenarios) = FindInputModels(tasdir, zos_modeldir, scenario)
+	
+	# Extract list of models that should be excluded
+	exclude_models = exclude_cmip_models.split(',')
+	indices_to_remove = [midx for midx, modelstr in enumerate(include_models) if modelstr in exclude_models]
+	indices_to_remove.sort(reverse=True)
+	
+	# Remove models
+	for index_to_remove in indices_to_remove:
+		include_models.pop(index_to_remove)
+		include_scenarios.pop(index_to_remove)
 
 	if(not include_models):
 		raise Exception("No models found for this scenario or temperature target - {}".format(scenario))
@@ -195,8 +206,64 @@ def tlm_preprocess_oceandynamics(scenario, modeldir, driftcorr, no_correlation, 
 	# Merging is done in the postprocessing stage automatically.
 	mergeZOSZOSTOGA = 0
 
+	# Always subset the models to overlap
+	#subset_overlap = 1
+
+	# Read in the TAS data
+	(tas_modellist, tas_scenariolist, TAS) = IncludeCMIP6Models(tasdir,'tas', datayears, include_models, include_scenarios)
+
+	# Extrapolate TAS beyond 2100 to accommodate 19-year smoothing
+	for j in range(TAS.shape[1]):
+		idx = np.isfinite(TAS[:, j])
+		yrs = datayears[idx]
+		# Skip if no valid data for given model and location
+		if len(yrs)==0:
+			continue
+		arr = TAS[idx, j]
+		
+		# Only extrapolate for models that have no data after 2110
+		if (yrs[-1] <= 2110) & (len(arr) >= 30):
+			
+			# Generate years for extrapolation
+			yrs_extrap = np.arange(yrs[-1] + 1, yrs[-1] + 11)
+			
+			# Perform linear regression on the last 30 years of valid data
+			slope, intercept, _, _, _ = stats.linregress(yrs[-30:], arr[-30:])
+			arr_extrap = slope * yrs_extrap + intercept
+			
+			# Update the ZOSTOGA array with the extrapolated values (replacing NaNs)
+			TAS[yrs[-1] - datayears[0] + 1 : yrs[-1] - datayears[0] + 11, j] = arr_extrap
+
+	# Center, suture, and smooth TAS
+	sTAS = np.nan * TAS
+	for i in np.arange(0,TAS.shape[1]):
+		(TAS[:,i], sTAS[:,i]) = SmoothZOSTOGA(TAS[:,i], datayears, baseyear, smoothwin)
+			
+
 	# Read in the ZOSTOGA data
 	(zostoga_modellist, zostoga_scenariolist, ZOSTOGA) = IncludeCMIP6Models(zostoga_modeldir,'zostoga', datayears, include_models, include_scenarios)
+
+	# Extrapolate ZOSTOGA beyond 2100 to accommodate 19-year smoothing
+	for j in range(ZOSTOGA.shape[1]):
+		idx = np.isfinite(ZOSTOGA[:, j])
+		yrs = datayears[idx]
+		# Skip if no valid data for given model and location
+		if len(yrs)==0:
+			continue
+		arr = ZOSTOGA[idx, j]
+		
+		# Only extrapolate for models that have no data after 2110
+		if (yrs[-1] <= 2110) & (len(arr) >= 30):
+			
+			# Generate years for extrapolation
+			yrs_extrap = np.arange(yrs[-1] + 1, yrs[-1] + 11)
+			
+			# Perform linear regression on the last 30 years of valid data
+			slope, intercept, _, _, _ = stats.linregress(yrs[-30:], arr[-30:])
+			arr_extrap = slope * yrs_extrap + intercept
+			
+			# Update the ZOSTOGA array with the extrapolated values (replacing NaNs)
+			ZOSTOGA[yrs[-1] - datayears[0] + 1 : yrs[-1] - datayears[0] + 11, j] = arr_extrap
 
 	# Center, suture, and smooth ZOSTOGA
 	sZOSTOGA = np.nan * ZOSTOGA
@@ -207,7 +274,7 @@ def tlm_preprocess_oceandynamics(scenario, modeldir, driftcorr, no_correlation, 
 	output = {'datayears': datayears, 'scenario': scenario, \
 		'targyears': targyears,	'mergeZOSZOSTOGA': mergeZOSZOSTOGA,\
 		'smoothwin': smoothwin, 'driftcorr': driftcorr, 'baseyear': baseyear,\
-		'GCMprobscale': GCMprobscale, 'maxDOF': maxDOF, 'no_correlation': no_correlation}
+		'GCMprobscale': GCMprobscale, 'maxDOF': maxDOF, 'no_correlation': no_correlation, 'subset_overlap': subset_overlap}
 
 	# Write the configuration to a file
 	outdir = os.path.dirname(__file__)
@@ -215,14 +282,32 @@ def tlm_preprocess_oceandynamics(scenario, modeldir, driftcorr, no_correlation, 
 	pickle.dump(output, outfile, protocol=4)
 	outfile.close()
 
-	# Store the ZOSTOGA variables in a pickle
-	output = {'sZOSTOGA': sZOSTOGA, 'zostoga_modellist': zostoga_modellist, \
-				'zostoga_scenariolist': zostoga_scenariolist}
+	# Store the unadjusted TAS and ZOSTOGA variables in a pickle
+	if subset_overlap == 0:
+		output = {'sZOSTOGA': sZOSTOGA, 'zostoga_modellist': zostoga_modellist, \
+			  'zostoga_scenariolist': zostoga_scenariolist}
+		
+		# Write the ZOSTOGA variables to a file
+		outfile = open(os.path.join(outdir, "{}_ZOSTOGA.pkl".format(pipeline_id)), 'wb')
+		pickle.dump(output, outfile, protocol=4)
+		outfile.close()
 
-	# Write the ZOSTOGA variables to a file
-	outfile = open(os.path.join(outdir, "{}_ZOSTOGA.pkl".format(pipeline_id)), 'wb')
-	pickle.dump(output, outfile, protocol=4)
-	outfile.close()
+		output = {'sTAS': sTAS, 'tas_modellist': tas_modellist, \
+			  'tas_scenariolist': tas_scenariolist}
+		
+		# Write the TAS variables to a file
+		outfile = open(os.path.join(outdir, "{}_TAS.pkl".format(pipeline_id)), 'wb')
+		pickle.dump(output, outfile, protocol=4)
+		outfile.close()
+
+	# Find the overlap between TAS and ZOSTOGA
+	combgm_modellist, tas_model_idx, zostoga_model_idx = np.intersect1d(tas_modellist, zostoga_modellist, return_indices=True)
+	tas_scenariolist = [tas_scenariolist[idx] for idx in tas_model_idx]
+	zostoga_scenariolist = [zostoga_scenariolist[idx] for idx in zostoga_model_idx]
+	sTAS = sTAS[:,tas_model_idx]
+	sZOSTOGA = sZOSTOGA[:,zostoga_model_idx]
+	TAS = TAS[:,tas_model_idx]
+	ZOSTOGA = ZOSTOGA[:,zostoga_model_idx]
 
 
 	#------------ Begin Ocean Dynamics ---------------------------------------------------
@@ -234,8 +319,8 @@ def tlm_preprocess_oceandynamics(scenario, modeldir, driftcorr, no_correlation, 
 	# Load the ZOS data
 	(zos_modellist, zos_scenariolist, ZOS_raw) = IncludeCMIP6ZOSModels(zos_modeldir, "zos", datayears, include_models, include_scenarios, focus_site_lats, focus_site_lons)
 
-	# Find the overlap between ZOS and ZOSTOGA
-	comb_modellist, zostoga_model_idx, zos_model_idx = np.intersect1d(zostoga_modellist, zos_modellist, return_indices=True)
+	# Find the overlap between ZOS and ZOSTOGA/TAS
+	comb_modellist, combgm_model_idx, zos_model_idx = np.intersect1d(combgm_modellist, zos_modellist, return_indices=True)
 
 	'''
 	#NOTE: POTENTIAL BUG IN ORIGINAL CODE
@@ -244,12 +329,16 @@ def tlm_preprocess_oceandynamics(scenario, modeldir, driftcorr, no_correlation, 
 	#bug, set 'ZOSTOGAadj' to a subset of 'sZOSTOGA' instead of 'ZOSTOGA'.
 	'''
 	# If no_correlation, do not subset the models to overlap
-	if no_correlation:
-		ZOSTOGAadj = sZOSTOGA # Replicate potential bug
-		#ZOSTOGAadj = ZOSTOGA  # Fix for potential bug
+	if no_correlation and not subset_overlap:
+		#TASadj = sTAS # Replicate potential bug
+		TASadj = TAS # Fix for potential bug
+		#ZOSTOGAadj = sZOSTOGA # Replicate potential bug
+		ZOSTOGAadj = ZOSTOGA  # Fix for potential bug
 	else:
-		ZOSTOGAadj = sZOSTOGA[:,zostoga_model_idx]  # Replicate potential bug
-		#ZOSTOGAadj = ZOSTOGA[:,zostoga_model_idx]  # Fix for potential bug
+		#TASadj = sTAS[:,combgm_model_idx]  # Replicate potential bug
+		TASadj = TAS[:,combgm_model_idx] # Fix for potential bug
+		#ZOSTOGAadj = sZOSTOGA[:,combgm_model_idx]  # Replicate potential bug
+		ZOSTOGAadj = ZOSTOGA[:,combgm_model_idx]  # Fix for potential bug
 		ZOS_raw = ZOS_raw[:, zos_model_idx, :]
 
 	# Should we merge ZOSTOGA and ZOS?
@@ -257,6 +346,29 @@ def tlm_preprocess_oceandynamics(scenario, modeldir, driftcorr, no_correlation, 
 		ZOS = ZOS_raw + ZOSTOGAadj[:,:,np.newaxis]
 	else:
 		ZOS = ZOS_raw
+
+	# Extrapolate ZOS beyond 2100 to accommodate 19-year smoothing
+	# Loop over locations
+	for k in range(ZOS.shape[2]):
+		# Loop over models
+		for j in range(ZOS.shape[1]):
+			idx = np.isfinite(ZOS[:, j, k])
+			yrs = datayears[idx]
+			# Skip if no valid data for given model and location
+			if len(yrs)==0:
+				continue
+			arr = ZOS[idx, j, k]
+			if (yrs[-1]<=2110) & (len(arr) >= 30):
+				
+				# Generate years for extrapolation
+				yrs_extrap = np.arange(yrs[-1] + 1, yrs[-1] + 11)
+				
+				# Perform linear regression on the last 30 years of valid data
+				slope, intercept, _, _, _ = stats.linregress(yrs[-30:], arr[-30:])
+				arr_extrap = slope * yrs_extrap + intercept
+				
+				# Update the ZOS array with the extrapolated values (replacing NaNs)
+				ZOS[yrs[-1] - datayears[0] + 1 : yrs[-1] - datayears[0] + 11, j, k] = arr_extrap
 
 	# Smooth ZOS and ZOSTOGA over 19 year smoothing window
 	def nanSmooth(x, w):
@@ -268,22 +380,41 @@ def tlm_preprocess_oceandynamics(scenario, modeldir, driftcorr, no_correlation, 
 
 	sZOS = np.apply_along_axis(nanSmooth, axis=0, arr=ZOS, w=smoothwin)
 	sZOSTOGAadj = np.apply_along_axis(nanSmooth, axis=0, arr=ZOSTOGAadj, w=smoothwin)
+	sTASadj = np.apply_along_axis(nanSmooth, axis=0, arr=TASadj, w=smoothwin)
 
 	# Center the smoothed ZOS/ZOSTOGAadj to the baseyear
 	baseyear_idx = np.flatnonzero(datayears == baseyear)
 	sZOS = np.apply_along_axis(lambda z, idx: z - z[idx], axis=0, arr=sZOS, idx=baseyear_idx)
 	sZOSTOGAadj = np.apply_along_axis(lambda z, idx: z - z[idx], axis=0, arr=sZOSTOGAadj, idx=baseyear_idx)
+	sTASadj = np.apply_along_axis(lambda z, idx: z - z[idx], axis=0, arr=sTASadj, idx=baseyear_idx)
 
 	# Store the ZOS variable in a pickle
 	output = {'sZOS': sZOS, 'zos_modellist': zos_modellist, 'zos_scenariolist': zos_scenariolist, 'datayears': datayears, \
 				'focus_site_ids': focus_site_ids, 'focus_site_lats': focus_site_lats, \
-				'focus_site_lons': focus_site_lons, 'sZOSTOGAadj': sZOSTOGAadj, 'comb_modellist': comb_modellist}
+				'focus_site_lons': focus_site_lons, 'sZOSTOGAadj': sZOSTOGAadj, 'sTASadj': sTASadj, 'comb_modellist': comb_modellist}
 
 	# Write the ZOS variables to a file
 	outfile = open(os.path.join(outdir, "{}_ZOS.pkl".format(pipeline_id)), 'wb')
 	pickle.dump(output, outfile, protocol=4)
 	outfile.close()
 
+	# Store the adjusted ZOSTOGA variables in a pickle
+	if subset_overlap == 1:
+		output = {'sZOSTOGA': sZOSTOGAadj, 'zostoga_modellist': [combgm_modellist[idx] for idx in combgm_model_idx], \
+			  'zostoga_scenariolist': [zostoga_scenariolist[idx] for idx in combgm_model_idx]}
+		
+		# Write the ZOSTOGA variables to a file
+		outfile = open(os.path.join(outdir, "{}_ZOSTOGA.pkl".format(pipeline_id)), 'wb')
+		pickle.dump(output, outfile, protocol=4)
+		outfile.close()
+		
+		output = {'sTAS': sTASadj, 'tas_modellist': [combgm_modellist[idx] for idx in combgm_model_idx], \
+			  'tas_scenariolist': [tas_scenariolist[idx] for idx in combgm_model_idx]}
+		
+		# Write the TAS variables to a file
+		outfile = open(os.path.join(outdir, "{}_TAS.pkl".format(pipeline_id)), 'wb')
+		pickle.dump(output, outfile, protocol=4)
+		outfile.close()
 
 
 if __name__ == '__main__':
@@ -301,6 +432,8 @@ if __name__ == '__main__':
 	parser.add_argument('--no_drift_corr', help="Do not apply the drift correction", type=int, choices=[0,1], default=0)
 
 	parser.add_argument('--no_correlation', help="Do not apply the correlation between ZOS and ZOSTOGA fields", type=int, choices=[0,1], default=0)
+	parser.add_argument('--subset_overlap', help="Subset the models so that the same models are used for ZOS and ZOSTOGA", type=int, choices=[0,1], default=0)
+	parser.add_argument('--exclude_cmip_models', help="Comma-separated list of CMIP models to exclude", default="")
 
 	parser.add_argument('--pyear_start', help="Year for which projections start [default=2000]", default=2020, type=int)
 	parser.add_argument('--pyear_end', help="Year for which projections end [default=2300]", default=2300, type=int)
@@ -320,6 +453,7 @@ if __name__ == '__main__':
 	configfile = os.path.join(outdir, "{}_config.pkl".format(args.pipeline_id))
 	zostogafile = os.path.join(outdir, "{}_ZOSTOGA.pkl".format(args.pipeline_id))
 	zosfile = os.path.join(outdir, "{}_ZOS.pkl".format(args.pipeline_id))
+	tasfile = os.path.join(outdir, "{}_TAS.pkl".format(args.pipeline_id))
 	tlmfile = os.path.join(outdir, "{}_tlmdata.pkl".format(args.pipeline_id))
 
 	# Run the OD preprocessing if intermediate files are not present
@@ -330,7 +464,7 @@ if __name__ == '__main__':
 	if os.path.isfile(configfile) and os.path.isfile(zostogafile) and os.path.isfile(zosfile):
 		print("{}, {}, and {} found, skipping OD preprocessing".format(configfile, zostogafile, zosfile))
 	else:
-		tlm_preprocess_oceandynamics(scenario_dsl, args.model_dir, not args.no_drift_corr, args.no_correlation, args.pyear_start, args.pyear_end, args.pyear_step, args.locationfile, args.baseyear, args.pipeline_id)
+		tlm_preprocess_oceandynamics(scenario_dsl, args.model_dir, not args.no_drift_corr, args.no_correlation, args.subset_overlap, args.exclude_cmip_models, args.pyear_start, args.pyear_end, args.pyear_step, args.locationfile, args.baseyear, args.pipeline_id)
 
 	# Done
 	sys.exit()
